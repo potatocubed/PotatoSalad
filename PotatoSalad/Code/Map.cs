@@ -13,21 +13,30 @@ namespace PotatoSalad
         public int YDimension;
         public Tile[,] TileArray;
 
-        public Map(int xSize = 10, int ySize = 10)
+        public void Generate(int xSize = 10, int ySize = 10)
         {
             // We'll add some more creation parameters and variables later. Like depth, tileset, reference, etc.
             // The default is a 10x10 map, blank in the middle, with walls all around the edge.
-            TileArray = new Tile[xSize - 1, ySize - 1];
-            for (int i = 0; i <= TileArray.GetUpperBound(1); i++)
+            TileArray = new Tile[xSize, ySize];
+            for (int i = 0; i <= TileArray.GetUpperBound(0); i++)
+            {
+                for (int j = 0; j <= TileArray.GetUpperBound(1); j++)
+                {
+                    TileArray[i, j] = new Tile(i, j);
+                    TileArray[i, j].MakeTile("floor");
+                }
+            }
+
+            for (int i = 0; i <= TileArray.GetUpperBound(0); i++)
             {
                 // Loop through the x-axis, adding walls on top and bottom.
                 TileArray[i, 0].MakeTile("wall");
-                TileArray[i, TileArray.GetUpperBound(2)].MakeTile("wall");
+                TileArray[i, TileArray.GetUpperBound(1)].MakeTile("wall");
             }
-            for (int i = 0; i <= TileArray.GetUpperBound(2); i++)
+            for (int i = 0; i <= TileArray.GetUpperBound(1); i++)
             {
                 TileArray[0, i].MakeTile("wall");
-                TileArray[TileArray.GetUpperBound(1), i].MakeTile("wall");
+                TileArray[TileArray.GetUpperBound(0), i].MakeTile("wall");
             }
 
         }
