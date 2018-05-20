@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
+//using System.IO;
 using System.Windows.Forms;
 
 namespace PotatoSalad
@@ -22,12 +22,6 @@ namespace PotatoSalad
         private void Form1_Load(object sender, EventArgs e)
         {
             DrawMap(Game.DungeonMap);
-            //string here = Directory.GetCurrentDirectory();
-            //PictureBox pb1 = new PictureBox();
-            //pb1.Image = Image.FromFile("../../Graphics/Tiles/return-to-nature.png");
-            //pb1.Location = new Point(100, 100);
-            //pb1.Size = new Size(500, 500);
-            //this.Controls.Add(pb1);
         }
 
         private void DrawMap(Map m)
@@ -36,9 +30,9 @@ namespace PotatoSalad
             {
                 PictureBox pb = new PictureBox();
                 pb.Image = Image.FromFile(t.TileGraphic);
-                pb.Location = new Point(16 * t.X, 16 * t.Y);
-                pb.Size = new Size(16, 16);
-                this.Controls.Add(pb);
+                pb.Location = new Point(32 * t.X, 32 * t.Y);
+                pb.Size = new Size(32, 32);
+                this.Controls.Add(pb);  // TODO: Is this necessary?
             }
 
         }
