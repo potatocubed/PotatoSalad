@@ -10,8 +10,14 @@ namespace PotatoSalad
     {
         public void KeyIn(string k)
         {
-            // This is a debug setting.
-            Game.ConsoleForm.RenderText(k);
+            if (Globals.DEBUG_MODE)
+            {
+                Game.ConsoleForm.RenderText(k);
+            }
+            if (Game.StateMachine.GetState() == Globals.STATE_PLAYER_TURN)
+            {
+                // Player input should move the player.
+            }
         }
     }
 }

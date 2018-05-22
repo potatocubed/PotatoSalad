@@ -12,9 +12,15 @@ namespace PotatoSalad
 {
     public class StateMachine
     {
-        private const int PLAYER_TURN = 1;
-        private const int ENEMY_TURN = 2;
-        private int _state = PLAYER_TURN;
+        //private const int PLAYER_TURN = 1;
+        //private const int ENEMY_TURN = 2;
+        //private int _state = PLAYER_TURN;
+        private int _state;
+
+        public StateMachine(int initial_state)
+        {
+            _state = initial_state;
+        }
 
         public int GetState()
         {

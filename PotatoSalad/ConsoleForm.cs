@@ -21,7 +21,10 @@ namespace PotatoSalad
         private void ConsoleForm_Load(object sender, EventArgs e)
         {
             //DrawMap(Game.DungeonMap);
-            RenderText("If you can read this, it's worked.");
+            if (Globals.DEBUG_MODE)
+            {
+                RenderText("If you can read this, it's worked.");
+            }
         }
         
         public void RenderText(string textToRender)

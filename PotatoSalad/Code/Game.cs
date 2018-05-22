@@ -16,6 +16,8 @@ namespace PotatoSalad
         public static Form1 WorldForm;
         public static ConsoleForm ConsoleForm;
         public static InputHandler InputHandler;
+        public static StateMachine StateMachine;
+        public static Globals Globals;
 
         [STAThread]
         static void Main()
@@ -23,17 +25,26 @@ namespace PotatoSalad
             DungeonMap = new Map();
             DungeonMap.Generate(10, 10);
 
+            Globals = new Globals();
             InputHandler = new InputHandler();
+            StateMachine = new StateMachine(Globals.STATE_PLAYER_TURN);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ShowForms();
             Application.Run();
 
-            // Echo keypresses to the console for debugging purposes.
-            // Add 'debug' flag somewhere.
-            // Add them to a log, too. (Maximum size for a C# 'list' type is 134 million entries or so.)
+            // Add 'mobile' class, then have the player class inherit from it.
+            // Add another grid to track mobile locations. OR add a property to Tile which stores the single mobile
+            // that can occupy that space.
+            // Add bits to the draw method which draw the mobiles in the Tile.
+            // Implement player movement.
+            // Implement map scrolling.
+            // Implement FOV.
+
+            // Add keypress to a log, too. (Maximum size for a C# 'list' type is 134 million entries or so.)
             // Create a single 'one form to bind them all' to control opening and closing of the various windows.
+
             // (Apparently you can hijack the 'on close' event to just hide the windows. When all are hidden, kill the app.)
 
             // Bresenham's Line Algorithm is key for determining FOV.
