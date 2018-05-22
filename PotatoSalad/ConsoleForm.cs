@@ -24,12 +24,11 @@ namespace PotatoSalad
             RenderText("If you can read this, it's worked.");
         }
         
-        private void RenderText(string textToRender)
+        public void RenderText(string textToRender)
         {
             ListBox cOutput = this.FakeConsole;
             FakeConsole.Items.Insert(0, textToRender);
-            FakeConsole.Items.Insert(0, "And this is for debugging purposes.");
+            //FakeConsole.Items.Insert(0, "And this is for debugging purposes.");
         }
-
     }
 }

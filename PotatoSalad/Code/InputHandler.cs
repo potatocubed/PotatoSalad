@@ -4,22 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-/// <summary>
-/// Summary description for Class1
-/// </summary>
-
 namespace PotatoSalad
 {
-    public class InputHandler
+    class InputHandler
     {
-        // Whenever an input is detected by one of the various forms, it passes that input
-        // (and its own identifier) here, for processing.
-
-        public Class1()
+        public void KeyIn(string k)
         {
-            //
-            // TODO: Add constructor logic here
-            //
+            // This is a debug setting.
+            Game.ConsoleForm.RenderText(k);
         }
     }
 }

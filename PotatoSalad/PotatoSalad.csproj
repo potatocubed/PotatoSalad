@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="Code\Game.cs" />
     <Compile Include="Code\Map.cs" />
+    <Compile Include="Code\InputHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Code\Tile.cs" />
     <Compile Include="TheOneForm.cs">

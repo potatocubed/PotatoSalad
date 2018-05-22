@@ -13,12 +13,17 @@ namespace PotatoSalad
         /// </summary>
 
         public static Map DungeonMap;
+        public static Form1 WorldForm;
+        public static ConsoleForm ConsoleForm;
+        public static InputHandler InputHandler;
 
         [STAThread]
         static void Main()
         {
             DungeonMap = new Map();
             DungeonMap.Generate(10, 10);
+
+            InputHandler = new InputHandler();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -58,13 +63,14 @@ namespace PotatoSalad
             int formCount = 0;
             List<Form> formList = new List<Form>(); // The ControlForm doesn't live on this list.
 
-            Form1 worldForm = new Form1();
-            formList.Add(worldForm);
-            ConsoleForm consoleForm = new ConsoleForm();
-            formList.Add(consoleForm);
+            //Form1 worldForm = new Form1();
+            WorldForm = new Form1();
+            ConsoleForm = new ConsoleForm();
+            formList.Add(WorldForm);
+            formList.Add(ConsoleForm);
 
             // We fire up the control form last of all.
-            TheOneForm ControlForm = new TheOneForm(worldForm, consoleForm)
+            TheOneForm ControlForm = new TheOneForm(WorldForm, ConsoleForm)
             {
                 ShowInTaskbar = true
             };
@@ -114,6 +120,10 @@ namespace PotatoSalad
                             ControlForm.WindowState = FormWindowState.Normal;
                         }
                     }
+                };
+                f.KeyPress += (sender, e) =>
+                {
+                    InputHandler.KeyIn(e.KeyChar.ToString());
                 };
                 f.Show();
             }
