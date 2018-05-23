@@ -15,6 +15,9 @@ namespace PotatoSalad
 
         public void Generate(int xSize = 10, int ySize = 10)
         {
+            XDimension = xSize - 1;
+            YDimension = ySize - 1;
+
             // We'll add some more creation parameters and variables later. Like depth, tileset, reference, etc.
             // The default is a 10x10 map, blank in the middle, with walls all around the edge.
             TileArray = new Tile[xSize, ySize];
@@ -39,6 +42,14 @@ namespace PotatoSalad
                 TileArray[TileArray.GetUpperBound(0), i].MakeTile("wall");
             }
 
+            // For the default map, lets stick the player just inside the top-left corner.
+            InstantiatePlayer(TileArray[2, 2]);
+        }
+
+        public void InstantiatePlayer(Tile loc)
+        {
+            Game.Player = new Player(loc);
+            loc.Occupier = Game.Player;
         }
     }
 }

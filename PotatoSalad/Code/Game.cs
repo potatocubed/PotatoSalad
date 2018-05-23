@@ -18,6 +18,7 @@ namespace PotatoSalad
         public static InputHandler InputHandler;
         public static StateMachine StateMachine;
         public static Globals Globals;
+        public static Player Player;
 
         [STAThread]
         static void Main()

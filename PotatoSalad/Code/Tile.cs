@@ -9,6 +9,7 @@ namespace PotatoSalad
     public class Tile
     {
         // A class (object?) which holds all the information for any given map tile.
+        public string Name;
         public int X;
         public int Y;
         public bool BlockSight;
@@ -19,6 +20,7 @@ namespace PotatoSalad
         public string DisplayChar;
         public string TileGraphic;
         public string DarkTileGraphic;
+        public Mobile Occupier;
 
         private string TileDir = "../../Graphics/Tiles";
 
@@ -46,6 +48,7 @@ namespace PotatoSalad
             switch (tileType)
             {
                 case "floor":
+                    Name = "floor";
                     BlockSight = false;
                     BlockEffect = false;
                     BlockMovement = false;
@@ -53,6 +56,7 @@ namespace PotatoSalad
                     TileGraphicSetting("floor");
                     break;
                 case "wall":
+                    Name = "wall";
                     BlockSight = true;
                     BlockEffect = true;
                     BlockMovement = true;

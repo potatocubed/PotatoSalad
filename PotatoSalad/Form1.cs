@@ -21,10 +21,15 @@ namespace PotatoSalad
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            
+        }
+
+        private void Form1_Paint(object sender, PaintEventArgs e)
+        {
             DrawMap(Game.DungeonMap);
         }
 
-        private void DrawMap(Map m)
+        public void DrawMap(Map m)
         {
             foreach (Tile t in m.TileArray)
             {
@@ -33,6 +38,17 @@ namespace PotatoSalad
                 pb.Location = new Point(32 * t.X, 32 * t.Y);
                 pb.Size = new Size(32, 32);
                 this.Controls.Add(pb);  // TODO: Is this necessary?
+
+                if(t.Occupier != null)
+                {
+                    PictureBox mpb = new PictureBox();
+                    pb.Controls.Add(mpb);
+                    mpb.Image = Image.FromFile(t.Occupier.displayGraphic);
+                    mpb.Location = new Point(0, 0); // This is RELATIVE to the container.
+                    mpb.Size = pb.Size;
+                    mpb.BackColor = Color.Transparent;
+                    mpb.BringToFront();
+                }
             }
 
         }
