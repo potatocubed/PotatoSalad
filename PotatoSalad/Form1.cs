@@ -31,6 +31,11 @@ namespace PotatoSalad
 
         public void DrawMap(Map m)
         {
+            // Okay, new fucking plan.
+            // I'll create an array of pictureboxes which represents the entire level.
+            // Then redraw each one each time. Somehow.
+            // Every MOBILE gets its own picturebox, which is assigned to different parents
+            // based on its location.
             foreach (Tile t in m.TileArray)
             {
                 PictureBox pb = new PictureBox();
