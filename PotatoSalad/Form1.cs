@@ -83,6 +83,12 @@ namespace PotatoSalad
 
         public void DrawMap(Map m)
         {
+            List<Tile> fovList = Game.FOVCalculator.ReturnFOVList(
+                m.TileArray,
+                Game.Player.X(),
+                Game.Player.Y(),
+                Game.Player.FOVRange);
+
             foreach(Tile t in m.TileArray)
             {
                 // Don't draw anything further out than 80x25.
@@ -97,37 +103,10 @@ namespace PotatoSalad
                 {
                     PictureBox mpb = FindMobBox(t.Occupier.id);
                     mpb.Parent = displayBox;
-                    mpb.Location = new Point(0, 0);
                 }
             }
-
-            // Okay, new fucking plan.
-            // I'll create an array of pictureboxes which represents the entire level.
-            // Standard console size is 80x by 25y.
-            // Then redraw each one each time. Somehow.
-            // Every MOBILE gets its own picturebox, which is assigned to different parents
-            // based on its location.
-            //foreach (Tile t in m.TileArray)
-            //{
-            //    PictureBox pb = new PictureBox();
-            //    pb.Image = Image.FromFile(t.TileGraphic);
-            //    pb.Location = new Point(32 * t.X, 32 * t.Y);
-            //    pb.Size = new Size(32, 32);
-            //    this.Controls.Add(pb);  // TODO: Is this necessary?
-
-            //    if(t.Occupier != null)
-            //    {
-            //        PictureBox mpb = new PictureBox();
-            //        pb.Controls.Add(mpb);
-            //        mpb.Image = Image.FromFile(t.Occupier.displayGraphic);
-            //        mpb.Location = new Point(0, 0); // This is RELATIVE to the container.
-            //        mpb.Size = pb.Size;
-            //        mpb.BackColor = Color.Transparent;
-            //        mpb.BringToFront();
-            //    }
-            //}
-
         }
+
         private void FindTag(Control.ControlCollection controls)
             // Not used for anything yet. But might be handy?
         {

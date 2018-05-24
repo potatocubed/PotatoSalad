@@ -15,6 +15,7 @@ namespace PotatoSalad
         public string name; // The display name.
         public string displayGraphic;   // The image which is the thing.
         public Tile location;   // A reference to the containing tile.
+        public int FOVRange;
 
         public Mobile(Tile loc, string uniqueID)
         {
@@ -23,6 +24,7 @@ namespace PotatoSalad
             location = loc;
             //displayGraphic = System.Environment.CurrentDirectory;
             displayGraphic = "../../Graphics/Mobiles/player.png";
+            FOVRange = 2;   // Just a default value, for testing.
         }
 
         public int X()
@@ -66,6 +68,7 @@ namespace PotatoSalad
             newLoc.Occupier = this;
 
             // Update the form.
+            // This may need to move to a turn update method at some point.
             Game.WorldForm.DrawMap(Game.DungeonMap);
         }
     }

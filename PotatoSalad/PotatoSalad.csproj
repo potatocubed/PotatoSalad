@@ -49,6 +49,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\FOVCalculator.cs" />
     <Compile Include="Code\Globals.cs" />
     <Compile Include="Code\Player.cs" />
     <Compile Include="Code\StateMachine.cs" />

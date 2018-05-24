@@ -19,6 +19,7 @@ namespace PotatoSalad
         public static StateMachine StateMachine;
         public static Globals Globals;
         public static Player Player;
+        public static FOVCalculator FOVCalculator;
 
         [STAThread]
         static void Main()
@@ -29,6 +30,7 @@ namespace PotatoSalad
             Globals = new Globals();
             InputHandler = new InputHandler();
             StateMachine = new StateMachine(Globals.STATE_PLAYER_TURN);
+            FOVCalculator = new FOVCalculator();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
