@@ -11,26 +11,18 @@ namespace PotatoSalad
         // A mobile is the basis for the player and monster classes.
         // Every Tile has one slot for a mobile.
 
-        private string id;   // Every mobile needs a unique ID.
+        public string id;   // Every mobile needs a unique ID.
         public string name; // The display name.
         public string displayGraphic;   // The image which is the thing.
         public Tile location;   // A reference to the containing tile.
 
-        public Mobile(Tile loc)
+        public Mobile(Tile loc, string uniqueID)
         {
             name = "mobile";
-            id = GenID();
+            id = uniqueID;
             location = loc;
             //displayGraphic = System.Environment.CurrentDirectory;
             displayGraphic = "../../Graphics/Mobiles/player.png";
-        }
-
-        private string GenID()
-        {
-            // This just doesn't work at all.  =/
-            Guid guid = new Guid();
-            string s = guid.ToString();
-            return s;
         }
 
         public int X()
@@ -74,7 +66,7 @@ namespace PotatoSalad
             newLoc.Occupier = this;
 
             // Update the form.
-            Game.WorldForm.Refresh();
+            Game.WorldForm.DrawMap(Game.DungeonMap);
         }
     }
 }

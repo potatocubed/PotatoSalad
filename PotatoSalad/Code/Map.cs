@@ -12,6 +12,8 @@ namespace PotatoSalad
         public int XDimension;
         public int YDimension;
         public Tile[,] TileArray;
+        public List<Mobile> MobileArray = new List<Mobile>();
+        public string MapID;    // Includes name, depth, etc.
 
         public void Generate(int xSize = 10, int ySize = 10)
         {
@@ -42,6 +44,8 @@ namespace PotatoSalad
                 TileArray[TileArray.GetUpperBound(0), i].MakeTile("wall");
             }
 
+            // Now we've got some terrain, let's add some beasts.
+
             // For the default map, lets stick the player just inside the top-left corner.
             InstantiatePlayer(TileArray[2, 2]);
         }
@@ -50,6 +54,7 @@ namespace PotatoSalad
         {
             Game.Player = new Player(loc);
             loc.Occupier = Game.Player;
+            MobileArray.Add(Game.Player);
         }
     }
 }

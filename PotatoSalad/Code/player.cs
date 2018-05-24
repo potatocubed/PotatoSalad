@@ -9,7 +9,7 @@ namespace PotatoSalad
     class Player : Mobile
     {
         public Player(Tile loc)
-            : base(loc)
+            : base(loc, "UniqueIDPlayer")
         {
             name = "Player";
             displayGraphic = "../../Graphics/Mobiles/player.png";
