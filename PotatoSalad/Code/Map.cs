@@ -44,6 +44,8 @@ namespace PotatoSalad
                 TileArray[TileArray.GetUpperBound(0), i].MakeTile("wall");
             }
 
+            TileArray[5, 5].MakeTile("wall");
+
             // Now we've got some terrain, let's add some beasts.
 
             // For the default map, lets stick the player just inside the top-left corner.

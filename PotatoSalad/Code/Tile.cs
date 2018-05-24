@@ -21,6 +21,7 @@ namespace PotatoSalad
         public string TileGraphic;
         public string DarkTileGraphic;
         public Mobile Occupier;
+        public string Blackout;
 
         private string TileDir = "../../Graphics/Tiles";
 
@@ -41,6 +42,7 @@ namespace PotatoSalad
             DisplayChar = dc;
             TileGraphic = graphic;
             DarkTileGraphic = dGraphic;
+            Blackout = TileDir + "/black.png";
         }
 
         public void MakeTile(string tileType = "")

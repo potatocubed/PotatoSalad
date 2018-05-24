@@ -89,14 +89,40 @@ namespace PotatoSalad
                 Game.Player.Y(),
                 Game.Player.FOVRange);
 
-            foreach(Tile t in m.TileArray)
+            foreach (Tile t in m.TileArray)
+            {
+                t.IsInFOV = false;
+            }
+
+            foreach (Tile t in fovList)
+            {
+                t.IsExplored = true;
+                t.IsInFOV = true;
+            }
+
+            foreach (Tile t in m.TileArray)
             {
                 // Don't draw anything further out than 80x25.
                 PictureBox displayBox = MapDisplayArray[t.X, t.Y];
 
                 if (t.X >= 0 && t.X <= 79 && t.Y >= 0 && t.Y <= 24)
                 {
-                    displayBox.Image = Image.FromFile(t.TileGraphic);
+                    if (t.IsExplored)
+                    {
+                        if (t.IsInFOV)
+                        {
+                            displayBox.Image = Image.FromFile(t.TileGraphic);
+                        }
+                        else
+                        {
+                            displayBox.Image = Image.FromFile(t.DarkTileGraphic);
+                        }
+                    }
+                    else
+                    {
+                        displayBox.Image = Image.FromFile(t.Blackout);
+                    }
+                    
                 }
 
                 if (t.Occupier != null)

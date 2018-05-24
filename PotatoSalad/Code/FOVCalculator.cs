@@ -25,10 +25,15 @@ namespace PotatoSalad
                 foreach (Tile t in TilesInALine(pX, pY, box[0, i], box[1, i], Game.DungeonMap))
                 {
                     results.Add(t);
+                    if (t.BlockSight)   // This should bring to a halt any vision through a wall.
+                    {
+                        break;
+                    }
                 }
             }
 
             // MUST NOT return tiles that are outside the map.
+            results = results.Distinct().ToList();
             return results;
         }
 
@@ -78,8 +83,9 @@ namespace PotatoSalad
             // This is where we use Bresenham's algorithm to get all the tiles between origin and destination.
 
             // Step 1. Which octant are we looking at?
-            // Get a transform to make it into the lower-right, dx > dy octant.
-            // Then transform it back again to get your actual tile.
+            // Zero the vector.
+            // Then rotate it.
+            // Then rotate the x/y values back again to get the actual tiles.
 
             // Starting at 12 o'clock, the octants go clockwise 1-8.
 
@@ -101,18 +107,20 @@ namespace PotatoSalad
                 rightSide = false;
             }
 
-            if (yo < yd || ((yo == yd) && (xo > xd)))
+            if (yo > yd || ((yo == yd) && (xo > xd)))
             {
                 // It's on top OR straight left.
-                rightSide = false;
+                topSide = true;
             }
             else
             {
                 // It's underneath OR straight right.
-                rightSide = true;
+                topSide = false;
             }
 
-            if (deltaX > deltaY || ((xd > xo) && (yd < yo)) || ((xd < xo) && (yd > yo)))
+            if (deltaX > deltaY || 
+                ((deltaX == deltaY) && ((xd > xo) && (yd < yo))) || 
+                ((deltaX == deltaY) && ((xd < xo) && (yd > yo))))
             {
                 // It's a 'flat' octant, OR you're going northeast, OR you're going southwest.
                 longX = true;
@@ -123,211 +131,148 @@ namespace PotatoSalad
                 longX = false;
             }
 
-            int x0 = 0;
-            int x1 = 0;
-            int y0 = 0;
-            int y1 = 0;
+            // Zero the vector.
+            int x0 = xo - xo;
+            int y0 = yo - yo;
+            int x1 = xd - xo;
+            int y1 = yd - yo;
 
-            int octant = 0;
-
-            if (!topSide && rightSide && longX)
-            {
-                // 3. The default octant.
-                octant = 3;
-            }
-            else if(topSide && rightSide && longX)
-            {
-                octant = 2;
-            }
-            else if(topSide && rightSide && !longX)
-            {
-                octant = 1;
-            }
-            else if(topSide && !rightSide && !longX)
-            {
-                octant = 8;
-            }
-            else if (topSide && !rightSide && longX)
-            {
-                octant = 7;
-            }
-            else if (!topSide && !rightSide && longX)
-            {
-                octant = 6;
-            }
-            else if (!topSide && !rightSide && !longX)
-            {
-                octant = 5;
-            }
-            else if (!topSide && rightSide && !longX)
-            {
-                octant = 4;
-            }
-
-            switch (octant)
-            {
-                case 1:
-                    // Origin remains the same.
-                    // Destination is transformed using deltas.
-                    deltaX = xd - xo;
-                    deltaY = yo - yd;
-                    x0 = xo;
-                    y0 = yo;
-                    x1 = xo + deltaY;
-                    y1 = yo + deltaX;
-                    break;
-                case 2:
-                    // Invert the y of origin and destination.
-                    x0 = xo;
-                    y0 = yd;
-                    x1 = xd;
-                    y1 = yo;
-                    break;
-                case 3:
-                    x0 = xo;
-                    y0 = yo;
-                    x1 = xd;
-                    y1 = yd;
-                    break;
-                case 4:
-                    // Origin remains the same.
-                    // Destination is transformed using deltas.
-                    deltaX = xd - xo;
-                    deltaY = yd - yo;
-                    x0 = xo;
-                    y0 = yo;
-                    x1 = xo + deltaY;
-                    y1 = yo + deltaX;
-                    break;
-                case 7:
-                    // Invert origin and destination.
-                    x0 = yo;
-                    x1 = xo;
-                    y0 = yd;
-                    y1 = xd;
-                    break;
-            }
-
-
-            bool steep = Math.Abs(y1 - y0) > Math.Abs(x1 - x0);
-            bool invert = x0 > x1;
-            if (steep)
+            // The transformation depends on the three checks.
+            // A vertical slice requires transposing x and y.
+            // (x0 and y0 are always zero, so.)
+            if (!longX)
             {
                 int t;
-                t = x0; // swap x0 and y0
-                x0 = y0;
-                y0 = t;
-                t = x1; // swap x1 and y1
+                t = x1;
                 x1 = y1;
                 y1 = t;
             }
-            if (invert)    // Inverted
+            // Flipping from bottom half to top half requires (y * -1)
+            if (topSide)
             {
-                int t;
-                t = x0; // swap x0 and x1
-                x0 = x1;
-                x1 = t;
-                t = y0; // swap y0 and y1
-                y0 = y1;
-                y1 = t;
+                //(y0 < y1) ? 1 : -1;
+                if (longX)
+                {
+                    y1 = y1 * -1;
+                }
+                else
+                {
+                    x1 = x1 * -1;
+                }
             }
+            // Flipping from right to left requires (x * -1)
+            if (!rightSide)
+            {
+                if (longX)
+                {
+                    x1 = x1 * -1;
+                }
+                else
+                {
+                    y1 = y1 * -1;
+                }
+            }
+
             int dx = x1 - x0;
             int dy = Math.Abs(y1 - y0);
             int error = dx / 2;
-            int xstep = (invert) ? -1 : 1;
-            int ystep = (y0 < y1) ? 1 : -1;
+            int ystep = 1;
             int y = y0;
-            if (xstep == 1)
+            for (int x = x0; x <= x1; x++)
             {
-                // We're reading left to right.
-                for (int x = x0; x <= x1; x++)
+                //yield return new Point((steep ? y : x), (steep ? x : y));
+                int targX = x;
+                int targY = y;
+                // Reverse the transformations.
+                if (!longX)
                 {
-                    if (x >= 0 && y >= 0 && x < m.XDimension && y < m.YDimension)
-                    {
-                        if (steep)
-                        {
-                            results.Add(m.TileArray[y, x]);
-                        }
-                        else
-                        {
-                            results.Add(m.TileArray[x, y]);
-                        }
-                    }
-                    error = error - dy;
-                    if (error < 0)
-                    {
-                        y += ystep;
-                        error += dx;
-                    }
+                    targX = y;
+                    targY = x;
+                }
+                if (topSide)
+                {
+                    targY = targY * -1;
+
+                    //if (longX)
+                    //{
+                    //    targY = targY * -1;
+                    //}
+                    //else
+                    //{
+                    //    targX = targX * -1;
+                    //}
+                    
+                }
+                if (!rightSide)
+                {
+                    targX = targX * -1;
+
+                    //if (longX)
+                    //{
+                    //    targX = targX * -1;
+                    //}
+                    //else
+                    //{
+                    //    targY = targY * -1;
+                    //}
+                    
+                }
+                targX = targX + xo;
+                targY = targY + yo;
+
+                if (targX >= 0 && targY >= 0 && targX <= m.XDimension && targY <= m.YDimension)
+                {
+                    results.Add(m.TileArray[targX, targY]);
+                }
+
+                error = error - dy;
+                if (error < 0)
+                {
+                    y += ystep;
+                    error += dx;
                 }
             }
-            else
-            {
-                // We're reading right to left.
-                for (int x = x1; x >= x0; x--)
-                {
-                    if (x >= 0 && y >= 0 && x < m.XDimension && y < m.YDimension)
-                    {
-                        if (steep)
-                        {
-                            results.Add(m.TileArray[y, x]);
-                        }
-                        else
-                        {
-                            results.Add(m.TileArray[x, y]);
-                        }
-                    }
-                    error = error - dy;
-                    if (error < 0)
-                    {
-                        y += ystep;
-                        error += dx;
-                    }
-                }
-            }
-            results = results.Distinct().ToList();
             return results;
         }
-
-        //public static IEnumerable<Point> GetPointsOnLine(int x0, int y0, int x1, int y1)
-        //{
-        //    bool steep = Math.Abs(y1 - y0) > Math.Abs(x1 - x0);
-        //    if (steep)
-        //    {
-        //        int t;
-        //        t = x0; // swap x0 and y0
-        //        x0 = y0;
-        //        y0 = t;
-        //        t = x1; // swap x1 and y1
-        //        x1 = y1;
-        //        y1 = t;
-        //    }
-        //    if (x0 > x1)
-        //    {
-        //        int t;
-        //        t = x0; // swap x0 and x1
-        //        x0 = x1;
-        //        x1 = t;
-        //        t = y0; // swap y0 and y1
-        //        y0 = y1;
-        //        y1 = t;
-        //    }
-        //    int dx = x1 - x0;
-        //    int dy = Math.Abs(y1 - y0);
-        //    int error = dx / 2;
-        //    int ystep = (y0 < y1) ? 1 : -1;
-        //    int y = y0;
-        //    for (int x = x0; x <= x1; x++)
-        //    {
-        //        yield return new Point((steep ? y : x), (steep ? x : y));
-        //        error = error - dy;
-        //        if (error < 0)
-        //        {
-        //            y += ystep;
-        //            error += dx;
-        //        }
-        //    }
-        //    yield break;
-        //}
+            //public static IEnumerable<Point> GetPointsOnLine(int x0, int y0, int x1, int y1)
+            //{
+            //    bool steep = Math.Abs(y1 - y0) > Math.Abs(x1 - x0);
+            //    if (steep)
+            //    {
+            //        int t;
+            //        t = x0; // swap x0 and y0
+            //        x0 = y0;
+            //        y0 = t;
+            //        t = x1; // swap x1 and y1
+            //        x1 = y1;
+            //        y1 = t;
+            //    }
+            //    if (x0 > x1)
+            //    {
+            //        int t;
+            //        t = x0; // swap x0 and x1
+            //        x0 = x1;
+            //        x1 = t;
+            //        t = y0; // swap y0 and y1
+            //        y0 = y1;
+            //        y1 = t;
+            //    }
+            //    int dx = x1 - x0;
+            //    int dy = Math.Abs(y1 - y0);
+            //    int error = dx / 2;
+            //    int ystep = (y0 < y1) ? 1 : -1;
+            //    int y = y0;
+            //    for (int x = x0; x <= x1; x++)
+            //    {
+            //        yield return new Point((steep ? y : x), (steep ? x : y));
+            //        error = error - dy;
+            //        if (error < 0)
+            //        {
+            //            y += ystep;
+            //            error += dx;
+            //        }
+            //    }
+            //    yield break;
+            //}
+        }
     }
-}
