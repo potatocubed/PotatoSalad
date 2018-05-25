@@ -42,7 +42,7 @@ namespace PotatoSalad
             if (destX < 0 || destY < 0 || destX > Game.DungeonMap.XDimension || destY > Game.DungeonMap.YDimension)
             {
                 // You're trying to move off the edge of the map. Nope.
-                Game.ConsoleForm.RenderText($"No movement! Trying to walk off the map at {destX}, {destY}.");
+                Game.GI.RenderText($"No movement! Trying to walk off the map at {destX}, {destY}.");
                 return;
             }
 
@@ -51,14 +51,14 @@ namespace PotatoSalad
             // Check if the tile is walkable.
             if (newLoc.BlockMovement)
             {
-                Game.ConsoleForm.RenderText($"No movement! Bumped into {newLoc.Name}.");
+                Game.GI.RenderText($"No movement! Bumped into {newLoc.Name}.");
                 return;
             }
 
             // Check if the tile has a mob in it.
             if (newLoc.Occupier != null)
             {
-                Game.ConsoleForm.RenderText($"No movement! Bumped into {newLoc.Occupier.name}.");
+                Game.GI.RenderText($"No movement! Bumped into {newLoc.Occupier.name}.");
                 return;
             }
 

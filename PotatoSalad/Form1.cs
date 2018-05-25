@@ -16,6 +16,7 @@ namespace PotatoSalad
         private PictureBox[,] MapDisplayArray;
         public List<PictureBox> MobileList = new List<PictureBox>();
         private Size TileSize;
+        private List<Tile> oldFOV;
         // x, y
 
         public Form1()
@@ -23,6 +24,7 @@ namespace PotatoSalad
             InitializeComponent();
             this.Text = "The World";    //Sets the window title.
 
+            oldFOV = new List<Tile>();
             TileSize = new Size(32, 32);
             MapDisplayArray = new PictureBox[80, 25];
             // It's going to run 0-79, 0-24.
@@ -83,11 +85,12 @@ namespace PotatoSalad
 
         public void DrawMap(Map m)
         {
-            List<Tile> fovList = Game.FOVCalculator.ReturnFOVList(
+            List<Tile> fovList = oldFOV.Union(
+                Game.FOVCalculator.ReturnFOVList(
                 m.TileArray,
                 Game.Player.X(),
                 Game.Player.Y(),
-                Game.Player.FOVRange);
+                Game.Player.FOVRange)).ToList();
 
             foreach (Tile t in m.TileArray)
             {
@@ -131,6 +134,8 @@ namespace PotatoSalad
                     mpb.Parent = displayBox;
                 }
             }
+
+            oldFOV = fovList;
         }
 
         private void FindTag(Control.ControlCollection controls)

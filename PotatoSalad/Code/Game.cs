@@ -20,39 +20,34 @@ namespace PotatoSalad
         public static Globals Globals;
         public static Player Player;
         public static FOVCalculator FOVCalculator;
+        public static GraphicIntermediary GI;
+        public static Dice Dice;
 
         [STAThread]
         static void Main()
         {
             DungeonMap = new Map();
-            DungeonMap.Generate(10, 10);
+            DungeonMap.Generate(80, 25, "dungeon");
 
             Globals = new Globals();
             InputHandler = new InputHandler();
             StateMachine = new StateMachine(Globals.STATE_PLAYER_TURN);
             FOVCalculator = new FOVCalculator();
+            GI = new GraphicIntermediary();
+            Dice = new Dice();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ShowForms();
             Application.Run();
 
-            // Add 'mobile' class, then have the player class inherit from it.
-            // Add another grid to track mobile locations. OR add a property to Tile which stores the single mobile
-            // that can occupy that space.
-            // Add bits to the draw method which draw the mobiles in the Tile.
-            // Implement player movement.
             // Implement map scrolling.
-            // Implement FOV.
-
-            // Add keypress to a log, too. (Maximum size for a C# 'list' type is 134 million entries or so.)
-            // Create a single 'one form to bind them all' to control opening and closing of the various windows.
+            // Save/Load
+            // Procgen pantheons
+            // Starting screen, menu, etc.
+            // Form layout.
 
             // (Apparently you can hijack the 'on close' event to just hide the windows. When all are hidden, kill the app.)
-
-            // Bresenham's Line Algorithm is key for determining FOV.
-            // It's an octant thing.
-            // It's the method used in Roguesharp, so I'll steal it.
         }
 
         static void ShowForms()
