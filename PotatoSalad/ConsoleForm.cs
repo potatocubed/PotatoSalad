@@ -23,18 +23,14 @@ namespace PotatoSalad
 
         private void ConsoleForm_Load(object sender, EventArgs e)
         {
-            //DrawMap(Game.DungeonMap);
-            if (Globals.DEBUG_MODE)
+            if (Game.Globals.DEBUG_ERROR_LIST.Count > 0)
             {
-                //RenderText("If you can read this, it's worked.");
+                foreach (string s in Game.Globals.DEBUG_ERROR_LIST)
+                {
+                    Game.GI.RenderText(s);
+                }
             }
+            Game.Globals.DEBUG_ERROR_LIST.Clear();
         }
-        
-        //public void RenderText(string textToRender)
-        //{
-        //    ListBox cOutput = this.FakeConsole;
-        //    FakeConsole.Items.Insert(0, textToRender);
-        //    //FakeConsole.Items.Insert(0, "And this is for debugging purposes.");
-        //}
     }
 }

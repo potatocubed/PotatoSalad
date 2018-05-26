@@ -61,12 +61,6 @@
       <DependentUpon>ConsoleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Code\Dice.cs" />
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Code\Game.cs" />
     <Compile Include="Code\Map.cs" />
     <Compile Include="Code\InputHandler.cs" />
@@ -80,11 +74,14 @@
     <Compile Include="TheOneForm.Designer.cs">
       <DependentUpon>TheOneForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="TheWorld.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TheWorld.Designer.cs">
+      <DependentUpon>TheWorld.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="ConsoleForm.resx">
       <DependentUpon>ConsoleForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -97,6 +94,9 @@
     </Compile>
     <EmbeddedResource Include="TheOneForm.resx">
       <DependentUpon>TheOneForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TheWorld.resx">
+      <DependentUpon>TheWorld.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

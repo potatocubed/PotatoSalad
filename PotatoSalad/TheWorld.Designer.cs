@@ -1,6 +1,6 @@
 ﻿namespace PotatoSalad
 {
-    partial class Form1
+    partial class TheWorld
     {
         /// <summary>
         /// Required designer variable.
@@ -28,22 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.WorldMapPanel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
-            // Form1
+            // WorldMapPanel
+            // 
+            this.WorldMapPanel.BackColor = System.Drawing.Color.Transparent;
+            this.WorldMapPanel.Location = new System.Drawing.Point(0, 0);
+            this.WorldMapPanel.Name = "WorldMapPanel";
+            this.WorldMapPanel.Size = new System.Drawing.Size(2560, 800);
+            this.WorldMapPanel.TabIndex = 0;
+            this.WorldMapPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.WorldForm_Paint);
+            // 
+            // TheWorld
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Name = "Form1";
-            this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
+            this.Controls.Add(this.WorldMapPanel);
+            this.DoubleBuffered = true;
+            this.Name = "TheWorld";
+            this.Text = "TheWorld";
+            this.Load += new System.EventHandler(this.WorldForm_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.Panel WorldMapPanel;
     }
 }
-

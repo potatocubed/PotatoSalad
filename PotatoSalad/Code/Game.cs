@@ -13,7 +13,7 @@ namespace PotatoSalad
         /// </summary>
 
         public static Map DungeonMap;
-        public static Form1 WorldForm;
+        public static TheWorld WorldForm;
         public static ConsoleForm ConsoleForm;
         public static InputHandler InputHandler;
         public static StateMachine StateMachine;
@@ -26,22 +26,24 @@ namespace PotatoSalad
         [STAThread]
         static void Main()
         {
-            DungeonMap = new Map();
-            DungeonMap.Generate(80, 25, "dungeon");
-
+            Dice = new Dice();
             Globals = new Globals();
             InputHandler = new InputHandler();
             StateMachine = new StateMachine(Globals.STATE_PLAYER_TURN);
             FOVCalculator = new FOVCalculator();
             GI = new GraphicIntermediary();
-            Dice = new Dice();
+
+            DungeonMap = new Map();
+            DungeonMap.Generate(80, 25, "dungeon");
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ShowForms();
             Application.Run();
 
-            // Implement map scrolling.
+            // Implement map scrolling. -- I've done it, but holy BALLS it's slow.
+            // I think 2000 pictureboxes is probably too many.
+            // System.Drawing is apparently the way to go??
             // Save/Load
             // Procgen pantheons
             // Starting screen, menu, etc.
@@ -73,8 +75,9 @@ namespace PotatoSalad
             List<Form> formList = new List<Form>(); // The ControlForm doesn't live on this list.
 
             //Form1 worldForm = new Form1();
-            WorldForm = new Form1();
+            WorldForm = new TheWorld();
             ConsoleForm = new ConsoleForm();
+            
             formList.Add(WorldForm);
             formList.Add(ConsoleForm);
 
@@ -109,7 +112,6 @@ namespace PotatoSalad
                 {
                     if (f.WindowState == FormWindowState.Minimized)
                     {
-                        //ControlForm.MinimiseOkay = true;
                         ControlForm.AllFormsMinimised = true;
                         foreach (Form f2 in formList)
                         {

@@ -12,5 +12,7 @@ namespace PotatoSalad
 
         public static int STATE_PLAYER_TURN = 1;
         public static int STATE_ENEMY_TURN = 2;
+
+        public List<string> DEBUG_ERROR_LIST = new List<string>();
     }
 }

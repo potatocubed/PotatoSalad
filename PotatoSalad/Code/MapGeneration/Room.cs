@@ -18,10 +18,10 @@ namespace PotatoSalad.Code.MapGeneration
         public void CalculateCentre()
         {
             // Errs to the top-left.
-            int x = xDimension - TopLeftX;
-            int y = yDimension - TopLeftY;
-            CentreX = TopLeftX + (x / 2);
-            CentreY = TopLeftY + (y / 2);
+            //int x = xDimension - TopLeftX;
+            //int y = yDimension - TopLeftY;
+            CentreX = TopLeftX + (xDimension / 2);
+            CentreY = TopLeftY + (yDimension / 2);
         }
     }
 }

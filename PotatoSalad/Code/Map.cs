@@ -79,16 +79,27 @@ namespace PotatoSalad
 
             // Link the rooms with tunnels.
             // Nice basic L-shaped tunnels for now.
-            for (int i = 1; i < RoomList.Count; i++)
+            for (int i = 0; i < RoomList.Count - 1; i++)
             {
-                // Go across.
-                CarveLine(RoomList[i].CentreX, RoomList[i].CentreY, RoomList[i + 1].CentreX, RoomList[i].CentreY);
-                // Go down.
-                CarveLine(RoomList[i].CentreX, RoomList[i].CentreY, RoomList[i].CentreX, RoomList[i + 1].CentreY);
+                if (RoomList[i].CentreX > 0)    // Ruling out the duff rooms.
+                {
+                    // Go across.
+                    CarveLine(RoomList[i].CentreX, RoomList[i].CentreY, RoomList[i + 1].CentreX, RoomList[i].CentreY);
+                    // Go down.
+                    CarveLine(RoomList[i].CentreX, RoomList[i].CentreY, RoomList[i].CentreX, RoomList[i + 1].CentreY);
+                }
             }
             // And then one more to link room(last) to room(first).
-            CarveLine(RoomList[RoomList.Count].CentreX, RoomList[RoomList.Count].CentreY, RoomList[0].CentreX, RoomList[RoomList.Count].CentreY);
-            CarveLine(RoomList[RoomList.Count].CentreX, RoomList[RoomList.Count].CentreY, RoomList[RoomList.Count].CentreX, RoomList[0].CentreY);
+
+            for(int i = RoomList.Count-1; i > 0; i--)
+            {
+                if (RoomList[i].CentreX != -1)
+                {
+                    CarveLine(RoomList[RoomList.Count - 1].CentreX, RoomList[RoomList.Count - 1].CentreY, RoomList[0].CentreX, RoomList[RoomList.Count - 1].CentreY);
+                    CarveLine(RoomList[RoomList.Count - 1].CentreX, RoomList[RoomList.Count - 1].CentreY, RoomList[RoomList.Count - 1].CentreX, RoomList[0].CentreY);
+                    break;
+                }
+            }
 
             // And then we drop the player in the start of Room 1.
             int x = RoomList[0].CentreX;
@@ -171,7 +182,7 @@ namespace PotatoSalad
             // If we get here, room generation has failed.
             if (Globals.DEBUG_MODE)
             {
-                Game.GI.RenderText("Room generation failed!");
+                Game.Globals.DEBUG_ERROR_LIST.Add("Room generation failed!");
             }
             r.CentreX = -1;
             return r;
@@ -185,7 +196,7 @@ namespace PotatoSalad
                 // Nope.
                 if (Globals.DEBUG_MODE)
                 {
-                    Game.GI.RenderText("Line carving failed! Not a straight line!");
+                    Game.Globals.DEBUG_ERROR_LIST.Add("Line carving failed! Not a straight line!");
                 }
                 return;
             }
@@ -201,7 +212,7 @@ namespace PotatoSalad
             {
                 for (int i = startX; i <= endX; i++)
                 {
-                    TileArray[startY, i].MakeTile("floor");
+                    TileArray[i, startY].MakeTile("floor");
                 }
             }
         }
