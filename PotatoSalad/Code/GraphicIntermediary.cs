@@ -17,6 +17,7 @@ namespace PotatoSalad
         {
             ListBox cOutput = Game.ConsoleForm.cOutput;
             cOutput.Items.Insert(0, textToRender);
+            Game.ConsoleForm.Refresh();
         }
     }
 }

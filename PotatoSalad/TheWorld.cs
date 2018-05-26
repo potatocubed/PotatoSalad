@@ -43,7 +43,6 @@ namespace PotatoSalad
                 pb.Image = Image.FromFile(mob.displayGraphic);
                 pb.BackColor = Color.Transparent;
                 pb.Location = new Point(-32, -32);  // Just off-screen?
-                this.Controls.Add(pb);
             }
         }
 
@@ -120,9 +119,14 @@ namespace PotatoSalad
 
                 if (t.Occupier != null)
                 {
-                    PictureBox mpb = FindMobBox(t.Occupier.id);
-                    mpb.Location = new Point(t.X * 32, t.Y * 32);
-                    mpb.BringToFront();
+                    MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+                    MapDrawer.DrawImage(Image.FromFile(t.Occupier.displayGraphic), t.X * 32, t.Y * 32);
+                    MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+
+                    //PictureBox mpb = FindMobBox(t.Occupier.id);
+                    //mpb.Location = new Point(t.X * 32, t.Y * 32);
+                    //WorldMapPanel.Controls.Add(mpb);
+                    //mpb.BringToFront();
                 }
             }
             oldFOV = newFOV;
