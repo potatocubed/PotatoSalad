@@ -13,7 +13,7 @@ namespace PotatoSalad
         {
             name = "Player";
             displayGraphic = "../../Graphics/Mobiles/player.png";
-            displayGraphic = "C:/Users/Chris/source/repos/PotatoSalad/PotatoSalad/Graphics/Mobiles/player.png";
+            //displayGraphic = "C:/Users/Chris/source/repos/PotatoSalad/PotatoSalad/Graphics/Mobiles/player.png";
         }
     }
 }

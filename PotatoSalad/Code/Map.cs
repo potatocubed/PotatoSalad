@@ -95,8 +95,8 @@ namespace PotatoSalad
             {
                 if (RoomList[i].CentreX != -1)
                 {
-                    CarveLine(RoomList[RoomList.Count - 1].CentreX, RoomList[RoomList.Count - 1].CentreY, RoomList[0].CentreX, RoomList[RoomList.Count - 1].CentreY);
-                    CarveLine(RoomList[RoomList.Count - 1].CentreX, RoomList[RoomList.Count - 1].CentreY, RoomList[RoomList.Count - 1].CentreX, RoomList[0].CentreY);
+                    CarveLine(RoomList[i].CentreX, RoomList[i].CentreY, RoomList[0].CentreX, RoomList[i].CentreY);
+                    CarveLine(RoomList[i].CentreX, RoomList[i].CentreY, RoomList[i].CentreX, RoomList[0].CentreY);
                     break;
                 }
             }

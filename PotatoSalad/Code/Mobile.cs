@@ -24,7 +24,7 @@ namespace PotatoSalad
             location = loc;
             //displayGraphic = System.Environment.CurrentDirectory;
             displayGraphic = "../../Graphics/Mobiles/player.png";
-            FOVRange = 2;   // Just a default value, for testing.
+            FOVRange = 5;   // Just a default value, for testing.
         }
 
         public int X()
@@ -39,6 +39,9 @@ namespace PotatoSalad
 
         public void MoveTo(int destX, int destY)
         {
+            int origX = X();
+            int origY = Y();
+
             if (destX < 0 || destY < 0 || destX > Game.DungeonMap.XDimension || destY > Game.DungeonMap.YDimension)
             {
                 // You're trying to move off the edge of the map. Nope.
@@ -69,6 +72,14 @@ namespace PotatoSalad
 
             // Update the form.
             // This may need to move to a turn update method at some point.
+            
+            if (id == "UniqueIDPlayer")
+            {
+                // Delete the player, move the map, redraw the player.
+                Game.WorldForm.EraseMob(origX, origY, Game.DungeonMap);
+                //Game.WorldForm.EraseMob(destX, destY, Game.DungeonMap);
+                Game.GI.ScrollBox(origX, origY, destX, destY);
+            }
             Game.WorldForm.DrawMap(Game.DungeonMap);
         }
     }

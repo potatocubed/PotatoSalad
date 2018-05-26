@@ -33,7 +33,7 @@
             // 
             // WorldMapPanel
             // 
-            this.WorldMapPanel.BackColor = System.Drawing.Color.Transparent;
+            this.WorldMapPanel.BackColor = System.Drawing.Color.Black;
             this.WorldMapPanel.Location = new System.Drawing.Point(0, 0);
             this.WorldMapPanel.Name = "WorldMapPanel";
             this.WorldMapPanel.Size = new System.Drawing.Size(2560, 800);
@@ -45,12 +45,15 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
+            this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.WorldMapPanel);
             this.DoubleBuffered = true;
+            this.MinimumSize = new System.Drawing.Size(96, 96);
             this.Name = "TheWorld";
             this.Text = "TheWorld";
             this.Load += new System.EventHandler(this.WorldForm_Load);
+            this.Resize += new System.EventHandler(this.TheWorld_Resize);
             this.ResumeLayout(false);
 
         }
