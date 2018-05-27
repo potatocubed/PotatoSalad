@@ -27,7 +27,7 @@ namespace PotatoSalad
             {
                 foreach (string s in Game.Globals.DEBUG_ERROR_LIST)
                 {
-                    Game.GI.RenderText(s);
+                    Game.GAPI.RenderText(s);
                 }
             }
             Game.Globals.DEBUG_ERROR_LIST.Clear();

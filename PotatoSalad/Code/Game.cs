@@ -20,7 +20,7 @@ namespace PotatoSalad
         public static Globals Globals;
         public static Player Player;
         public static FOVCalculator FOVCalculator;
-        public static GraphicIntermediary GI;
+        public static GraphicsAPI GAPI;
         public static Dice Dice;
 
         [STAThread]
@@ -31,7 +31,7 @@ namespace PotatoSalad
             InputHandler = new InputHandler();
             StateMachine = new StateMachine(Globals.STATE_PLAYER_TURN);
             FOVCalculator = new FOVCalculator();
-            GI = new GraphicIntermediary();
+            GAPI = new GraphicsAPI();
 
             DungeonMap = new Map();
             DungeonMap.Generate(80, 25, "dungeon");

@@ -45,7 +45,7 @@ namespace PotatoSalad
             if (destX < 0 || destY < 0 || destX > Game.DungeonMap.XDimension || destY > Game.DungeonMap.YDimension)
             {
                 // You're trying to move off the edge of the map. Nope.
-                Game.GI.RenderText($"No movement! Trying to walk off the map at {destX}, {destY}.");
+                Game.GAPI.RenderText($"No movement! Trying to walk off the map at {destX}, {destY}.");
                 return;
             }
 
@@ -54,14 +54,14 @@ namespace PotatoSalad
             // Check if the tile is walkable.
             if (newLoc.BlockMovement)
             {
-                Game.GI.RenderText($"No movement! Bumped into {newLoc.Name}.");
+                Game.GAPI.RenderText($"No movement! Bumped into {newLoc.Name}.");
                 return;
             }
 
             // Check if the tile has a mob in it.
             if (newLoc.Occupier != null)
             {
-                Game.GI.RenderText($"No movement! Bumped into {newLoc.Occupier.name}.");
+                Game.GAPI.RenderText($"No movement! Bumped into {newLoc.Occupier.name}.");
                 return;
             }
 
@@ -76,11 +76,10 @@ namespace PotatoSalad
             if (id == "UniqueIDPlayer")
             {
                 // Delete the player, move the map, redraw the player.
-                Game.WorldForm.EraseMob(origX, origY, Game.DungeonMap);
-                //Game.WorldForm.EraseMob(destX, destY, Game.DungeonMap);
-                Game.GI.ScrollBox(origX, origY, destX, destY);
+                //Game.WorldForm.EraseMob(origX, origY, Game.DungeonMap);
+                //Game.GAPI.ScrollBox(origX, origY, destX, destY);
             }
-            Game.WorldForm.DrawMap(Game.DungeonMap);
+            Game.GAPI.DrawMap(Game.DungeonMap);
         }
     }
 }

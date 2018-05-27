@@ -65,7 +65,7 @@
     <Compile Include="Code\Map.cs" />
     <Compile Include="Code\InputHandler.cs" />
     <Compile Include="Code\Mobile.cs" />
-    <Compile Include="Code\GraphicIntermediary.cs" />
+    <Compile Include="Code\GraphicsAPI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Code\Tile.cs" />
     <Compile Include="TheOneForm.cs">

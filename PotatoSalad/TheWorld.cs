@@ -12,54 +12,28 @@ namespace PotatoSalad
 {
     public partial class TheWorld : Form
     {
-        //public List<PictureBox> MobileList = new List<PictureBox>();
         private Size TileSize;
+        private int apertureCount;  // Window width AND height in tiles.
         private List<Tile> oldFOV;
         private Bitmap MapImage;
         private Graphics MapDrawer;
-
-        private Control TopLeftControl;
-        private Control BottomRightControl;
 
         public TheWorld()
         {
             InitializeComponent();
             this.Text = "The World";    //Sets the window title.
+            TileSize = new Size(32, 32);
+            apertureCount = 15;
 
             oldFOV = new List<Tile>();
-            TileSize = new Size(32, 32);
-            //InitialiseMobileList(Game.DungeonMap);
-            MapImage = new Bitmap(this.WorldMapPanel.Width, this.WorldMapPanel.Height);
+
+            MapImage = new Bitmap((Game.DungeonMap.XDimension + 1) * 32, (Game.DungeonMap.YDimension + 1) * 32);
             MapDrawer = Graphics.FromImage(MapImage);
             MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
             MapDrawer.FillRectangle(Brushes.Black, 0, 0, MapImage.Width, MapImage.Height);
 
-            TopLeftControl = new Control();
-            BottomRightControl = new Control();
-
-            TopLeftControl.Size = new Size(1, 1);
-            TopLeftControl.Location = new Point(0, 0);
-            BottomRightControl.Size = new Size(1, 1);
-            BottomRightControl.Location = new Point(this.ClientSize.Width, this.ClientSize.Height);
-            this.Controls.Add(TopLeftControl);
-            this.Controls.Add(BottomRightControl);
-
             InitialJumpToPlayer();
         }
-
-        //private void InitialiseMobileList(Map m)
-        //{
-        //    foreach (Mobile mob in m.MobileArray)
-        //    {
-        //        PictureBox pb = new PictureBox();
-        //        MobileList.Add(pb);
-        //        pb.Tag = mob.id;
-        //        pb.Size = TileSize;
-        //        pb.Image = Image.FromFile(mob.displayGraphic);
-        //        pb.BackColor = Color.Transparent;
-        //        pb.Location = new Point(-32, -32);  // Just off-screen?
-        //    }
-        //}
 
         private void WorldForm_Paint(object sender, PaintEventArgs e)
         {
@@ -113,7 +87,7 @@ namespace PotatoSalad
 
             Panel p = this.WorldMapPanel;
             Graphics g = p.CreateGraphics();
-            //Bitmap bmp;
+            Bitmap bmp;
 
             foreach (Tile t in oldFOV)
             {
@@ -145,82 +119,45 @@ namespace PotatoSalad
                 }
             }
             oldFOV = newFOV;
-            this.WorldMapPanel.BackgroundImage = MapImage;
-        }
+            
+            // Whenever we draw the map, we take a 480 x 480 slice from map image with the player
+            // at the centre, and draw that as the background image.
 
-        private void TheWorld_Resize(object sender, EventArgs e)
-        {
-            // This is going to need adjustment.
-        }
-
-        public void ScrollWorld(int origX, int origY, int targX, int targY)
-        {
-            // Moves the window to centre on targx/targy.
-            int dx = targX - origX;
-            int dy = targY - origY;
-
-            Point p = new Point(TopLeftControl.Location.X + (dx * 32), TopLeftControl.Location.Y + (dy * 32));
-            TopLeftControl.Location = p;
-            p.X = BottomRightControl.Location.X + (dx * 32);
-            p.Y = BottomRightControl.Location.Y + (dy * 32);
-            BottomRightControl.Location = p;
-
-            if (dx < 0)
+            int sideMeasure = apertureCount * TileSize.Width;  // Default 480 pixels for a 15x15 tile layout at 32x32 size.
+            Size apertureSize = new Size(sideMeasure, sideMeasure);
+            int offset = (sideMeasure - TileSize.Width) / 2;
+            Point origin = new Point((Game.Player.X() * 32) - offset, (Game.Player.Y() * 32) - offset);
+            if (origin.X < 0)
             {
-                // Scroll left.
-                this.ScrollControlIntoView(TopLeftControl);
+                origin.X = 0;
             }
-            else
+            if (origin.Y < 0)
             {
-                // Scroll right.
-                this.ScrollControlIntoView(BottomRightControl);
+                origin.Y = 0;
             }
-            if (dy < 0)
+            if (origin.X + apertureSize.Width > MapImage.Width)
             {
-                // Scroll up.
-                this.ScrollControlIntoView(TopLeftControl);
+                origin.X = MapImage.Width - apertureSize.Width;
             }
-            else
+            if (origin.Y + apertureSize.Height > MapImage.Height)
             {
-                // Scroll down.
-                this.ScrollControlIntoView(BottomRightControl);
+                origin.Y = MapImage.Height - apertureSize.Height;
             }
+            // It turns out that clone breaks if the rectangle is outside the image bounds.
+            Rectangle cropper = new Rectangle(origin, apertureSize);
+            bmp = (Bitmap)MapImage.Clone(cropper, MapImage.PixelFormat);
+            WorldMapPanel.BackgroundImage = bmp;
         }
 
         public void InitialJumpToPlayer()
         {
-            // Get dimensions in tiles.
-            int tWidth = this.ClientSize.Width / 32;
-            int tHeight = this.ClientSize.Height / 32;
-
-            if (tWidth % 2 == 0)
-            {
-                tWidth++;
-            }
-            if (tHeight % 2 == 0)
-            {
-                tHeight++;
-            }
-
-            int tx = tWidth / 2;
-            int ty = tHeight / 2;
-
-            //Control c = new Control();
-            //c.Location = new Point((Game.Player.X() * 32) + (tx * 32), (Game.Player.Y() * 32) + (ty * 32));
-            //// This should work because the level always initialises at 0, 0.
-            //this.ScrollControlIntoView(c);
-
-            TopLeftControl.Location = new Point((Game.Player.X() - tx) * 32, (Game.Player.Y() - ty) * 32);
-            BottomRightControl.Location = new Point((Game.Player.X() + tx) * 32, (Game.Player.Y() + ty) * 32);
-
-            this.ScrollControlIntoView(TopLeftControl);
-            this.ScrollControlIntoView(BottomRightControl);
-            //DrawMap(Game.DungeonMap);
+            DrawMap(Game.DungeonMap);
         }
 
         public void EraseMob(int x, int y, Map m)
         {
             // Repaints a single tile with the basic texture, overwriting any mobs (OR ITEMS) there.
+            // UNUSED but I'll keep it in case it becomes handy.
             Tile t = m.TileArray[x, y];
 
             if (t.IsInFOV)

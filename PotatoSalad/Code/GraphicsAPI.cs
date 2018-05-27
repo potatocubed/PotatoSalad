@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace PotatoSalad
 {
-    class GraphicIntermediary
+    class GraphicsAPI
     {
         // This class exists to ease any future swapping out of display options.
 
@@ -18,10 +18,9 @@ namespace PotatoSalad
             Game.ConsoleForm.Refresh();
         }
 
-        public void ScrollBox(int origX, int origY, int destX, int destY)
+        public void DrawMap(Map m)
         {
-            // Move the screen with the PC.
-            Game.WorldForm.ScrollWorld(origX, origY, destX, destY);
+            Game.WorldForm.DrawMap(m);
         }
     }
 }
