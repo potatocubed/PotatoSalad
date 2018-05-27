@@ -41,5 +41,10 @@ namespace PotatoSalad
                 ConsoleForm.WindowState = FormWindowState.Normal;
             }
         }
+
+        private void TheOneForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // This is where the data dump for the auto-savegame happens.
+        }
     }
 }

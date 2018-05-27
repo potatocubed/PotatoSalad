@@ -8,14 +8,13 @@ namespace PotatoSalad
 {
     class Player : Mobile
     {
-        public string SaveDataFile;
+        //public string SaveDataFile;
 
         public Player(Tile loc)
             : base(loc, "UniqueIDPlayer")
         {
             name = "Player";
             displayGraphic = "../../Graphics/Mobiles/player.png";
-            //displayGraphic = "C:/Users/Chris/source/repos/PotatoSalad/PotatoSalad/Graphics/Mobiles/player.png";
         }
     }
 }

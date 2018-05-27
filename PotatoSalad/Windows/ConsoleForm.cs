@@ -23,6 +23,9 @@ namespace PotatoSalad
 
         private void ConsoleForm_Load(object sender, EventArgs e)
         {
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            
             if (Game.Globals.DEBUG_ERROR_LIST.Count > 0)
             {
                 foreach (string s in Game.Globals.DEBUG_ERROR_LIST)

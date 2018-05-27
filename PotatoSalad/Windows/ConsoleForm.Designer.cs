@@ -34,19 +34,20 @@
             // FakeConsole
             // 
             this.FakeConsole.FormattingEnabled = true;
-            this.FakeConsole.Location = new System.Drawing.Point(290, 71);
+            this.FakeConsole.Location = new System.Drawing.Point(0, 0);
             this.FakeConsole.Name = "FakeConsole";
-            this.FakeConsole.Size = new System.Drawing.Size(363, 134);
+            this.FakeConsole.Size = new System.Drawing.Size(481, 134);
             this.FakeConsole.TabIndex = 0;
             // 
             // ConsoleForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(481, 135);
             this.Controls.Add(this.FakeConsole);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "ConsoleForm";
-            this.Text = "ConsoleForm";
+            this.Text = "Console";
             this.Load += new System.EventHandler(this.ConsoleForm_Load);
             this.ResumeLayout(false);
 

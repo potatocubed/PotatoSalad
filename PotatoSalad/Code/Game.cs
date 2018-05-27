@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace PotatoSalad
 {
@@ -27,6 +28,9 @@ namespace PotatoSalad
         public static GraphicsAPI GAPI;
         public static Dice Dice;
 
+        public static XmlDocument PlayerXML;    // This allows us to edit the deets in real-time.
+        public static XmlDocument LevelXML;     // Likewise, but for the world map.
+
         [STAThread]
         static void Main()
         {
@@ -39,12 +43,11 @@ namespace PotatoSalad
             GAPI = new GraphicsAPI();
 
             DungeonMap = new Map();
-            DungeonMap.Generate(80, 25, "dungeon");
+            DungeonMap.Generate("Dungeon", "D1", 1, 1, 80, 25, "dungeon");  
+            // Perhaps move this to the new game start script in MainMenu?
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //ShowForms();
-            //string[] mText = DungeonMap.MapText();
 
             Game.MainMenu = new MainMenu();
             MainMenu.Show();
@@ -52,8 +55,11 @@ namespace PotatoSalad
             Application.Run();
 
             // Starting screen, menu, etc.
-            // New Game: Input name. Create savedir. Record in XML which name matches which savedir.
             // Save/Load
+            // Hold the XML docs open as necessary, for continuous writing.
+            // Need to add auto-updates to the XML docs.
+            // Also need to work out the structure of maps and such for the game, so I can get the saving sorted.
+            // Remember to auto-save when the app closes. -- The event's in place, just needs the code.
             // Procgen pantheons
             // Form layout.
             // Fix showforms.
@@ -61,7 +67,7 @@ namespace PotatoSalad
             // (Apparently you can hijack the 'on close' event to just hide the windows. When all are hidden, kill the app.)
         }
 
-        static void ShowForms()
+        public static void ShowForms()
         {
             // This doesn't quite do what I want.
             // I just want to hide the forms instead of closing them.

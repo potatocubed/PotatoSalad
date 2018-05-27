@@ -38,6 +38,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "TheOneForm";
             this.Text = "TheOneForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TheOneForm_FormClosing);
             this.Load += new System.EventHandler(this.TheOneForm_Load);
             this.Resize += new System.EventHandler(this.TheOneForm_Resize);
             this.ResumeLayout(false);

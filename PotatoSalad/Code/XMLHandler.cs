@@ -14,6 +14,7 @@ namespace PotatoSalad
         private string here = Directory.GetCurrentDirectory();
         private string dataDir;
         private string saveData;
+        public string saveDir;  // This is the active game.
 
         public XMLHandler()
         {
@@ -31,14 +32,22 @@ namespace PotatoSalad
 
         public void CreateNewSaveData(string pcName, int iteration = 0)
         {
+            // We're starting a new game.
             // If a savedir for that name already exists, append a number to the end.
             pcName = pcName.Replace(" ", "");
-            string saveDir = dataDir + "/" + pcName;
+            saveDir = dataDir + "/" + pcName;
             if (!Directory.Exists(saveDir))
             {
                 Directory.CreateDirectory(saveDir);
                 CreateDataFile(saveDir + "/character.xml", "CharData");
-                Game.Player.SaveDataFile = saveDir;
+                Game.PlayerXML = new XmlDocument();
+                Game.PlayerXML.Load(saveDir + "/character.xml");
+                Game.LevelXML = new XmlDocument();
+                
+                // So here's the thing: The level is generated BEFORE this event fires, but should probably go after.
+                // That way you can store the level data right there in the XML.
+
+                // I think I need to work out what the game structure is going to be before I do much more on this.
             }
             else
             {

@@ -14,8 +14,11 @@ namespace PotatoSalad
         public Tile[,] TileArray;
         public List<Mobile> MobileArray = new List<Mobile>();
         public string MapID;    // Includes name, depth, etc.
+        public string MapName;
+        public string LevelNumber;  // For display.
+        public string Depth;    // For internal use. Sort of a difficulty marker, I guess.
 
-        public void Generate(int xSize = 80, int ySize = 25, string mapType = "default")
+        public void Generate(string mn, string mid, int ln, int d, int xSize = 80, int ySize = 25, string mapType = "default")
         {
             ClearMap();
 
