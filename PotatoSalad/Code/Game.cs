@@ -13,8 +13,12 @@ namespace PotatoSalad
         /// </summary>
 
         public static Map DungeonMap;
+
         public static TheWorld WorldForm;
         public static ConsoleForm ConsoleForm;
+        public static MainMenu MainMenu;
+
+        public static XMLHandler XMLHandler;
         public static InputHandler InputHandler;
         public static StateMachine StateMachine;
         public static Globals Globals;
@@ -28,6 +32,7 @@ namespace PotatoSalad
         {
             Dice = new Dice();
             Globals = new Globals();
+            XMLHandler = new XMLHandler();
             InputHandler = new InputHandler();
             StateMachine = new StateMachine(Globals.STATE_PLAYER_TURN);
             FOVCalculator = new FOVCalculator();
@@ -38,16 +43,20 @@ namespace PotatoSalad
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            ShowForms();
+            //ShowForms();
+            //string[] mText = DungeonMap.MapText();
+
+            Game.MainMenu = new MainMenu();
+            MainMenu.Show();
+
             Application.Run();
 
-            // Implement map scrolling. -- I've done it, but holy BALLS it's slow.
-            // I think 2000 pictureboxes is probably too many.
-            // System.Drawing is apparently the way to go??
+            // Starting screen, menu, etc.
+            // New Game: Input name. Create savedir. Record in XML which name matches which savedir.
             // Save/Load
             // Procgen pantheons
-            // Starting screen, menu, etc.
             // Form layout.
+            // Fix showforms.
 
             // (Apparently you can hijack the 'on close' event to just hide the windows. When all are hidden, kill the app.)
         }

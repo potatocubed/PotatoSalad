@@ -216,5 +216,23 @@ namespace PotatoSalad
                 }
             }
         }
+
+        public string[] MapText()
+        {
+            string[] mText = new string[YDimension + 1];
+            var mapRepresentation = new StringBuilder();
+
+            for (int y = 0; y <= YDimension; y++)
+            {
+                for (int x = 0; x <= XDimension; x++)
+                {
+                    mapRepresentation.Append(TileArray[x, y].DisplayChar);
+                }
+                mText[y] = mapRepresentation.ToString();
+                mapRepresentation.Clear();
+            }
+
+            return mText;
+        }
     }
 }

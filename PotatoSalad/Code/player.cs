@@ -8,6 +8,8 @@ namespace PotatoSalad
 {
     class Player : Mobile
     {
+        public string SaveDataFile;
+
         public Player(Tile loc)
             : base(loc, "UniqueIDPlayer")
         {
