@@ -40,14 +40,6 @@ namespace PotatoSalad
             {
                 Directory.CreateDirectory(saveDir);
                 CreateDataFile(saveDir + "/character.xml", "CharData");
-                Game.PlayerXML = new XmlDocument();
-                Game.PlayerXML.Load(saveDir + "/character.xml");
-                Game.LevelXML = new XmlDocument();
-                
-                // So here's the thing: The level is generated BEFORE this event fires, but should probably go after.
-                // That way you can store the level data right there in the XML.
-
-                // I think I need to work out what the game structure is going to be before I do much more on this.
             }
             else
             {
@@ -57,6 +49,98 @@ namespace PotatoSalad
             }
         }
 
+        public void CreateNewLevelData()
+        {
+            // Creates save data for the current player, for the current map.
+            // A few quick prelims first:
+
+            string mapDir = saveDir + "/data/" + Game.DungeonMap.MapID;
+
+            if (!Directory.Exists(saveDir + "/data"))
+            {
+                Directory.CreateDirectory(saveDir + "/data");
+            }
+            if (!Directory.Exists(mapDir))
+            {
+                Directory.CreateDirectory(mapDir);
+            }
+            CreateDataFile(mapDir + "/mapdata.xml", "MapData");
+            UpdateMapData();
+
+            // The mobile list and the map itself will be added later.
+
+            //public Tile[,] TileArray;
+            //public List<Mobile> MobileArray = new List<Mobile>();
+
+        }
+
+        public void UpdateMapData()
+        {
+            string mapDir = saveDir + "/data/" + Game.DungeonMap.MapID + "/mapdata.xml";
+            XmlDocument mapxml = new XmlDocument();
+            mapxml.Load(mapDir);
+
+            // Any given part of this may or may not already exist.
+            XmlElement xRoot = mapxml.DocumentElement;
+            XmlNode xNode;
+            XmlElement xElem;
+
+            xNode = xRoot.SelectSingleNode("./MapID");
+            if (xNode == null)
+            {
+                xNode = mapxml.CreateElement("MapID");
+                xRoot.AppendChild(xNode);
+            }
+            xNode.InnerText = Game.DungeonMap.MapID;
+
+            xNode = xRoot.SelectSingleNode("./MapName");
+            if (xNode == null)
+            {
+                xNode = mapxml.CreateElement("MapName");
+                xRoot.AppendChild(xNode);
+            }
+            xNode.InnerText = Game.DungeonMap.MapName;
+
+            xNode = xRoot.SelectSingleNode("./LevelNumber");
+            if (xNode == null)
+            {
+                xNode = mapxml.CreateElement("LevelNumber");
+                xRoot.AppendChild(xNode);
+            }
+            xNode.InnerText = Game.DungeonMap.LevelNumber;
+
+            xNode = xRoot.SelectSingleNode("./Depth");
+            if (xNode == null)
+            {
+                xNode = mapxml.CreateElement("Depth");
+                xRoot.AppendChild(xNode);
+            }
+            xNode.InnerText = Game.DungeonMap.Depth;
+
+            xNode = xRoot.SelectSingleNode("./Details");
+            if (xNode == null)
+            {
+                xNode = mapxml.CreateElement("Details");
+                xRoot.AppendChild(xNode);
+            }
+            xElem = (XmlElement)xNode;
+            xElem.SetAttribute("x", (Game.DungeonMap.XDimension + 1).ToString());
+            xElem.SetAttribute("y", (Game.DungeonMap.YDimension + 1).ToString());
+            xElem.SetAttribute("maptype", Game.DungeonMap.mapType);
+
+            // The mobile list and the map itself will be added later.
+
+            //public Tile[,] TileArray;
+            //public List<Mobile> MobileArray = new List<Mobile>();
+
+            mapxml.Save(mapDir);
+        }
+
+        public void UpdateCharData()
+        {
+
+        }
+        
         private bool CreateDataFile(string fileName, string rootElementName)
         {
             XmlDocument doc = new XmlDocument();

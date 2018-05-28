@@ -30,6 +30,7 @@ namespace PotatoSalad
 
         public static XmlDocument PlayerXML;    // This allows us to edit the deets in real-time.
         public static XmlDocument LevelXML;     // Likewise, but for the world map.
+        // These variables aren't filled until the game is started -- whether by newgame or loadgame.
 
         [STAThread]
         static void Main()
@@ -41,10 +42,6 @@ namespace PotatoSalad
             StateMachine = new StateMachine(Globals.STATE_PLAYER_TURN);
             FOVCalculator = new FOVCalculator();
             GAPI = new GraphicsAPI();
-
-            DungeonMap = new Map();
-            DungeonMap.Generate("Dungeon", "D1", 1, 1, 80, 25, "dungeon");  
-            // Perhaps move this to the new game start script in MainMenu?
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -58,13 +55,37 @@ namespace PotatoSalad
             // Save/Load
             // Hold the XML docs open as necessary, for continuous writing.
             // Need to add auto-updates to the XML docs.
-            // Also need to work out the structure of maps and such for the game, so I can get the saving sorted.
+            // Need to make the UpdatePlayerXML script, then key updates to doing stuff.
+            // Turn-by-turn updates are applied to the open XML files.
             // Remember to auto-save when the app closes. -- The event's in place, just needs the code.
             // Procgen pantheons
             // Form layout.
             // Fix showforms.
 
             // (Apparently you can hijack the 'on close' event to just hide the windows. When all are hidden, kill the app.)
+        }
+
+        public static void NewGame(string playerName)
+        {
+            //Game.Player.name = playerName;
+            // Right now the player is instantiated AS PART OF the level build.
+            // That's going to need to change.
+
+            XMLHandler.CreateNewSaveData(playerName);
+            // This sets XMLHandler.saveDir to the current save directory.
+            PlayerXML = new XmlDocument();
+            PlayerXML.Load(XMLHandler.saveDir + "/character.xml");
+            LevelXML = new XmlDocument();
+
+            DungeonMap = new Map();
+            DungeonMap.Generate("Dungeon", "D1", 1, 1, 80, 25, "dungeon");
+            Game.Player.name = playerName;
+
+            XMLHandler.CreateNewLevelData();
+            LevelXML.Load(XMLHandler.saveDir + "/data/" + Game.DungeonMap.MapID + "/mapdata.xml");
+
+            // And now we start the show.
+            Game.ShowForms();
         }
 
         public static void ShowForms()

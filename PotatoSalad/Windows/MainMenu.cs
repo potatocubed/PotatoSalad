@@ -29,11 +29,8 @@ namespace PotatoSalad
             if (nf.ShowDialog(this) == DialogResult.OK)
             {
                 // We're starting a new game.
-                Game.XMLHandler.CreateNewSaveData(nf.typeTextHere.Text);
-                Game.Player.name = nf.typeTextHere.Text;
-                // map.generate should probably go here?
+                Game.NewGame(nf.typeTextHere.Text);
                 this.Close();
-                Game.ShowForms();
             }
             else
             {

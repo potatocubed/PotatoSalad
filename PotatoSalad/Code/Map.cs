@@ -17,15 +17,22 @@ namespace PotatoSalad
         public string MapName;
         public string LevelNumber;  // For display.
         public string Depth;    // For internal use. Sort of a difficulty marker, I guess.
+        public string mapType;
 
-        public void Generate(string mn, string mid, int ln, int d, int xSize = 80, int ySize = 25, string mapType = "default")
+        public void Generate(string mn, string mid, int ln, int d, int xSize = 80, int ySize = 25, string mType = "default")
         {
             ClearMap();
 
             XDimension = xSize - 1;
             YDimension = ySize - 1;
+            mapType = mType;
 
             TileArray = new Tile[xSize, ySize];
+
+            MapID = mid;
+            MapName = mn;
+            LevelNumber = ln.ToString();
+            Depth = d.ToString();
 
             // We'll add some more creation parameters and variables later. Like depth, tileset, reference, etc.
             
