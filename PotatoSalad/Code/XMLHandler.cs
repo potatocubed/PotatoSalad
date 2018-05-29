@@ -23,7 +23,7 @@ namespace PotatoSalad
             {
                 Directory.CreateDirectory(dataDir);
             }
-            saveData = dataDir + "/savedata.xml";
+            saveData = dataDir + "/savedata.xml";   // This bit may be unnecessary.
             if (!File.Exists(saveData))
             {
                 CreateDataFile(saveData, "SaveData");
@@ -34,12 +34,17 @@ namespace PotatoSalad
         {
             // We're starting a new game.
             // If a savedir for that name already exists, append a number to the end.
+            // MUST BE CALLED AFTER CHARACTER IS INITIALISED.
             pcName = pcName.Replace(" ", "");
             saveDir = dataDir + "/" + pcName;
             if (!Directory.Exists(saveDir))
             {
                 Directory.CreateDirectory(saveDir);
                 CreateDataFile(saveDir + "/character.xml", "CharData");
+                //UpdateCharData();
+                // This has to be called later, because mobs can't exist without a map to contain them...
+                // ...but the map can't exist without the player directory to exist in.
+                // This is Bad Design. But I don't feel like refactoring it right now.
             }
             else
             {
@@ -52,6 +57,7 @@ namespace PotatoSalad
         public void CreateNewLevelData()
         {
             // Creates save data for the current player, for the current map.
+            // REQUIRES THE MAP TO BE GENERATED AND STORED IN DUNGEONMAP FIRST.
             // A few quick prelims first:
 
             string mapDir = saveDir + "/data/" + Game.DungeonMap.MapID;
@@ -67,9 +73,11 @@ namespace PotatoSalad
             CreateDataFile(mapDir + "/mapdata.xml", "MapData");
             UpdateMapData();
 
-            // The mobile list and the map itself will be added later.
+            string[] mText = Game.DungeonMap.MapText();
+            File.WriteAllLines(mapDir + "/geography.txt", mText);
 
-            //public Tile[,] TileArray;
+            // The mobile list will be added later.
+
             //public List<Mobile> MobileArray = new List<Mobile>();
 
         }
@@ -128,9 +136,11 @@ namespace PotatoSalad
             xElem.SetAttribute("y", (Game.DungeonMap.YDimension + 1).ToString());
             xElem.SetAttribute("maptype", Game.DungeonMap.mapType);
 
-            // The mobile list and the map itself will be added later.
+            // Since the geography of the level will change only rarely, I'll handle that
+            // as and when it pops up.
 
-            //public Tile[,] TileArray;
+            // The mobile list will be added later.
+
             //public List<Mobile> MobileArray = new List<Mobile>();
 
             mapxml.Save(mapDir);
@@ -138,7 +148,67 @@ namespace PotatoSalad
 
         public void UpdateCharData()
         {
+            // saveDir is already pointing to the right place.
+            // THE PLAYER MUST BE INITIALISED BEFORE THIS IS CALLED.
+            XmlDocument charxml = new XmlDocument();
+            charxml.Load(saveDir + "/character.xml");
 
+            // Any given part of this may or may not already exist.
+            XmlElement xRoot = charxml.DocumentElement;
+            XmlNode xNode;
+            XmlElement xElem;
+
+            xNode = xRoot.SelectSingleNode("./CharacterID");
+            if (xNode == null)
+            {
+                xNode = charxml.CreateElement("CharacterID");
+                xRoot.AppendChild(xNode);
+            }
+            xNode.InnerText = Game.Player.id;
+
+            xNode = xRoot.SelectSingleNode("./Name");
+            if (xNode == null)
+            {
+                xNode = charxml.CreateElement("Name");
+                xRoot.AppendChild(xNode);
+            }
+            xNode.InnerText = Game.Player.name;
+
+            xNode = xRoot.SelectSingleNode("./DisplayGraphic");
+            if (xNode == null)
+            {
+                xNode = charxml.CreateElement("DisplayGraphic");
+                xRoot.AppendChild(xNode);
+            }
+            xNode.InnerText = Game.Player.displayGraphic;
+
+            xNode = xRoot.SelectSingleNode("./Stats");
+            if (xNode == null)
+            {
+                xNode = charxml.CreateElement("Stats");
+                xRoot.AppendChild(xNode);
+            }
+            xElem = (XmlElement)xNode;
+            xNode = xElem.SelectSingleNode("./FOVRange");
+            if (xNode == null)
+            {
+                xNode = charxml.CreateElement("FOVRange");
+                xElem.AppendChild(xNode);
+            }
+            xNode.InnerText = Game.Player.FOVRange.ToString();
+
+            xNode = xRoot.SelectSingleNode("Location");
+            if (xNode == null)
+            {
+                xNode = charxml.CreateElement("Location");
+                xRoot.AppendChild(xNode);
+            }
+            xElem = (XmlElement)xNode;
+            xElem.SetAttribute("mapID", Game.DungeonMap.MapID); // Got to note the level!
+            xElem.SetAttribute("x", Game.Player.location.X.ToString());
+            xElem.SetAttribute("y", Game.Player.location.Y.ToString());
+
+            charxml.Save(saveDir + "/character.xml");
         }
         
         private bool CreateDataFile(string fileName, string rootElementName)

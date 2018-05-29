@@ -55,7 +55,6 @@ namespace PotatoSalad
             // Save/Load
             // Hold the XML docs open as necessary, for continuous writing.
             // Need to add auto-updates to the XML docs.
-            // Need to make the UpdatePlayerXML script, then key updates to doing stuff.
             // Turn-by-turn updates are applied to the open XML files.
             // Remember to auto-save when the app closes. -- The event's in place, just needs the code.
             // Procgen pantheons
@@ -67,22 +66,21 @@ namespace PotatoSalad
 
         public static void NewGame(string playerName)
         {
-            //Game.Player.name = playerName;
-            // Right now the player is instantiated AS PART OF the level build.
-            // That's going to need to change.
-
-            XMLHandler.CreateNewSaveData(playerName);
             // This sets XMLHandler.saveDir to the current save directory.
-            PlayerXML = new XmlDocument();
-            PlayerXML.Load(XMLHandler.saveDir + "/character.xml");
-            LevelXML = new XmlDocument();
-
+            XMLHandler.CreateNewSaveData(playerName);
+            
+            // Sort the dungeon data, and in the process initialise the player.
             DungeonMap = new Map();
             DungeonMap.Generate("Dungeon", "D1", 1, 1, 80, 25, "dungeon");
-            Game.Player.name = playerName;
-
             XMLHandler.CreateNewLevelData();
+            LevelXML = new XmlDocument();
             LevelXML.Load(XMLHandler.saveDir + "/data/" + Game.DungeonMap.MapID + "/mapdata.xml");
+
+            // Sort the player data.
+            Game.Player.name = playerName;
+            XMLHandler.UpdateCharData();
+            PlayerXML = new XmlDocument();
+            PlayerXML.Load(XMLHandler.saveDir + "/character.xml");
 
             // And now we start the show.
             Game.ShowForms();
