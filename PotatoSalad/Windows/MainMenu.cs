@@ -30,7 +30,7 @@ namespace PotatoSalad
             string dataDir = here + "/data";
             if (!Directory.Exists(dataDir) || Directory.GetDirectories(dataDir).Count() == 0)
             {
-                this.buttonLoadGame.Enabled = false;
+                // Do nothing.
             }
             else
             {
@@ -65,21 +65,20 @@ namespace PotatoSalad
                 if (loadList[1, 0] == "")
                 {
                     // We've got a situation where nothing has passed validation.
-                    this.buttonLoadGame.Enabled = false;
+                    // So do nothing.
                 }
 
-                // Okay, fuck the load button.
                 // We'll generate a picturebox for each loadgame, and display it in
                 // the side panel. Click on it to load your game!
 
-                Bitmap bmp = new Bitmap(this.LoadListPanel.Width - 4, 64);  // -4 on the width to allow for a 2px border on the picturebox.
+                Bitmap bmp = new Bitmap(this.LoadListPanel.Width - 30, 64);  // -4 on the width to allow for a 2px border on the picturebox.
                 Graphics drawer = Graphics.FromImage(bmp);
                 drawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
                 drawer.FillRectangle(Brushes.Black, 0, 0, bmp.Width, bmp.Height);
 
                 // Create a rectangle for the top line of text.
-                RectangleF rectTop = new RectangleF(4, 4, bmp.Width - 8, 24);
-                RectangleF rectBottom = new RectangleF(4, bmp.Height - 28, bmp.Width - 8, 24);
+                RectangleF rectTop = new RectangleF(8, 8, bmp.Width - 8, 24);
+                RectangleF rectBottom = new RectangleF(8, bmp.Height - 32, bmp.Width - 8, 24);
 
                 // Make it look fancy.
                 drawer.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -90,15 +89,16 @@ namespace PotatoSalad
                 StringFormat sf = new StringFormat()
                 {
                     Alignment = StringAlignment.Near,
-                    LineAlignment = StringAlignment.Near,
+                    LineAlignment = StringAlignment.Center,
                 };
 
-                Font drawFont = new Font("Consolas", 10);
-                Font drawFontBold = new Font("Consolas", 10, FontStyle.Bold);
+                Font drawFont = new Font("Consolas", 14);
+                Font drawFontBold = new Font("Consolas", 14, FontStyle.Bold);
 
                 for(int i = 0; i <= loadList.GetUpperBound(1); i++)
                 {
                     // Draw the text onto the image
+                    drawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
                     drawer.DrawString(loadList[0, i], drawFontBold, Brushes.White, rectTop, sf);
                     drawer.DrawString(loadList[3, i], drawFont, Brushes.White, rectBottom, sf);
                     drawer.Flush();
@@ -110,15 +110,36 @@ namespace PotatoSalad
                     pb.Width = bmp.Width + 4;   // This clever trick gives me a white border.
                     pb.Height = bmp.Height + 4;
                     pb.BackColor = Color.White;
-                    pb.BackgroundImage = bmp;
+                    pb.BackgroundImage = (Image)bmp.Clone();
                     pb.BackgroundImageLayout = ImageLayout.Center;
                     this.LoadListPanel.Controls.Add(pb);
-                    pb.Location = new Point(0, (i * 64) + 4);
+                    pb.Location = new Point(0, (i * 76));
                     pb.Visible = true;
 
                     // There needs to be a whole thing here where we set up the picturebox for being clicked on.
+                    pb.MouseEnter += (sender, e) =>
+                    {
+                        pb.BackColor = Color.Yellow;
+                    };
+                    pb.MouseLeave += (sender, e) =>
+                    {
+                        pb.BackColor = Color.White;
+                    };
+                    pb.Click += (sender, e) =>
+                    {
+                        // Here is where we jump out to the loadgame method.
+                        //MessageBox.Show((String)pb.Tag);
+
+                        // We need to load the map first.
+                        // Into DungeonMap and also LevelXML.
+                        // (Could do LevelXML first then have DungeonMap draw from that?)
+
+                        // Then we load the player.
+                        // Then we close this form and on with the show.
+                    };
 
                     // Reset bmp for future use.
+                    drawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
                     drawer.FillRectangle(Brushes.Black, 0, 0, bmp.Width, bmp.Height);
                 }
             }

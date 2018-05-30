@@ -19,6 +19,13 @@ namespace PotatoSalad
         public string Depth;    // For internal use. Sort of a difficulty marker, I guess.
         public string mapType;
 
+        public void LoadMap(string mapDir)
+        {
+            ClearMap();
+
+            // Too sleepy to work out what goes here.
+        }
+
         public void Generate(string mn, string mid, int ln, int d, int xSize = 80, int ySize = 25, string mType = "default")
         {
             ClearMap();
@@ -63,6 +70,8 @@ namespace PotatoSalad
         private void GenerateDungeonMap()
         {
             // A dungeon map fills the entire level with wall, then cuts ten rooms, then links them with tunnels.
+            // Right now it produces quite an open-plan dungeon. Which I'm okay with?
+            // But I think I need to refine the overlap parameters.
             for (int i = 0; i <= TileArray.GetUpperBound(0); i++)
             {
                 for (int j = 0; j <= TileArray.GetUpperBound(1); j++)
@@ -100,6 +109,7 @@ namespace PotatoSalad
                 }
             }
             // And then one more to link room(last) to room(first).
+            // NOTE: THIS ISN'T WORKING.
 
             for(int i = RoomList.Count-1; i > 0; i--)
             {
@@ -121,7 +131,6 @@ namespace PotatoSalad
         {
             // The default is a 10x10 map, blank in the middle, with walls all around the edge.
 
-            //TileArray = new Tile[xSize, ySize];
             for (int i = 0; i <= TileArray.GetUpperBound(0); i++)
             {
                 for (int j = 0; j <= TileArray.GetUpperBound(1); j++)

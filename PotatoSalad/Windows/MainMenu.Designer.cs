@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.buttonNewGame = new System.Windows.Forms.Button();
-            this.buttonLoadGame = new System.Windows.Forms.Button();
             this.LoadListPanel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
@@ -42,15 +41,6 @@
             this.buttonNewGame.Text = "New Game";
             this.buttonNewGame.UseVisualStyleBackColor = true;
             this.buttonNewGame.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // buttonLoadGame
-            // 
-            this.buttonLoadGame.Location = new System.Drawing.Point(130, 244);
-            this.buttonLoadGame.Name = "buttonLoadGame";
-            this.buttonLoadGame.Size = new System.Drawing.Size(110, 44);
-            this.buttonLoadGame.TabIndex = 1;
-            this.buttonLoadGame.Text = "Load Game";
-            this.buttonLoadGame.UseVisualStyleBackColor = true;
             // 
             // LoadListPanel
             // 
@@ -67,7 +57,6 @@
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.LoadListPanel);
-            this.Controls.Add(this.buttonLoadGame);
             this.Controls.Add(this.buttonNewGame);
             this.Name = "MainMenu";
             this.Text = "Main Menu";
@@ -78,7 +67,6 @@
         #endregion
 
         private System.Windows.Forms.Button buttonNewGame;
-        private System.Windows.Forms.Button buttonLoadGame;
         private System.Windows.Forms.Panel LoadListPanel;
     }
 }
