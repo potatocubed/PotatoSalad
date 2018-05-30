@@ -207,6 +207,7 @@ namespace PotatoSalad
             xElem.SetAttribute("mapID", Game.DungeonMap.MapID); // Got to note the level!
             xElem.SetAttribute("x", Game.Player.location.X.ToString());
             xElem.SetAttribute("y", Game.Player.location.Y.ToString());
+            xElem.InnerText = Game.DungeonMap.MapName + ", Level " + Game.DungeonMap.LevelNumber;   // This is for easy display when loading the game again.
 
             charxml.Save(saveDir + "/character.xml");
         }
