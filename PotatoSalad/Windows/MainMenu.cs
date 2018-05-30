@@ -72,13 +72,14 @@ namespace PotatoSalad
                 // We'll generate a picturebox for each loadgame, and display it in
                 // the side panel. Click on it to load your game!
 
-                Bitmap bmp = new Bitmap(this.LoadListPanel.Width, 32);
+                Bitmap bmp = new Bitmap(this.LoadListPanel.Width - 4, 64);  // -4 on the width to allow for a 2px border on the picturebox.
                 Graphics drawer = Graphics.FromImage(bmp);
                 drawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
                 drawer.FillRectangle(Brushes.Black, 0, 0, bmp.Width, bmp.Height);
 
                 // Create a rectangle for the top line of text.
-                RectangleF rectf = new RectangleF(4, 4, bmp.Width - 8, (bmp.Height - 8) / 2);
+                RectangleF rectTop = new RectangleF(4, 4, bmp.Width - 8, 24);
+                RectangleF rectBottom = new RectangleF(4, bmp.Height - 28, bmp.Width - 8, 24);
 
                 // Make it look fancy.
                 drawer.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -92,17 +93,34 @@ namespace PotatoSalad
                     LineAlignment = StringAlignment.Near,
                 };
 
-                Font drawFont = new Font("Consolas", 11);
-                Font drawFontBold = new Font("Consolas", 11, FontStyle.Bold);
+                Font drawFont = new Font("Consolas", 10);
+                Font drawFontBold = new Font("Consolas", 10, FontStyle.Bold);
 
-                //// Draw the text onto the image
-                //g.DrawString("yourText", new Font("Tahoma", 8), Brushes.Black, rectf, format);
+                for(int i = 0; i <= loadList.GetUpperBound(1); i++)
+                {
+                    // Draw the text onto the image
+                    drawer.DrawString(loadList[0, i], drawFontBold, Brushes.White, rectTop, sf);
+                    drawer.DrawString(loadList[3, i], drawFont, Brushes.White, rectBottom, sf);
+                    drawer.Flush();
 
-                //// Flush all graphics changes to the bitmap
-                //g.Flush();
+                    // Display the picturebox.
+                    PictureBox pb = new PictureBox();
+                    
+                    pb.Tag = loadList[1, i];    // Click on it, get this tag, that's your working directory.
+                    pb.Width = bmp.Width + 4;   // This clever trick gives me a white border.
+                    pb.Height = bmp.Height + 4;
+                    pb.BackColor = Color.White;
+                    pb.BackgroundImage = bmp;
+                    pb.BackgroundImageLayout = ImageLayout.Center;
+                    this.LoadListPanel.Controls.Add(pb);
+                    pb.Location = new Point(0, (i * 64) + 4);
+                    pb.Visible = true;
 
-                //// Now save or use the bitmap
-                //image.Image = bmp;
+                    // There needs to be a whole thing here where we set up the picturebox for being clicked on.
+
+                    // Reset bmp for future use.
+                    drawer.FillRectangle(Brushes.Black, 0, 0, bmp.Width, bmp.Height);
+                }
             }
         }
 
