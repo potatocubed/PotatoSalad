@@ -27,6 +27,7 @@ namespace PotatoSalad
         public static FOVCalculator FOVCalculator;
         public static GraphicsAPI GAPI;
         public static Dice Dice;
+        public static List<Tile> TileList;
 
         public static XmlDocument PlayerXML;    // This allows us to edit the deets in real-time.
         public static XmlDocument LevelXML;     // Likewise, but for the world map.
@@ -63,6 +64,53 @@ namespace PotatoSalad
 
             // (Apparently you can hijack the 'on close' event to just hide the windows. When all are hidden, kill the app.)
         }
+
+        private static void InitialiseTileList()
+        {
+            // At some point I can initialise this from a separate data file.
+            // All the data is currently stored in Tile.MakeTile.
+            Tile t = new Tile(-1, -1);
+
+            // floor
+            t.MakeTile("floor");
+            TileList.Add(t);
+
+            // wall
+            t.MakeTile("wall");
+            TileList.Add(t);
+        }
+
+        public static string GetTileTypeFromChar(char c)
+        {
+            foreach(Tile t in TileList)
+            {
+                if (t.DisplayChar == c.ToString())
+                {
+                    return t.Name;
+                }
+            }
+            // Not in the list???
+            return "floor";
+        }
+
+        public static void LoadGame(string saveDir, string mapID)
+        {
+            // We need to load the map first.
+            // Into DungeonMap and also LevelXML.
+            // (Could do LevelXML first then have DungeonMap draw from that?)
+            DungeonMap = new Map();
+            LevelXML = new XmlDocument();
+            LevelXML.Load(saveDir + "/data/" + mapID + "/mapdata.xml");
+            // Call the as-yet-nonexistent DungeonMap.LoadMap method, which will load from the XML.
+
+            // Then we load the player.
+            PlayerXML = new XmlDocument();
+            PlayerXML.Load(saveDir + "/character.xml");
+            // Call the as-yet-nonexistent Player.LoadPlayer method, which will load from the XML.
+
+            // Then we close this form and on with the show.
+        }
+
 
         public static void NewGame(string playerName)
         {

@@ -19,11 +19,35 @@ namespace PotatoSalad
         public string Depth;    // For internal use. Sort of a difficulty marker, I guess.
         public string mapType;
 
-        public void LoadMap(string mapDir)
+        public void LoadMap(string mn, string mid, int ln, int d, int xSize, int ySize, string mType)
         {
+            // By the time this is called, XMLHandler.saveDir is set to point to the right place.
             ClearMap();
 
-            // Too sleepy to work out what goes here.
+            XDimension = xSize - 1;
+            YDimension = ySize - 1;
+            mapType = mType;
+
+            TileArray = new Tile[xSize, ySize];
+
+            MapID = mid;
+            MapName = mn;
+            LevelNumber = ln.ToString();
+            Depth = d.ToString();
+
+            // LOAD MAP
+            //LevelXML.Load(saveDir + "/data/" + mapID + "/mapdata.xml");
+            System.IO.StreamReader mapReader = new System.IO.StreamReader(Game.XMLHandler.saveDir + "/data/" + mid + "/geography.txt");
+            string mapLine;
+            for (int j = 0; j <= YDimension; j++)
+            {
+                mapLine = mapReader.ReadLine();
+                char[] cArray = mapLine.ToCharArray();
+                for (int i = 0; i <= cArray.Length; i++)
+                {
+                    TileArray[i, j].MakeTile(Game.GetTileTypeFromChar(cArray[i]));
+                }
+            }
         }
 
         public void Generate(string mn, string mid, int ln, int d, int xSize = 80, int ySize = 25, string mType = "default")

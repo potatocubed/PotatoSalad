@@ -129,13 +129,7 @@ namespace PotatoSalad
                     {
                         // Here is where we jump out to the loadgame method.
                         //MessageBox.Show((String)pb.Tag);
-
-                        // We need to load the map first.
-                        // Into DungeonMap and also LevelXML.
-                        // (Could do LevelXML first then have DungeonMap draw from that?)
-
-                        // Then we load the player.
-                        // Then we close this form and on with the show.
+                        Game.XMLHandler.saveDir = (String)pb.Tag;
                     };
 
                     // Reset bmp for future use.
