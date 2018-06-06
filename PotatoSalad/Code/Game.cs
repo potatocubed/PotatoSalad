@@ -43,6 +43,8 @@ namespace PotatoSalad
             StateMachine = new StateMachine(Globals.STATE_PLAYER_TURN);
             FOVCalculator = new FOVCalculator();
             GAPI = new GraphicsAPI();
+            TileList = new List<Tile>();
+            InitialiseTileList();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -101,7 +103,21 @@ namespace PotatoSalad
             DungeonMap = new Map();
             LevelXML = new XmlDocument();
             LevelXML.Load(saveDir + "/data/" + mapID + "/mapdata.xml");
-            // Call the as-yet-nonexistent DungeonMap.LoadMap method, which will load from the XML.
+            
+            // Call DungeonMap.LoadMap method, which will load from the XML.
+            XmlElement xElem;
+            xElem = (XmlElement)LevelXML.SelectSingleNode("/MapData/MapName");
+            string mn = xElem.InnerText;
+            string mid = mapID;
+            xElem = (XmlElement)LevelXML.SelectSingleNode("/MapData/LevelNumber");
+            int ln = Convert.ToInt32(xElem.InnerText);
+            xElem = (XmlElement)LevelXML.SelectSingleNode("/MapData/Depth");
+            int d = Convert.ToInt32(xElem.InnerText);
+            xElem = (XmlElement)LevelXML.SelectSingleNode("/MapData/Details");
+            int xSize = Convert.ToInt32(xElem.GetAttribute("x"));
+            int ySize = Convert.ToInt32(xElem.GetAttribute("y"));
+            string mType = xElem.GetAttribute("maptype");
+            DungeonMap.LoadMap(mn, mid, ln, d, xSize, ySize, mType);
 
             // Then we load the player.
             PlayerXML = new XmlDocument();
@@ -109,6 +125,7 @@ namespace PotatoSalad
             // Call the as-yet-nonexistent Player.LoadPlayer method, which will load from the XML.
 
             // Then we close this form and on with the show.
+            // Game.ShowForms();
         }
 
 

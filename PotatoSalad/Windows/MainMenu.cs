@@ -20,6 +20,7 @@ namespace PotatoSalad
         // 1: Directory (for loading from)
         // 2: CharDetails (e.g. Daughter of Blorf, commanding Spoons, Love, and Heroism)
         // 3: CurrentLocation (e.g. 'Dungeon, Level 1')
+        // 4: Level ID for loading purposes.
 
         public MainMenu()
         {
@@ -53,6 +54,9 @@ namespace PotatoSalad
                             loadList[2, targRow] = "";  // Got no details to put here yet.
                             xNode = f.SelectSingleNode("/CharData/Location");
                             loadList[3, targRow] = xNode.InnerText;
+                            //XmlElement xElem;
+                            //xElem = (XmlElement)xNode;
+                            //loadList[4, targRow] = xElem.GetAttribute("mapID");
                             targRow++;
                         }
                         catch
@@ -130,6 +134,12 @@ namespace PotatoSalad
                         // Here is where we jump out to the loadgame method.
                         //MessageBox.Show((String)pb.Tag);
                         Game.XMLHandler.saveDir = (String)pb.Tag;
+                        XmlDocument xDoc = new XmlDocument();
+                        xDoc.Load((String)pb.Tag + "/character.xml");
+                        XmlElement xElem;
+                        xElem = (XmlElement)xDoc.SelectSingleNode("/CharData/Location");
+                        string s = xElem.GetAttribute("mapID");
+                        Game.LoadGame(Game.XMLHandler.saveDir, s);
                     };
 
                     // Reset bmp for future use.

@@ -43,8 +43,9 @@ namespace PotatoSalad
             {
                 mapLine = mapReader.ReadLine();
                 char[] cArray = mapLine.ToCharArray();
-                for (int i = 0; i <= cArray.Length; i++)
+                for (int i = 0; i < cArray.Length; i++)
                 {
+                    TileArray[i, j] = new Tile(i, j);
                     TileArray[i, j].MakeTile(Game.GetTileTypeFromChar(cArray[i]));
                 }
             }
