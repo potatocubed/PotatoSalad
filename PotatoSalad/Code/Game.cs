@@ -55,8 +55,7 @@ namespace PotatoSalad
             Application.Run();
 
             // Starting screen, menu, etc.
-            // Save/Load
-            // Hold the XML docs open as necessary, for continuous writing.
+            // Save/Load -- Loading is done. Now for saving.
             // Need to add auto-updates to the XML docs.
             // Turn-by-turn updates are applied to the open XML files.
             // Remember to auto-save when the app closes. -- The event's in place, just needs the code.
@@ -122,10 +121,26 @@ namespace PotatoSalad
             // Then we load the player.
             PlayerXML = new XmlDocument();
             PlayerXML.Load(saveDir + "/character.xml");
-            // Call the as-yet-nonexistent Player.LoadPlayer method, which will load from the XML.
+            
+            // Find the player location and call DungeonMap.InstantiatePlayer there.
+            xElem = (XmlElement)PlayerXML.SelectSingleNode("/CharData/Location");
+            xSize = Convert.ToInt32(xElem.GetAttribute("x"));
+            ySize = Convert.ToInt32(xElem.GetAttribute("y"));
+            DungeonMap.InstantiatePlayer(DungeonMap.TileArray[xSize, ySize]);
 
-            // Then we close this form and on with the show.
-            // Game.ShowForms();
+            // Call Player.LoadPlayer, which will load from the XML.
+            xElem = (XmlElement)PlayerXML.SelectSingleNode("/CharData/Name");
+            mn = xElem.InnerText;
+            xElem = (XmlElement)PlayerXML.SelectSingleNode("/CharData/CharacterID");
+            mid = xElem.InnerText;
+            xElem = (XmlElement)PlayerXML.SelectSingleNode("/CharData/DisplayGraphic");
+            string dg = xElem.InnerText;
+            xElem = (XmlElement)PlayerXML.SelectSingleNode("/CharData/Stats/FOVRange");
+            ln = Convert.ToInt32(xElem.InnerText);
+            Player.LoadPlayer(mn, mid, dg, ln);
+
+            // Then we close the main menu and on with the show.
+            Game.ShowForms();
         }
 
 

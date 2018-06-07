@@ -131,8 +131,6 @@ namespace PotatoSalad
                     };
                     pb.Click += (sender, e) =>
                     {
-                        // Here is where we jump out to the loadgame method.
-                        //MessageBox.Show((String)pb.Tag);
                         Game.XMLHandler.saveDir = (String)pb.Tag;
                         XmlDocument xDoc = new XmlDocument();
                         xDoc.Load((String)pb.Tag + "/character.xml");
@@ -140,6 +138,7 @@ namespace PotatoSalad
                         xElem = (XmlElement)xDoc.SelectSingleNode("/CharData/Location");
                         string s = xElem.GetAttribute("mapID");
                         Game.LoadGame(Game.XMLHandler.saveDir, s);
+                        this.Close();
                     };
 
                     // Reset bmp for future use.

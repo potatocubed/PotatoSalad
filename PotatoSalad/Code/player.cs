@@ -16,5 +16,13 @@ namespace PotatoSalad
             name = "Player";
             displayGraphic = "../../Graphics/Mobiles/player.png";
         }
+
+        public void LoadPlayer(string n, string id, string dg, int fovr)
+        {
+            name = n;
+            this.id = id;
+            displayGraphic = dg;
+            FOVRange = fovr;
+        }
     }
 }
