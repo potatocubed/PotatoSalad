@@ -97,8 +97,7 @@ namespace PotatoSalad
         public static void LoadGame(string saveDir, string mapID)
         {
             // We need to load the map first.
-            // Into DungeonMap and also LevelXML.
-            // (Could do LevelXML first then have DungeonMap draw from that?)
+            // LevelXML first then have DungeonMap draw from that.
             DungeonMap = new Map();
             LevelXML = new XmlDocument();
             LevelXML.Load(saveDir + "/data/" + mapID + "/mapdata.xml");

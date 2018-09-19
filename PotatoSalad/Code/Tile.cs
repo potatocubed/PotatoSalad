@@ -49,6 +49,7 @@ namespace PotatoSalad
         {
             switch (tileType)
             {
+                // TODO: Put all these details in an external file and draw from there.
                 case "floor":
                     Name = "floor";
                     BlockSight = false;
