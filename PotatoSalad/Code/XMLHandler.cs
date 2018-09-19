@@ -82,6 +82,13 @@ namespace PotatoSalad
 
         }
 
+        public void UpdateGeography()
+        {
+            string mapDir = saveDir + "/data/" + Game.DungeonMap.MapID;
+            string[] mText = Game.DungeonMap.MapText();
+            File.WriteAllLines(mapDir + "/geography.txt", mText);
+        }
+
         public void UpdateMapData()
         {
             string mapDir = saveDir + "/data/" + Game.DungeonMap.MapID + "/mapdata.xml";
@@ -137,7 +144,7 @@ namespace PotatoSalad
             xElem.SetAttribute("maptype", Game.DungeonMap.mapType);
 
             // Since the geography of the level will change only rarely, I'll handle that
-            // as and when it pops up.
+            // as and when it pops up. Using UpdateGeography().
 
             // The mobile list will be added later.
 
@@ -210,6 +217,26 @@ namespace PotatoSalad
             xElem.InnerText = Game.DungeonMap.MapName + ", Level " + Game.DungeonMap.LevelNumber;   // This is for easy display when loading the game again.
 
             charxml.Save(saveDir + "/character.xml");
+        }
+
+        public void UpdatePlayerLocation(XmlDocument charxml)
+        {
+            // Updating the real-time file.
+            XmlElement xRoot = charxml.DocumentElement;
+            XmlNode xNode;
+            XmlElement xElem;
+
+            xNode = xRoot.SelectSingleNode("Location");
+            // The character XML should be complete, so this error should never fire.
+            // But if it does... we're just not going to record the location. Game's going to be fucked anyway.
+            if (xNode == null)
+            {
+                // Do nothing.
+                return;
+            }
+            xElem = (XmlElement)xNode;
+            xElem.SetAttribute("x", Game.Player.location.X.ToString());
+            xElem.SetAttribute("y", Game.Player.location.Y.ToString());
         }
         
         private bool CreateDataFile(string fileName, string rootElementName)

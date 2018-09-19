@@ -39,14 +39,27 @@ namespace PotatoSalad
             //LevelXML.Load(saveDir + "/data/" + mapID + "/mapdata.xml");
             System.IO.StreamReader mapReader = new System.IO.StreamReader(Game.XMLHandler.saveDir + "/data/" + mid + "/geography.txt");
             string mapLine;
-            for (int j = 0; j <= YDimension; j++)
+            for (int j = 0; j <= YDimension * 2; j++)
             {
                 mapLine = mapReader.ReadLine();
                 char[] cArray = mapLine.ToCharArray();
-                for (int i = 0; i < cArray.Length; i++)
+                if (j <= YDimension)
                 {
-                    TileArray[i, j] = new Tile(i, j);
-                    TileArray[i, j].MakeTile(Game.GetTileTypeFromChar(cArray[i]));
+                    for (int i = 0; i < cArray.Length; i++)
+                    {
+                        TileArray[i, j] = new Tile(i, j);
+                        TileArray[i, j].MakeTile(Game.GetTileTypeFromChar(cArray[i]));
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < cArray.Length; i++)
+                    {
+                        if(cArray[i] == Convert.ToChar("."))
+                        {
+                            TileArray[i, j - YDimension].IsExplored = true;
+                        }
+                    }
                 }
             }
         }
@@ -263,20 +276,40 @@ namespace PotatoSalad
 
         public string[] MapText()
         {
+            // Export a text-based rendition of the map.
             string[] mText = new string[YDimension + 1];
+            string[] vText = new string[YDimension + 1];
             var mapRepresentation = new StringBuilder();
+            var mapVisibility = new StringBuilder();
 
             for (int y = 0; y <= YDimension; y++)
             {
                 for (int x = 0; x <= XDimension; x++)
                 {
                     mapRepresentation.Append(TileArray[x, y].DisplayChar);
+                    // And we also need to record the IsExplored property of the various tiles.
+                    if (TileArray[x, y].IsExplored)
+                    {
+                        mapVisibility.Append(".");
+                    }
+                    else
+                    {
+                        mapVisibility.Append("#");
+                    }
                 }
                 mText[y] = mapRepresentation.ToString();
+                vText[y] = mapVisibility.ToString();
                 mapRepresentation.Clear();
+                mapVisibility.Clear();
             }
 
-            return mText;
+            // FOV will be filled in on game load.
+
+            List<string> tList = new List<string>();
+            tList.AddRange(mText);
+            tList.AddRange(vText);
+            string[] rText = tList.ToArray();
+            return rText;
         }
     }
 }

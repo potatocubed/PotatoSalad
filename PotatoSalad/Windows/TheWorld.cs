@@ -32,6 +32,7 @@ namespace PotatoSalad
             MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
             MapDrawer.FillRectangle(Brushes.Black, 0, 0, MapImage.Width, MapImage.Height);
 
+            DrawMapOnLoad(Game.DungeonMap);
             InitialJumpToPlayer();
         }
 
@@ -69,6 +70,17 @@ namespace PotatoSalad
         public void DisplayAddMob()
         {
             // Another placeholder. For mid-level summons, spawns, etc.
+        }
+
+        public void DrawMapOnLoad(Map m)
+        {
+            foreach (Tile t in m.TileArray)
+            {
+                if (t.IsExplored)
+                {
+                    MapDrawer.DrawImage(Image.FromFile(t.DarkTileGraphic), t.X * 32, t.Y * 32);
+                }
+            }
         }
 
         public void DrawMap(Map m)

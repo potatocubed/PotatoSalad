@@ -75,9 +75,9 @@ namespace PotatoSalad
             
             if (id == "UniqueIDPlayer")
             {
-                // Delete the player, move the map, redraw the player.
-                //Game.WorldForm.EraseMob(origX, origY, Game.DungeonMap);
-                //Game.GAPI.ScrollBox(origX, origY, destX, destY);
+                // If it's the player, then we need to quickly update their location.
+                Game.XMLHandler.UpdatePlayerLocation(Game.PlayerXML);
+                // And the revealed sections of the map.
             }
             Game.GAPI.DrawMap(Game.DungeonMap);
         }

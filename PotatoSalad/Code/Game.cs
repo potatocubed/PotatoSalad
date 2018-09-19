@@ -56,9 +56,9 @@ namespace PotatoSalad
 
             // Starting screen, menu, etc.
             // Save/Load -- Loading is done. Now for saving.
-            // Need to add auto-updates to the XML docs.
-            // Turn-by-turn updates are applied to the open XML files.
+            // Need to add auto-updates to the open XML docs on movement, hp adjustment, etc.
             // Remember to auto-save when the app closes. -- The event's in place, just needs the code.
+            // Going to want a 'save' function which writes player data, map data, geography.txt
             // Procgen pantheons
             // Form layout.
             // Fix showforms.
