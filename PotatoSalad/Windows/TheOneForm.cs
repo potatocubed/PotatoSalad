@@ -45,6 +45,11 @@ namespace PotatoSalad
         private void TheOneForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             // This is where the data dump for the auto-savegame happens.
+            // The auto-savegame should only fire when the game is running. If you close from the main menu, it skips.
+            if (Game.StateMachine.GetState() != Globals.STATE_MAIN_MENU)
+            {
+                Game.SaveGame();
+            }
         }
     }
 }

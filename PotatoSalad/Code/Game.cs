@@ -32,6 +32,7 @@ namespace PotatoSalad
         public static XmlDocument PlayerXML;    // This allows us to edit the deets in real-time.
         public static XmlDocument LevelXML;     // Likewise, but for the world map.
         // These variables aren't filled until the game is started -- whether by newgame or loadgame.
+        // TODO: Are these variables even necessary? Saving the game doesn't use them...
 
         [STAThread]
         static void Main()
@@ -40,7 +41,8 @@ namespace PotatoSalad
             Globals = new Globals();
             XMLHandler = new XMLHandler();
             InputHandler = new InputHandler();
-            StateMachine = new StateMachine(Globals.STATE_PLAYER_TURN);
+            //StateMachine = new StateMachine(Globals.STATE_PLAYER_TURN);
+            StateMachine = new StateMachine(Globals.STATE_MAIN_MENU);
             FOVCalculator = new FOVCalculator();
             GAPI = new GraphicsAPI();
             TileList = new List<Tile>();
@@ -55,10 +57,8 @@ namespace PotatoSalad
             Application.Run();
 
             // Starting screen, menu, etc.
-            // Save/Load -- Loading is done. Now for saving.
-            // Need to add auto-updates to the open XML docs on movement, hp adjustment, etc.
-            // Remember to auto-save when the app closes. -- The event's in place, just needs the code.
-            // Going to want a 'save' function which writes player data, map data, geography.txt
+            // Saving is done. Now needs testing.
+            // Save scripts in XMLHandler will need to be updated as I add new odds and ends.
             // Procgen pantheons
             // Form layout.
             // Fix showforms.
@@ -92,6 +92,13 @@ namespace PotatoSalad
             }
             // Not in the list???
             return "floor";
+        }
+
+        public static void SaveGame()
+        {
+            XMLHandler.UpdateCharData();
+            XMLHandler.UpdateMapData();
+            XMLHandler.UpdateGeography();
         }
 
         public static void LoadGame(string saveDir, string mapID)
@@ -184,6 +191,9 @@ namespace PotatoSalad
             // 7. When any form is closed, all forms are closed. (???)
             // 9. Closing any of the sub-forms just minimises them.
 
+            // Tell the game we're actually playing as opposed to noodling about in menus.
+            // TODO: Expand the state machine to handle this.
+
             int formCount = 0;
             List<Form> formList = new List<Form>(); // The ControlForm doesn't live on this list.
 
@@ -251,6 +261,8 @@ namespace PotatoSalad
                 };
                 f.Show();
             }
+
+            StateMachine.SetState(Globals.STATE_PLAYER_TURN);
         }
     }
 }
