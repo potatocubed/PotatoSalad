@@ -28,6 +28,7 @@ namespace PotatoSalad
         public static GraphicsAPI GAPI;
         public static Dice Dice;
         public static List<Tile> TileList;
+        public static MonsterPopulater MonPop;
 
         public static XmlDocument PlayerXML;    // This allows us to edit the deets in real-time.
         public static XmlDocument LevelXML;     // Likewise, but for the world map.
@@ -47,6 +48,7 @@ namespace PotatoSalad
             GAPI = new GraphicsAPI();
             TileList = new List<Tile>();
             InitialiseTileList();
+            MonPop = new MonsterPopulater();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -58,6 +60,12 @@ namespace PotatoSalad
 
             // Starting screen, menu, etc.
             // Saving is done. Now needs testing.
+            // Next up, enemy mobs.
+            // Then melee attacks.
+            // Also, the ability to scroll a cursor around to gather info.
+            // Then ranged attacks.
+            // XML file for tile details.
+            // XML files for monster details.
             // Save scripts in XMLHandler will need to be updated as I add new odds and ends.
             // Procgen pantheons
             // Form layout.
@@ -190,9 +198,6 @@ namespace PotatoSalad
 
             // 7. When any form is closed, all forms are closed. (???)
             // 9. Closing any of the sub-forms just minimises them.
-
-            // Tell the game we're actually playing as opposed to noodling about in menus.
-            // TODO: Expand the state machine to handle this.
 
             int formCount = 0;
             List<Form> formList = new List<Form>(); // The ControlForm doesn't live on this list.

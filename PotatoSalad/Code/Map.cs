@@ -100,6 +100,18 @@ namespace PotatoSalad
             MobileArray.Add(Game.Player);
         }
 
+        private void PopulateDefault()
+        {
+            // TODO
+            // This function populates the map with three goblins.
+            // First things first, find an open space.
+            // -- we can do this by grabbing clear space from RoomList?
+            // Then select a monster type to put there.
+            // Then get a unique ID.
+            // Then instantiate the mobile and add it to MobileArray.
+            // Then conform the mobile to the monster using monsterpopulater.monstersetup
+        }
+
         private void ClearMap()
         {
             TileArray = new Tile[0,0];
@@ -147,7 +159,7 @@ namespace PotatoSalad
                 }
             }
             // And then one more to link room(last) to room(first).
-            // NOTE: THIS ISN'T WORKING.
+            // TODO: THIS ISN'T WORKING.
 
             for(int i = RoomList.Count-1; i > 0; i--)
             {

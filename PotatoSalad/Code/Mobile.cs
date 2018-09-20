@@ -72,13 +72,14 @@ namespace PotatoSalad
 
             // Update the form.
             // This may need to move to a turn update method at some point.
-            
-            if (id == "UniqueIDPlayer")
-            {
-                // If it's the player, then we need to quickly update their location.
-                Game.XMLHandler.UpdatePlayerLocation(Game.PlayerXML);
-                // And the revealed sections of the map.
-            }
+
+            // TODO: None of this is necessary?
+            //if (id == "UniqueIDPlayer")
+            //{
+            //    // If it's the player, then we need to quickly update their location.
+            //    Game.XMLHandler.UpdatePlayerLocation(Game.PlayerXML);
+            //    // And the revealed sections of the map.
+            //}
             Game.GAPI.DrawMap(Game.DungeonMap);
         }
     }

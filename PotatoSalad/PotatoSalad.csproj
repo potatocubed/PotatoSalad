@@ -51,7 +51,9 @@
   <ItemGroup>
     <Compile Include="Code\FOVCalculator.cs" />
     <Compile Include="Code\Globals.cs" />
+    <Compile Include="Code\MapGeneration\MonsterPopulater.cs" />
     <Compile Include="Code\MapGeneration\Room.cs" />
+    <Compile Include="Code\Monster.cs" />
     <Compile Include="Code\Player.cs" />
     <Compile Include="Code\StateMachine.cs" />
     <Compile Include="Code\XMLHandler.cs" />
