@@ -220,6 +220,14 @@ namespace PotatoSalad
                 Application.ExitThread();
             };
 
+            //ControlForm.FormClosing += (sender, e) =>
+            //{
+            //    if (Game.StateMachine.GetState() != Globals.STATE_MAIN_MENU)
+            //    {
+            //        Game.SaveGame();
+            //    }
+            //};
+
             ControlForm.Show();
 
             foreach (Form f in formList)
@@ -234,6 +242,8 @@ namespace PotatoSalad
                         return;
                     }
 
+                    //Application.ExitThread();
+                    ControlForm.Close();
                     Application.ExitThread();
                 };
                 f.Resize += (sender, e) =>
