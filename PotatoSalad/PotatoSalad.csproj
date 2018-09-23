@@ -133,6 +133,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Graphics\Mobiles\generic_monster.png" />
+    <Content Include="Graphics\Mobiles\goblin.png" />
     <Content Include="Graphics\Mobiles\player.png" />
     <Content Include="Graphics\Tiles\default.png" />
     <Content Include="Graphics\Tiles\floor.png" />

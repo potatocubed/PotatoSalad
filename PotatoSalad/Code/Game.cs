@@ -199,6 +199,9 @@ namespace PotatoSalad
             // 7. When any form is closed, all forms are closed. (???)
             // 9. Closing any of the sub-forms just minimises them.
 
+            // This prevents various events from firing which mess things up.
+            StateMachine.SetState(Globals.STATE_WORKING);
+
             int formCount = 0;
             List<Form> formList = new List<Form>(); // The ControlForm doesn't live on this list.
 
@@ -220,14 +223,6 @@ namespace PotatoSalad
                 Application.ExitThread();
             };
 
-            //ControlForm.FormClosing += (sender, e) =>
-            //{
-            //    if (Game.StateMachine.GetState() != Globals.STATE_MAIN_MENU)
-            //    {
-            //        Game.SaveGame();
-            //    }
-            //};
-
             ControlForm.Show();
 
             foreach (Form f in formList)
@@ -242,7 +237,6 @@ namespace PotatoSalad
                         return;
                     }
 
-                    //Application.ExitThread();
                     ControlForm.Close();
                     Application.ExitThread();
                 };
