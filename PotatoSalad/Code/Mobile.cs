@@ -83,11 +83,10 @@ namespace PotatoSalad
             Game.GAPI.DrawMap(Game.DungeonMap);
         }
 
-        public XmlDocumentFragment GenerateSaveXML()
+        public virtual string GenerateSaveXML()
         {
             // For overwriting.
-            XmlDocumentFragment gsx = new XmlDocument().CreateDocumentFragment();
-            gsx.InnerXml = "";
+            string gsx = "";
             return gsx;
         }
     }

@@ -148,6 +148,13 @@ namespace PotatoSalad
 
             // This is where the call to update the mobile list will be.
             // It'll return an XML fragment which can be incorporated into the map file.
+            // TODO: This whole thing is done as a string, which is kind of not great. But that's a fix for later.
+            // We have to cut any pre-existing mobile list so it doesn't duplicate.
+            xNode = xRoot.SelectSingleNode("./mobiles");
+            if (!(xNode == null))
+            {
+                xRoot.RemoveChild(xNode);
+            }
             XmlNode importNode = xRoot.OwnerDocument.ImportNode(UpdateMobileData(), true);
             xRoot.AppendChild(importNode);
 
@@ -159,19 +166,20 @@ namespace PotatoSalad
         XmlDocumentFragment UpdateMobileData()
         {
             XmlDocumentFragment umd = new XmlDocument().CreateDocumentFragment();
-            umd.InnerXml = "<mobiles></mobiles>";
+            string s = "<mobiles>";
 
             foreach(Mobile mob in Game.DungeonMap.MobileArray)
             {
                 if(mob is Monster)
                 {
                     // Call some sort of XML-generating function in the monster class.
-                    XmlDocumentFragment gsx = mob.GenerateSaveXML();
-                    XmlNode importNode = umd.OwnerDocument.ImportNode(gsx, true);
-                    umd.AppendChild(importNode);
+                    string s2 = mob.GenerateSaveXML();
+                    s = $"{s}{s2}";
                 }
             }
 
+            s = $"{s}</mobiles>";
+            umd.InnerXml = s;
             return umd;
         }
 

@@ -30,6 +30,38 @@ namespace PotatoSalad
             return testName;
         }
 
+        public void LoadMonster(ref Tile[,] tileArray, ref List<Mobile> monList, string nm, string id,
+            string mtype, int locx, int locy, string g, int fov, int ai)
+        {
+            // TODO
+            // This creates a monster, adds all the details (as snagged from the XML),
+            // and then adds it to the map in the correct place.
+
+            Monster mon = new Monster(tileArray[locx, locy], id);
+            mon.name = nm;
+            mon.id = id;
+            mon.monType = mtype;
+            mon.displayGraphic = g;
+            mon.FOVRange = fov;
+            mon.AI_type = ai;
+            monList.Add(mon);
+            tileArray[locx, locy].Occupier = mon;
+
+            /*
+            Monster mon = new Monster(TileArray[targX, targY], uid);
+            mon.monType = mType;
+            MobileArray.Add(mon);
+            TileArray[targX, targY].Occupier = mon;
+
+            <name>Goblin</name>
+            <id>goblin-0</id>
+            <location x="48" y="2" />
+            <graphic>../../Graphics/Mobiles/goblin.png</graphic>
+            <fov>5</fov>
+            <ai>1</ai>
+            */
+        }
+
         public void MonsterSetUp(List<Mobile> monList)
         {
             // TODO

@@ -21,45 +21,24 @@ namespace PotatoSalad
                             // set AI_type to 0, then set it to something else when the player is spotted.
         }
 
-        new public XmlDocumentFragment GenerateSaveXML()
+        public override string GenerateSaveXML()
         {
-            XmlDocumentFragment gsx = new XmlDocument().CreateDocumentFragment();
-            gsx.InnerXml = "<monster></monster>";
-            XmlElement xElem;
+            string s = "<monster>";
 
             // Properties inherited from Mobile.
             // &#10; is a line feed, just in case.
-            xElem = new XmlDocument().CreateElement("name");
-            xElem.InnerText = name;
-            gsx.AppendChild(xElem);
-
-            xElem = new XmlDocument().CreateElement("id");
-            xElem.InnerText = id;
-            gsx.AppendChild(xElem);
-
-            xElem = new XmlDocument().CreateElement("location");
-            XmlAttribute attr = new XmlDocument().CreateAttribute("x");
-            attr.Value = X().ToString();
-            xElem.SetAttributeNode(attr);
-            attr = new XmlDocument().CreateAttribute("y");
-            attr.Value = Y().ToString();
-            xElem.SetAttributeNode(attr);
-            gsx.AppendChild(xElem);
-
-            xElem = new XmlDocument().CreateElement("graphic");
-            xElem.InnerText = displayGraphic;
-            gsx.AppendChild(xElem);
-
-            xElem = new XmlDocument().CreateElement("FOV");
-            xElem.InnerText = FOVRange.ToString();
-            gsx.AppendChild(xElem);
+            s = $"{s}<name>{name}</name>";
+            s = $"{s}<id>{id}</id>";
+            s = $"{s}<montype>{monType}</montype>";
+            s = $"{s}<location x=\"{X()}\" y = \"{Y()}\"/>";
+            s = $"{s}<graphic>{displayGraphic}</graphic>";
+            s = $"{s}<fov>{FOVRange}</fov>";
 
             // Properties from Monster.
-            xElem = new XmlDocument().CreateElement("AI");
-            xElem.InnerText = AI_type.ToString();
-            gsx.AppendChild(xElem);
+            s = $"{s}<ai>{AI_type}</ai>";
 
-            return gsx;
+            s = $"{s}</monster>";
+            return s;
         }
     }
 }

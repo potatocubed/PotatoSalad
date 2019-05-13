@@ -152,6 +152,28 @@ namespace PotatoSalad
             ln = Convert.ToInt32(xElem.InnerText);
             Player.LoadPlayer(mn, mid, dg, ln);
 
+            // Now we want to load all the mobiles.
+            XmlNodeList nodes = LevelXML.SelectNodes("//monster");
+            foreach (XmlNode n in nodes)
+            {
+                xElem = (XmlElement)n.SelectSingleNode("./name");
+                string nm = xElem.InnerText;
+                xElem = (XmlElement)n.SelectSingleNode("./id");
+                string id = xElem.InnerText;
+                xElem = (XmlElement)n.SelectSingleNode("./montype");
+                string mt = xElem.InnerText;
+                xElem = (XmlElement)n.SelectSingleNode("./location");
+                xSize = Convert.ToInt32(xElem.GetAttribute("x"));
+                ySize = Convert.ToInt32(xElem.GetAttribute("y"));
+                xElem = (XmlElement)n.SelectSingleNode("./graphic");
+                string g = xElem.InnerText;
+                xElem = (XmlElement)n.SelectSingleNode("./fov");
+                int fr = Convert.ToInt32(xElem.InnerText);
+                xElem = (XmlElement)n.SelectSingleNode("./ai");
+                int ai = Convert.ToInt32(xElem.InnerText);
+                Game.MonPop.LoadMonster(ref DungeonMap.TileArray, ref DungeonMap.MobileArray, nm, id, mt, xSize, ySize, g, fr, ai);
+            }
+
             // Then we close the main menu and on with the show.
             Game.ShowForms();
         }
