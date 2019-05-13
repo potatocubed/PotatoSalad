@@ -146,11 +146,33 @@ namespace PotatoSalad
             // Since the geography of the level will change only rarely, I'll handle that
             // as and when it pops up. Using UpdateGeography().
 
-            // The mobile list will be added later.
+            // This is where the call to update the mobile list will be.
+            // It'll return an XML fragment which can be incorporated into the map file.
+            XmlNode importNode = xRoot.OwnerDocument.ImportNode(UpdateMobileData(), true);
+            xRoot.AppendChild(importNode);
 
-            //public List<Mobile> MobileArray = new List<Mobile>();
-
+            // TODO: Once (if?) this starts getting uwieldy, I'll cut this bit and store the XML
+            // in memory until the player exits, at which point it gets written to drive.
             mapxml.Save(mapDir);
+        }
+
+        XmlDocumentFragment UpdateMobileData()
+        {
+            XmlDocumentFragment umd = new XmlDocument().CreateDocumentFragment();
+            umd.InnerXml = "<mobiles></mobiles>";
+
+            foreach(Mobile mob in Game.DungeonMap.MobileArray)
+            {
+                if(mob is Monster)
+                {
+                    // Call some sort of XML-generating function in the monster class.
+                    XmlDocumentFragment gsx = mob.GenerateSaveXML();
+                    XmlNode importNode = umd.OwnerDocument.ImportNode(gsx, true);
+                    umd.AppendChild(importNode);
+                }
+            }
+
+            return umd;
         }
 
         public void UpdateCharData()

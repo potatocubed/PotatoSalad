@@ -42,7 +42,6 @@ namespace PotatoSalad
             Globals = new Globals();
             XMLHandler = new XMLHandler();
             InputHandler = new InputHandler();
-            //StateMachine = new StateMachine(Globals.STATE_PLAYER_TURN);
             StateMachine = new StateMachine(Globals.STATE_MAIN_MENU);
             FOVCalculator = new FOVCalculator();
             GAPI = new GraphicsAPI();

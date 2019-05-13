@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace PotatoSalad
 {
@@ -22,7 +23,6 @@ namespace PotatoSalad
             name = "mobile";
             id = uniqueID;
             location = loc;
-            //displayGraphic = System.Environment.CurrentDirectory;
             displayGraphic = "../../Graphics/Mobiles/player.png";
             FOVRange = 5;   // Just a default value, for testing.
         }
@@ -81,6 +81,14 @@ namespace PotatoSalad
             //    // And the revealed sections of the map.
             //}
             Game.GAPI.DrawMap(Game.DungeonMap);
+        }
+
+        public XmlDocumentFragment GenerateSaveXML()
+        {
+            // For overwriting.
+            XmlDocumentFragment gsx = new XmlDocument().CreateDocumentFragment();
+            gsx.InnerXml = "";
+            return gsx;
         }
     }
 }
