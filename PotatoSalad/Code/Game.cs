@@ -25,7 +25,7 @@ namespace PotatoSalad
         public static Globals Globals;
         public static Player Player;
         public static FOVCalculator FOVCalculator;
-        public static GraphicsAPI GAPI;
+        public static Graphics GAPI;
         public static Dice Dice;
         public static List<Tile> TileList;
         public static MonsterPopulater MonPop;
@@ -44,7 +44,7 @@ namespace PotatoSalad
             InputHandler = new InputHandler();
             StateMachine = new StateMachine(Globals.STATE_MAIN_MENU);
             FOVCalculator = new FOVCalculator();
-            GAPI = new GraphicsAPI();
+            GAPI = new Graphics();
             TileList = new List<Tile>();
             InitialiseTileList();
             MonPop = new MonsterPopulater();

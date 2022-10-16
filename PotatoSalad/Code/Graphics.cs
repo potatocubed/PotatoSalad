@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace PotatoSalad
 {
-    class GraphicsAPI
+    class Graphics
     {
         // This class exists to ease any future swapping out of display options.
 

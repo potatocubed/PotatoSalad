@@ -8,9 +8,10 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>PotatoSalad</RootNamespace>
     <AssemblyName>PotatoSalad</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -68,7 +69,7 @@
     <Compile Include="Code\Map.cs" />
     <Compile Include="Code\InputHandler.cs" />
     <Compile Include="Code\Mobile.cs" />
-    <Compile Include="Code\GraphicsAPI.cs" />
+    <Compile Include="Code\Graphics.cs" />
     <Compile Include="Windows\MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -109,6 +110,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Windows\TextInputBox.resx">
       <DependentUpon>TextInputBox.cs</DependentUpon>
