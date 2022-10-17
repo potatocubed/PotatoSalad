@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace PotatoSalad
 {
@@ -16,15 +17,25 @@ namespace PotatoSalad
         public string displayGraphic;   // The image which is the thing.
         public Tile location;   // A reference to the containing tile.
         public int FOVRange;
+        public int AI_type;     // I can't work out how to pull this selectively.
+        public string[,] skillArray;   // Stores skillName [0], skillRating [1], and skillChecks [2]
+
+        public int health;
+        public int mana;
 
         public Mobile(Tile loc, string uniqueID)
         {
             name = "mobile";
             id = uniqueID;
             location = loc;
-            //displayGraphic = System.Environment.CurrentDirectory;
             displayGraphic = "../../Graphics/Mobiles/player.png";
             FOVRange = 5;   // Just a default value, for testing.
+
+            // At some point we'll have to initiate all skills.
+            skillArray = new string[1, 3];
+            skillArray[0, 0] = "unarmed";
+            skillArray[0, 1] = "5";     //Too low for most skills; fix in final version
+            skillArray[0, 2] = "0";
         }
 
         public int X()
@@ -45,7 +56,7 @@ namespace PotatoSalad
             if (destX < 0 || destY < 0 || destX > Game.DungeonMap.XDimension || destY > Game.DungeonMap.YDimension)
             {
                 // You're trying to move off the edge of the map. Nope.
-                Game.GAPI.RenderText($"No movement! Trying to walk off the map at {destX}, {destY}.");
+                //Game.GAPI.RenderText($"No movement! {this.id} is trying to walk off the map at {destX}, {destY}.");
                 return;
             }
 
@@ -54,14 +65,14 @@ namespace PotatoSalad
             // Check if the tile is walkable.
             if (newLoc.BlockMovement)
             {
-                Game.GAPI.RenderText($"No movement! Bumped into {newLoc.Name}.");
+                //Game.GAPI.RenderText($"No movement! {this.id} bumped into {newLoc.Name}.");
                 return;
             }
 
             // Check if the tile has a mob in it.
             if (newLoc.Occupier != null)
             {
-                Game.GAPI.RenderText($"No movement! Bumped into {newLoc.Occupier.name}.");
+                //Game.GAPI.RenderText($"No movement! {this.id} bumped into {newLoc.Occupier.name}.");
                 return;
             }
 
@@ -73,14 +84,14 @@ namespace PotatoSalad
             // Update the form.
             // This may need to move to a turn update method at some point.
 
-            // TODO: None of this is necessary?
-            //if (id == "UniqueIDPlayer")
-            //{
-            //    // If it's the player, then we need to quickly update their location.
-            //    Game.XMLHandler.UpdatePlayerLocation(Game.PlayerXML);
-            //    // And the revealed sections of the map.
-            //}
             Game.GAPI.DrawMap(Game.DungeonMap);
+        }
+
+        public virtual string GenerateSaveXML()
+        {
+            // For overwriting.
+            string gsx = "";
+            return gsx;
         }
     }
 }

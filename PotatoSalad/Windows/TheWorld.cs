@@ -117,17 +117,16 @@ namespace PotatoSalad
                 if (t.IsInFOV)
                 {
                     MapDrawer.DrawImage(Image.FromFile(t.TileGraphic), t.X * 32, t.Y * 32);
+                    if (t.Occupier != null)
+                    {
+                        MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+                        MapDrawer.DrawImage(Image.FromFile(t.Occupier.displayGraphic), t.X * 32, t.Y * 32);
+                        MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+                    }
                 }
                 else
                 {
                     MapDrawer.DrawImage(Image.FromFile(t.DarkTileGraphic), t.X * 32, t.Y * 32);
-                }
-
-                if (t.Occupier != null)
-                {
-                    MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-                    MapDrawer.DrawImage(Image.FromFile(t.Occupier.displayGraphic), t.X * 32, t.Y * 32);
-                    MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
                 }
             }
             oldFOV = newFOV;

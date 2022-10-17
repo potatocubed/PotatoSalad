@@ -85,6 +85,7 @@ namespace PotatoSalad
             {
                 case "dungeon":
                     GenerateDungeonMap();
+                    PopulateDefault();
                     break;
                 case "default":
                 default:
@@ -104,12 +105,48 @@ namespace PotatoSalad
         {
             // TODO
             // This function populates the map with three goblins.
-            // First things first, find an open space.
-            // -- we can do this by grabbing clear space from RoomList?
-            // Then select a monster type to put there.
-            // Then get a unique ID.
-            // Then instantiate the mobile and add it to MobileArray.
-            // Then conform the mobile to the monster using monsterpopulater.monstersetup
+
+            List<string> errorList = new List<string>();
+
+            for (int i = 1; i <= 3; i++)
+            {
+                // First things first, find an open space.
+                int targX;
+                int targY;
+
+                // It'll try 100 times to find a spawn point, then give up.
+                string mType = "goblin";
+                bool exit = false;
+                int counter = 0;
+                    
+                while (!exit || !(counter < 100))
+                {
+                    targX = Game.Dice.XdY(1, XDimension);
+                    targY = Game.Dice.XdY(1, YDimension);
+                    if (!TileArray[targX, targY].BlockMovement && TileArray[targX, targY].Occupier == null)
+                    {
+                        // Tile is clear.
+                        // Then select a monster type to put there.
+                        errorList.Add($"{mType} spawned at {targX}, {targY}");
+                        string uid = Game.MonPop.GenerateUniqueID(mType, MobileArray);
+                        Monster mon = new Monster(TileArray[targX, targY], uid);
+                        mon.monType = mType;
+                        MobileArray.Add(mon);
+                        TileArray[targX, targY].Occupier = mon;
+                        exit = true;
+                    }
+                    else
+                    {
+                        errorList.Add($"Attempt to spawn {mType} at {targX}, {targY} failed. Blocked.");
+                        targX = Game.Dice.XdY(1, XDimension);
+                        targY = Game.Dice.XdY(1, YDimension);
+                        counter++;  // Just a failsafe.
+                    }
+                }
+            }
+
+            // Then feed MobileArray into MonsterPopulater.MonsterSetup [remember to skip the player!]
+            Game.MonPop.MonsterSetUp(MobileArray);
         }
 
         private void ClearMap()
