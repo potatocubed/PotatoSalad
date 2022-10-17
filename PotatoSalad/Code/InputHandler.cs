@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PotatoSalad.Code;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -83,6 +84,9 @@ namespace PotatoSalad
                     default:
                         break;
                 }
+
+                // Letting the monsters have a turn.
+                Game.AIHandler.RunAllAIs();
             }
         }
     }

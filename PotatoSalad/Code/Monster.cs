@@ -9,7 +9,6 @@ namespace PotatoSalad
 {
     class Monster : Mobile
     {
-        public int AI_type;
         public string monType = "generic-monster";
 
         public Monster(Tile loc, string uid)
@@ -17,8 +16,10 @@ namespace PotatoSalad
         {
             name = "Generic Monster";
             displayGraphic = "../../Graphics/Mobiles/generic-monster.png";
-            AI_type = 1;    // There's room here for monsters who do nothing until disturbed.
-                            // set AI_type to 0, then set it to something else when the player is spotted.
+            AI_type = 1;    // Move at random.
+            
+            // There's room here for monsters who do nothing until disturbed.
+            // set AI_type to 0, then set it to something else when the player is spotted.
         }
 
         public override string GenerateSaveXML()

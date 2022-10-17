@@ -17,6 +17,7 @@ namespace PotatoSalad
         public string displayGraphic;   // The image which is the thing.
         public Tile location;   // A reference to the containing tile.
         public int FOVRange;
+        public int AI_type;     // I can't work out how to pull this selectively.
 
         public Mobile(Tile loc, string uniqueID)
         {
@@ -45,7 +46,7 @@ namespace PotatoSalad
             if (destX < 0 || destY < 0 || destX > Game.DungeonMap.XDimension || destY > Game.DungeonMap.YDimension)
             {
                 // You're trying to move off the edge of the map. Nope.
-                Game.GAPI.RenderText($"No movement! Trying to walk off the map at {destX}, {destY}.");
+                Game.GAPI.RenderText($"No movement! {this.id} is trying to walk off the map at {destX}, {destY}.");
                 return;
             }
 
@@ -54,14 +55,14 @@ namespace PotatoSalad
             // Check if the tile is walkable.
             if (newLoc.BlockMovement)
             {
-                Game.GAPI.RenderText($"No movement! Bumped into {newLoc.Name}.");
+                Game.GAPI.RenderText($"No movement! {this.id} bumped into {newLoc.Name}.");
                 return;
             }
 
             // Check if the tile has a mob in it.
             if (newLoc.Occupier != null)
             {
-                Game.GAPI.RenderText($"No movement! Bumped into {newLoc.Occupier.name}.");
+                Game.GAPI.RenderText($"No movement! {this.id} bumped into {newLoc.Occupier.name}.");
                 return;
             }
 

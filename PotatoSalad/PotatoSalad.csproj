@@ -50,6 +50,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\AIHandler.cs" />
     <Compile Include="Code\FOVCalculator.cs" />
     <Compile Include="Code\Globals.cs" />
     <Compile Include="Code\MapGeneration\MonsterPopulater.cs" />
@@ -69,7 +70,7 @@
     <Compile Include="Code\Map.cs" />
     <Compile Include="Code\InputHandler.cs" />
     <Compile Include="Code\Mobile.cs" />
-    <Compile Include="Code\Graphics.cs" />
+    <Compile Include="Code\SaladGraphics.cs" />
     <Compile Include="Windows\MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>

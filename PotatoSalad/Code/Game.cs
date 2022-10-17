@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PotatoSalad.Code;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,13 +20,14 @@ namespace PotatoSalad
         public static ConsoleForm ConsoleForm;
         public static MainMenu MainMenu;
 
+        public static AIHandler AIHandler;
         public static XMLHandler XMLHandler;
         public static InputHandler InputHandler;
         public static StateMachine StateMachine;
         public static Globals Globals;
         public static Player Player;
         public static FOVCalculator FOVCalculator;
-        public static Graphics GAPI;
+        public static SaladGraphics GAPI;
         public static Dice Dice;
         public static List<Tile> TileList;
         public static MonsterPopulater MonPop;
@@ -42,9 +44,10 @@ namespace PotatoSalad
             Globals = new Globals();
             XMLHandler = new XMLHandler();
             InputHandler = new InputHandler();
+            AIHandler = new AIHandler();
             StateMachine = new StateMachine(Globals.STATE_MAIN_MENU);
             FOVCalculator = new FOVCalculator();
-            GAPI = new Graphics();
+            GAPI = new SaladGraphics();
             TileList = new List<Tile>();
             InitialiseTileList();
             MonPop = new MonsterPopulater();
@@ -66,7 +69,6 @@ namespace PotatoSalad
             // XML file for tile details.
             // XML files for monster details.
             // Save scripts in XMLHandler will need to be updated as I add new odds and ends.
-            // Procgen pantheons
             // Form layout.
             // Fix showforms.
 
@@ -110,6 +112,10 @@ namespace PotatoSalad
 
         public static void LoadGame(string saveDir, string mapID)
         {
+            // TODO: We need to check the file you're about to
+            // load is valid in all ways otherwise this risks
+            // some crashes due to unhandled errors.
+
             // We need to load the map first.
             // LevelXML first then have DungeonMap draw from that.
             DungeonMap = new Map();
