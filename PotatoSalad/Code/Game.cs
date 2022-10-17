@@ -61,8 +61,6 @@ namespace PotatoSalad
             Application.Run();
 
             // Starting screen, menu, etc.
-            // Saving is done. Now needs testing.
-            // Next up, enemy mobs.
             // Then melee attacks.
             // Also, the ability to scroll a cursor around to gather info.
             // Then ranged attacks.
@@ -148,6 +146,7 @@ namespace PotatoSalad
             DungeonMap.InstantiatePlayer(DungeonMap.TileArray[xSize, ySize]);
 
             // Call Player.LoadPlayer, which will load from the XML.
+            /*
             xElem = (XmlElement)PlayerXML.SelectSingleNode("/CharData/Name");
             mn = xElem.InnerText;
             xElem = (XmlElement)PlayerXML.SelectSingleNode("/CharData/CharacterID");
@@ -157,11 +156,15 @@ namespace PotatoSalad
             xElem = (XmlElement)PlayerXML.SelectSingleNode("/CharData/Stats/FOVRange");
             ln = Convert.ToInt32(xElem.InnerText);
             Player.LoadPlayer(mn, mid, dg, ln);
+            */
+            xElem = (XmlElement)PlayerXML.SelectSingleNode("/CharData");
+            Player.LoadPlayerXML(xElem);
 
             // Now we want to load all the mobiles.
             XmlNodeList nodes = LevelXML.SelectNodes("//monster");
-            foreach (XmlNode n in nodes)
+            foreach (XmlElement n in nodes)
             {
+                /*
                 xElem = (XmlElement)n.SelectSingleNode("./name");
                 string nm = xElem.InnerText;
                 xElem = (XmlElement)n.SelectSingleNode("./id");
@@ -177,7 +180,9 @@ namespace PotatoSalad
                 int fr = Convert.ToInt32(xElem.InnerText);
                 xElem = (XmlElement)n.SelectSingleNode("./ai");
                 int ai = Convert.ToInt32(xElem.InnerText);
-                Game.MonPop.LoadMonster(ref DungeonMap.TileArray, ref DungeonMap.MobileArray, nm, id, mt, xSize, ySize, g, fr, ai);
+                */
+                //Game.MonPop.LoadMonster(ref DungeonMap.TileArray, ref DungeonMap.MobileArray, nm, id, mt, xSize, ySize, g, fr, ai);
+                Game.MonPop.LoadMonsterXML(n, ref DungeonMap.TileArray, ref DungeonMap.MobileArray);
             }
 
             // Then we close the main menu and on with the show.
@@ -199,6 +204,8 @@ namespace PotatoSalad
 
             // Sort the player data.
             Game.Player.name = playerName;
+            Player.health = 5;
+            Player.mana = 5;
             XMLHandler.UpdateCharData();
             PlayerXML = new XmlDocument();
             PlayerXML.Load(XMLHandler.saveDir + "/character.xml");

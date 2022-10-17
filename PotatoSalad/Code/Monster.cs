@@ -16,10 +16,8 @@ namespace PotatoSalad
         {
             name = "Generic Monster";
             displayGraphic = "../../Graphics/Mobiles/generic-monster.png";
-            AI_type = 1;    // Move at random.
+            AI_type = 0;    // Do nothing; when disturbed, set to something else.
             
-            // There's room here for monsters who do nothing until disturbed.
-            // set AI_type to 0, then set it to something else when the player is spotted.
         }
 
         public override string GenerateSaveXML()
@@ -34,6 +32,15 @@ namespace PotatoSalad
             s = $"{s}<location x=\"{X()}\" y = \"{Y()}\"/>";
             s = $"{s}<graphic>{displayGraphic}</graphic>";
             s = $"{s}<fov>{FOVRange}</fov>";
+            s = $"{s}<health>{health}</health>";
+            s = $"{s}<mana>{mana}</mana>";
+
+            s = $"{s}<skills>";
+            for (int i = 0; i < skillArray.GetLength(0); i++)
+            {
+                s = $"{s}<skill name=\"{skillArray[i, 0]}\" rating=\"{skillArray[i, 1]}\" checks=\"{skillArray[i, 2]}\"/>";
+            }
+            s = $"{s}</skills>";
 
             // Properties from Monster.
             s = $"{s}<ai>{AI_type}</ai>";

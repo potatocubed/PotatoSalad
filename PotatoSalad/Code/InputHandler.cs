@@ -78,7 +78,7 @@ namespace PotatoSalad
                     case "7":
                     case "8":
                     case "9":
-                        Game.GAPI.RenderText($"Attempting player movement to the {direction}.");
+                        //Game.GAPI.RenderText($"Attempting player movement to the {direction}.");
                         Game.Player.MoveTo(Game.Player.X() + deltaX, Game.Player.Y() + deltaY);
                         break;
                     default:

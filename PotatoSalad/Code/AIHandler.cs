@@ -26,6 +26,9 @@ namespace PotatoSalad.Code
                         {
                             switch (m.AI_type)
                             {
+                                case 0:
+                                    // Unactivated, do nothing.
+                                    break;
                                 case 1:
                                     AIMoveRandom(m);
                                     break;
@@ -104,7 +107,7 @@ namespace PotatoSalad.Code
                     break;
             }
 
-            Game.GAPI.RenderText($"Attempting {m.id} movement to the {direction}.");
+            //Game.GAPI.RenderText($"Attempting {m.id} movement to the {direction}.");
             m.MoveTo(m.X() + deltaX, m.Y() + deltaY);
         }
     }

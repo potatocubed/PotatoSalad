@@ -75,11 +75,6 @@ namespace PotatoSalad
 
             string[] mText = Game.DungeonMap.MapText();
             File.WriteAllLines(mapDir + "/geography.txt", mText);
-
-            // The mobile list will be added later.
-
-            //public List<Mobile> MobileArray = new List<Mobile>();
-
         }
 
         public void UpdateGeography()
@@ -219,6 +214,7 @@ namespace PotatoSalad
             }
             xNode.InnerText = Game.Player.displayGraphic;
 
+            // Stats
             xNode = xRoot.SelectSingleNode("./Stats");
             if (xNode == null)
             {
@@ -233,8 +229,45 @@ namespace PotatoSalad
                 xElem.AppendChild(xNode);
             }
             xNode.InnerText = Game.Player.FOVRange.ToString();
+            xNode = xElem.SelectSingleNode("./Health");
+            if (xNode == null)
+            {
+                xNode = charxml.CreateElement("Health");
+                xElem.AppendChild(xNode);
+            }
+            xNode.InnerText = Game.Player.health.ToString();
+            xNode = xElem.SelectSingleNode("./Mana");
+            if (xNode == null)
+            {
+                xNode = charxml.CreateElement("Mana");
+                xElem.AppendChild(xNode);
+            }
+            xNode.InnerText = Game.Player.mana.ToString();
 
-            xNode = xRoot.SelectSingleNode("Location");
+            // Skills
+            xNode = xRoot.SelectSingleNode("./Skills");
+            if (xNode == null)
+            {
+                xNode = charxml.CreateElement("Skills");
+                xRoot.AppendChild(xNode);
+            }
+            xElem = (XmlElement)xNode;
+            for (int i = 0; i < Game.Player.skillArray.GetLength(0); i++)
+            {
+                xNode = xElem.SelectSingleNode($"./Skill[@name = '{Game.Player.skillArray[0,0]}']");
+                if (xNode == null)
+                {
+                    XmlElement xElem2;
+                    xElem2 = charxml.CreateElement("Skill");
+                    xElem2.SetAttribute("name", Game.Player.skillArray[0, 0]);
+                    xElem2.SetAttribute("rating", Game.Player.skillArray[0, 1]);
+                    xElem2.SetAttribute("checks", Game.Player.skillArray[0, 2]);
+                    xElem.AppendChild(xElem2);
+                }
+            }
+
+            // Location
+            xNode = xRoot.SelectSingleNode("./Location");
             if (xNode == null)
             {
                 xNode = charxml.CreateElement("Location");
@@ -271,6 +304,8 @@ namespace PotatoSalad
         
         private bool CreateDataFile(string fileName, string rootElementName)
         {
+            // Creates a blank XML doc with the specified root.
+
             XmlDocument doc = new XmlDocument();
             XmlElement xElem;
 
