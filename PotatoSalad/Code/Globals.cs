@@ -10,9 +10,13 @@ namespace PotatoSalad
     {
         public static bool DEBUG_MODE = true;
 
+        public static int STATE_WORKING = 0;
         public static int STATE_PLAYER_TURN = 1;
         public static int STATE_ENEMY_TURN = 2;
         public static int STATE_MAIN_MENU = 3;
+
+        public static int AI_TYPE_DO_NOTHING = 0;
+        public static int AI_TYPE_MOVE_RANDOM = 1;
 
         public List<string> DEBUG_ERROR_LIST = new List<string>();
     }

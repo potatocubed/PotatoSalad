@@ -60,6 +60,7 @@
             this.Controls.Add(this.buttonNewGame);
             this.Name = "MainMenu";
             this.Text = "Main Menu";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainMenu_FormClosed);
             this.ResumeLayout(false);
 
         }

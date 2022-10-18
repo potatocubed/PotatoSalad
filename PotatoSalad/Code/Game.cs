@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PotatoSalad.Code;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,13 +20,14 @@ namespace PotatoSalad
         public static ConsoleForm ConsoleForm;
         public static MainMenu MainMenu;
 
+        public static AIHandler AIHandler;
         public static XMLHandler XMLHandler;
         public static InputHandler InputHandler;
         public static StateMachine StateMachine;
         public static Globals Globals;
         public static Player Player;
         public static FOVCalculator FOVCalculator;
-        public static GraphicsAPI GAPI;
+        public static SaladGraphics GAPI;
         public static Dice Dice;
         public static List<Tile> TileList;
         public static MonsterPopulater MonPop;
@@ -42,10 +44,10 @@ namespace PotatoSalad
             Globals = new Globals();
             XMLHandler = new XMLHandler();
             InputHandler = new InputHandler();
-            //StateMachine = new StateMachine(Globals.STATE_PLAYER_TURN);
+            AIHandler = new AIHandler();
             StateMachine = new StateMachine(Globals.STATE_MAIN_MENU);
             FOVCalculator = new FOVCalculator();
-            GAPI = new GraphicsAPI();
+            GAPI = new SaladGraphics();
             TileList = new List<Tile>();
             InitialiseTileList();
             MonPop = new MonsterPopulater();
@@ -59,15 +61,12 @@ namespace PotatoSalad
             Application.Run();
 
             // Starting screen, menu, etc.
-            // Saving is done. Now needs testing.
-            // Next up, enemy mobs.
             // Then melee attacks.
             // Also, the ability to scroll a cursor around to gather info.
             // Then ranged attacks.
             // XML file for tile details.
             // XML files for monster details.
             // Save scripts in XMLHandler will need to be updated as I add new odds and ends.
-            // Procgen pantheons
             // Form layout.
             // Fix showforms.
 
@@ -111,6 +110,10 @@ namespace PotatoSalad
 
         public static void LoadGame(string saveDir, string mapID)
         {
+            // TODO: We need to check the file you're about to
+            // load is valid in all ways otherwise this risks
+            // some crashes due to unhandled errors.
+
             // We need to load the map first.
             // LevelXML first then have DungeonMap draw from that.
             DungeonMap = new Map();
@@ -143,6 +146,7 @@ namespace PotatoSalad
             DungeonMap.InstantiatePlayer(DungeonMap.TileArray[xSize, ySize]);
 
             // Call Player.LoadPlayer, which will load from the XML.
+            /*
             xElem = (XmlElement)PlayerXML.SelectSingleNode("/CharData/Name");
             mn = xElem.InnerText;
             xElem = (XmlElement)PlayerXML.SelectSingleNode("/CharData/CharacterID");
@@ -152,6 +156,34 @@ namespace PotatoSalad
             xElem = (XmlElement)PlayerXML.SelectSingleNode("/CharData/Stats/FOVRange");
             ln = Convert.ToInt32(xElem.InnerText);
             Player.LoadPlayer(mn, mid, dg, ln);
+            */
+            xElem = (XmlElement)PlayerXML.SelectSingleNode("/CharData");
+            Player.LoadPlayerXML(xElem);
+
+            // Now we want to load all the mobiles.
+            XmlNodeList nodes = LevelXML.SelectNodes("//monster");
+            foreach (XmlElement n in nodes)
+            {
+                /*
+                xElem = (XmlElement)n.SelectSingleNode("./name");
+                string nm = xElem.InnerText;
+                xElem = (XmlElement)n.SelectSingleNode("./id");
+                string id = xElem.InnerText;
+                xElem = (XmlElement)n.SelectSingleNode("./montype");
+                string mt = xElem.InnerText;
+                xElem = (XmlElement)n.SelectSingleNode("./location");
+                xSize = Convert.ToInt32(xElem.GetAttribute("x"));
+                ySize = Convert.ToInt32(xElem.GetAttribute("y"));
+                xElem = (XmlElement)n.SelectSingleNode("./graphic");
+                string g = xElem.InnerText;
+                xElem = (XmlElement)n.SelectSingleNode("./fov");
+                int fr = Convert.ToInt32(xElem.InnerText);
+                xElem = (XmlElement)n.SelectSingleNode("./ai");
+                int ai = Convert.ToInt32(xElem.InnerText);
+                */
+                //Game.MonPop.LoadMonster(ref DungeonMap.TileArray, ref DungeonMap.MobileArray, nm, id, mt, xSize, ySize, g, fr, ai);
+                Game.MonPop.LoadMonsterXML(n, ref DungeonMap.TileArray, ref DungeonMap.MobileArray);
+            }
 
             // Then we close the main menu and on with the show.
             Game.ShowForms();
@@ -172,6 +204,8 @@ namespace PotatoSalad
 
             // Sort the player data.
             Game.Player.name = playerName;
+            Player.health = 5;
+            Player.mana = 5;
             XMLHandler.UpdateCharData();
             PlayerXML = new XmlDocument();
             PlayerXML.Load(XMLHandler.saveDir + "/character.xml");
@@ -199,6 +233,9 @@ namespace PotatoSalad
             // 7. When any form is closed, all forms are closed. (???)
             // 9. Closing any of the sub-forms just minimises them.
 
+            // This prevents various events from firing which mess things up.
+            StateMachine.SetState(Globals.STATE_WORKING);
+
             int formCount = 0;
             List<Form> formList = new List<Form>(); // The ControlForm doesn't live on this list.
 
@@ -220,14 +257,6 @@ namespace PotatoSalad
                 Application.ExitThread();
             };
 
-            //ControlForm.FormClosing += (sender, e) =>
-            //{
-            //    if (Game.StateMachine.GetState() != Globals.STATE_MAIN_MENU)
-            //    {
-            //        Game.SaveGame();
-            //    }
-            //};
-
             ControlForm.Show();
 
             foreach (Form f in formList)
@@ -242,7 +271,6 @@ namespace PotatoSalad
                         return;
                     }
 
-                    //Application.ExitThread();
                     ControlForm.Close();
                     Application.ExitThread();
                 };

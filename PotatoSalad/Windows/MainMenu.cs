@@ -169,5 +169,13 @@ namespace PotatoSalad
             }
             nf.Dispose();
         }
+
+        private void MainMenu_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (Game.StateMachine.GetState() == Globals.STATE_MAIN_MENU)
+            {
+                Application.ExitThread();
+            }
+        }
     }
 }
