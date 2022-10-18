@@ -37,6 +37,8 @@ namespace PotatoSalad
         // These variables aren't filled until the game is started -- whether by newgame or loadgame.
         // TODO: Are these variables even necessary? Saving the game doesn't use them...
 
+        public static Item EmptyHand;   // Just creating it once to work as a reference.
+
         [STAThread]
         static void Main()
         {
@@ -51,6 +53,11 @@ namespace PotatoSalad
             TileList = new List<Tile>();
             InitialiseTileList();
             MonPop = new MonsterPopulater();
+
+            EmptyHand = new Item();
+            EmptyHand.name = "empty hand";
+            EmptyHand.type = "weapon-unarmed";
+            EmptyHand.damage = "1d2-blunt";
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

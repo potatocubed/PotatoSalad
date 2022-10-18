@@ -53,11 +53,14 @@
     <Compile Include="Code\AIHandler.cs" />
     <Compile Include="Code\FOVCalculator.cs" />
     <Compile Include="Code\Globals.cs" />
+    <Compile Include="Code\Item.cs" />
     <Compile Include="Code\MapGeneration\MonsterPopulater.cs" />
     <Compile Include="Code\MapGeneration\Room.cs" />
-    <Compile Include="Code\Monster.cs" />
-    <Compile Include="Code\Player.cs" />
+    <Compile Include="Code\Mobiles\Inventory.cs" />
+    <Compile Include="Code\Mobiles\Monster.cs" />
+    <Compile Include="Code\Mobiles\Player.cs" />
     <Compile Include="Code\StateMachine.cs" />
+    <Compile Include="Code\Violence.cs" />
     <Compile Include="Code\XMLHandler.cs" />
     <Compile Include="Windows\ConsoleForm.cs">
       <SubType>Form</SubType>
@@ -69,7 +72,7 @@
     <Compile Include="Code\Game.cs" />
     <Compile Include="Code\Map.cs" />
     <Compile Include="Code\InputHandler.cs" />
-    <Compile Include="Code\Mobile.cs" />
+    <Compile Include="Code\Mobiles\Mobile.cs" />
     <Compile Include="Code\SaladGraphics.cs" />
     <Compile Include="Windows\MainMenu.cs">
       <SubType>Form</SubType>

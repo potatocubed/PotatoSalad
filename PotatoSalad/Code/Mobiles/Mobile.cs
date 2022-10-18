@@ -1,8 +1,10 @@
-﻿using System;
+﻿using PotatoSalad.Code.Mobiles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using System.Xml;
 
 namespace PotatoSalad
@@ -19,6 +21,7 @@ namespace PotatoSalad
         public int FOVRange;
         public int AI_type;     // I can't work out how to pull this selectively.
         public string[,] skillArray;   // Stores skillName [0], skillRating [1], and skillChecks [2]
+        public Inventory inventory;
 
         public int health;
         public int mana;
@@ -34,8 +37,11 @@ namespace PotatoSalad
             // At some point we'll have to initiate all skills.
             skillArray = new string[1, 3];
             skillArray[0, 0] = "unarmed";
-            skillArray[0, 1] = "5";     //Too low for most skills; fix in final version
+            skillArray[0, 1] = "5";
             skillArray[0, 2] = "0";
+
+            // Stuff
+            inventory = new Inventory();
         }
 
         public int X()
@@ -92,6 +98,41 @@ namespace PotatoSalad
             // For overwriting.
             string gsx = "";
             return gsx;
+        }
+
+        public int GetSkillRatingBySkill(string skill)
+        {
+            int rating = 0;
+
+            for (int i = 0; i < this.skillArray.GetLength(0); i++)
+            {
+                if (this.skillArray[i, 0] == skill)
+                {
+                    rating = Convert.ToInt32(this.skillArray[i, 1]);
+                    break;
+                }
+            }
+
+            return rating;
+        }
+
+        public void AddSkillCheck(string skill)
+        {
+            for (int i = 0; i < this.skillArray.GetLength(0); i++)
+            {
+                if (this.skillArray[i, 0] == skill)
+                {
+                    this.skillArray[i, 2] = Convert.ToString(Convert.ToInt32(this.skillArray[i,2]) + 1);
+                    if (Convert.ToInt32(this.skillArray[i,2]) ==  5)
+                    {
+                        this.skillArray[i, 2] = "0";
+                        this.skillArray[i, 1] = Convert.ToString(Convert.ToInt32(this.skillArray[i, 1]) + 1);
+                        Game.GAPI.RenderText($"{Game.GAPI.CapitaliseString(skill)} has risen to {skillArray[i,1]}!");
+                    }
+
+                    break;
+                }
+            }
         }
     }
 }

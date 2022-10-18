@@ -22,5 +22,10 @@ namespace PotatoSalad
         {
             Game.WorldForm.DrawMap(m);
         }
+
+        public string CapitaliseString(string s)
+        {
+            return s.First().ToString().ToUpper() + s.Substring(1);
+        }
     }
 }
