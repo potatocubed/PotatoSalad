@@ -11,9 +11,10 @@ namespace PotatoSalad.Code
         public string graphic;
         public Tile location;
 
-        public Cursor()
+        public Cursor(Tile loc)
         {
             graphic = "../../Graphics/cursor.png";
+            location = loc;
         }
 
         public int X()
@@ -35,11 +36,17 @@ namespace PotatoSalad.Code
             if (destX < 0 || destY < 0 || destX > Game.DungeonMap.XDimension || destY > Game.DungeonMap.YDimension)
             {
                 // You're trying to move off the edge of the map. Nope.
-                //Game.GAPI.RenderText($"No movement! {this.id} is trying to walk off the map at {destX}, {destY}.");
+                Game.GAPI.RenderText($"No movement! Cursor is trying to walk off the map at {destX}, {destY}.");
                 return false;
             }
 
-            return false;
+            Tile newLoc = Game.DungeonMap.TileArray[destX, destY];
+
+            this.location = newLoc;
+
+            Game.GAPI.RenderText($"Cursor has moved to {this.X()}, {this.Y()}.");
+            Game.GAPI.CursorDrawMap(Game.DungeonMap, this);
+            return true;
         }
 
         public string GenerateDescription(int x, int y)

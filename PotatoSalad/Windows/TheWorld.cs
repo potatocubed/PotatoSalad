@@ -36,11 +36,6 @@ namespace PotatoSalad
             InitialJumpToPlayer();
         }
 
-        public int GetWindowDimension()
-        {
-            return apertureCount;
-        }
-
         private void WorldForm_Paint(object sender, PaintEventArgs e)
         {
             //DrawMap(Game.DungeonMap);
@@ -86,6 +81,45 @@ namespace PotatoSalad
                     MapDrawer.DrawImage(Image.FromFile(t.DarkTileGraphic), t.X * 32, t.Y * 32);
                 }
             }
+        }
+
+        public void CursorDrawMap(Map m, PotatoSalad.Code.Cursor c)
+        {
+            // No need to worry about field of view.
+            // Just draw all the boxes around the cursor.
+
+            Bitmap bmp;
+
+            int sideMeasure = apertureCount * TileSize.Width;  // Default 480 pixels for a 15x15 tile layout at 32x32 size.
+            Size apertureSize = new Size(sideMeasure, sideMeasure);
+            int offset = (sideMeasure - TileSize.Width) / 2;
+            Point origin = new Point((Game.SaladCursor.X() * 32) - offset, (Game.SaladCursor.Y() * 32) - offset);
+            if (origin.X < 0)
+            {
+                origin.X = 0;
+            }
+            if (origin.Y < 0)
+            {
+                origin.Y = 0;
+            }
+            if (origin.X + apertureSize.Width > MapImage.Width)
+            {
+                origin.X = MapImage.Width - apertureSize.Width;
+            }
+            if (origin.Y + apertureSize.Height > MapImage.Height)
+            {
+                origin.Y = MapImage.Height - apertureSize.Height;
+            }
+            // It turns out that clone breaks if the rectangle is outside the image bounds.
+            Rectangle cropper = new Rectangle(origin, apertureSize);
+            bmp = (Bitmap)MapImage.Clone(cropper, MapImage.PixelFormat);
+
+            WorldMapPanel.BackgroundImage = bmp;
+
+            //MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+            MapDrawer.DrawImage(Image.FromFile(Game.SaladCursor.graphic), 0, 0);
+            //MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+
         }
 
         public void DrawMap(Map m)

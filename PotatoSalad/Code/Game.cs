@@ -32,6 +32,7 @@ namespace PotatoSalad
         public static Dice Dice;
         public static List<Tile> TileList;
         public static MonsterPopulater MonPop;
+        public static PotatoSalad.Code.Cursor SaladCursor;
 
         public static XmlDocument PlayerXML;    // This allows us to edit the deets in real-time.
         public static XmlDocument LevelXML;     // Likewise, but for the world map.
@@ -309,7 +310,7 @@ namespace PotatoSalad
                 };
                 f.KeyPress += (sender, e) =>
                 {
-                    InputHandler.KeyIn(e.KeyChar.ToString());
+                    InputHandler.KeyIn(e.KeyChar);
                 };
                 f.Show();
             }

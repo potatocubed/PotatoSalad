@@ -23,6 +23,11 @@ namespace PotatoSalad
             Game.WorldForm.DrawMap(m);
         }
 
+        public void CursorDrawMap(Map m, PotatoSalad.Code.Cursor c)
+        {
+            Game.WorldForm.CursorDrawMap(m, c);
+        }
+
         public void RemoveMob(int x, int y, Map m)
         {
             // At the moment this blanks the whole square,
