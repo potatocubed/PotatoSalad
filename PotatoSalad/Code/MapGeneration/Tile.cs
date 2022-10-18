@@ -22,6 +22,7 @@ namespace PotatoSalad
         public string DarkTileGraphic;
         public Mobile Occupier;
         public string Blackout;
+        public string Description;
 
         private string TileDir = "../../Graphics/Tiles";
 
@@ -43,6 +44,7 @@ namespace PotatoSalad
             TileGraphic = graphic;
             DarkTileGraphic = dGraphic;
             Blackout = TileDir + "/black.png";
+            Description = "A default tile.";
         }
 
         public void MakeTile(string tileType = "")
@@ -56,6 +58,7 @@ namespace PotatoSalad
                     BlockEffect = false;
                     BlockMovement = false;
                     DisplayChar = ".";
+                    Description = "Plain dungeon flooring.";
                     TileGraphicSetting("floor");
                     break;
                 case "wall":
@@ -64,6 +67,7 @@ namespace PotatoSalad
                     BlockEffect = true;
                     BlockMovement = true;
                     DisplayChar = "#";
+                    Description = "An unremarkable dungeon wall.";
                     TileGraphicSetting("wall");
                     break;
                 default:

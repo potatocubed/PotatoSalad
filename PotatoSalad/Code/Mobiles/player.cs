@@ -44,6 +44,8 @@ namespace PotatoSalad
             // The player is always allied with themselves.
             this.faction = "player";
 
+            this.description = "It's you."; //TODO -- make this reflect inventory.
+
             xElem = (XmlElement)xmlSnippet.SelectSingleNode("./Stats/FOVRange");
             this.FOVRange = Convert.ToInt32(xElem.InnerText);
             xElem = (XmlElement)xmlSnippet.SelectSingleNode("./Stats/Health");

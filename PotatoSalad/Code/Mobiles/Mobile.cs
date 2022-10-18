@@ -24,6 +24,7 @@ namespace PotatoSalad
         public int AI_type;     // I can't work out how to pull this selectively.
         public string[,] skillArray;   // Stores skillName [0], skillRating [1], and skillChecks [2]
         public Inventory inventory;
+        public string description;
 
         public int health;
         public int mana;

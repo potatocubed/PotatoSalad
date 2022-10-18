@@ -36,6 +36,11 @@ namespace PotatoSalad
             InitialJumpToPlayer();
         }
 
+        public int GetWindowDimension()
+        {
+            return apertureCount;
+        }
+
         private void WorldForm_Paint(object sender, PaintEventArgs e)
         {
             //DrawMap(Game.DungeonMap);

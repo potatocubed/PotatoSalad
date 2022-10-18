@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\AIHandler.cs" />
+    <Compile Include="Code\Cursor.cs" />
     <Compile Include="Code\FOVCalculator.cs" />
     <Compile Include="Code\Globals.cs" />
     <Compile Include="Code\Item.cs" />
@@ -70,7 +71,7 @@
     </Compile>
     <Compile Include="Code\Dice.cs" />
     <Compile Include="Code\Game.cs" />
-    <Compile Include="Code\Map.cs" />
+    <Compile Include="Code\MapGeneration\Map.cs" />
     <Compile Include="Code\InputHandler.cs" />
     <Compile Include="Code\Mobiles\Mobile.cs" />
     <Compile Include="Code\SaladGraphics.cs" />
@@ -81,7 +82,7 @@
       <DependentUpon>MainMenu.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Code\Tile.cs" />
+    <Compile Include="Code\MapGeneration\Tile.cs" />
     <Compile Include="Windows\TextInputBox.cs">
       <SubType>Form</SubType>
     </Compile>

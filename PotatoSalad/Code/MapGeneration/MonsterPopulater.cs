@@ -104,6 +104,9 @@ namespace PotatoSalad
             xElem = (XmlElement)xmlSnippet.SelectSingleNode("./faction");
             mon.faction = xElem.InnerText;
 
+            xElem = (XmlElement)xmlSnippet.SelectSingleNode("./desc");
+            mon.description = xElem.InnerText;
+
             xElem = (XmlElement)xmlSnippet.SelectSingleNode("./ai");
             mon.AI_type = Convert.ToInt32(xElem.InnerText);
 
@@ -149,6 +152,7 @@ namespace PotatoSalad
                             mon.mana = 4;
                             mon.AI_type = 1;
                             mon.faction = "enemy";
+                            mon.description = "Short, green-skinned, big-eared, often malevolent.";
                             break;
                         default:
                             // If passed with no parameter then nothing happens.
