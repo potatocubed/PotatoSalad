@@ -23,6 +23,7 @@ namespace PotatoSalad
         public static AIHandler AIHandler;
         public static XMLHandler XMLHandler;
         public static InputHandler InputHandler;
+        public static Violence ViolenceHandler;
         public static StateMachine StateMachine;
         public static Globals Globals;
         public static Player Player;
@@ -46,6 +47,7 @@ namespace PotatoSalad
             Globals = new Globals();
             XMLHandler = new XMLHandler();
             InputHandler = new InputHandler();
+            ViolenceHandler = new Violence();
             AIHandler = new AIHandler();
             StateMachine = new StateMachine(Globals.STATE_MAIN_MENU);
             FOVCalculator = new FOVCalculator();

@@ -1,4 +1,5 @@
-﻿using PotatoSalad.Code.Mobiles;
+﻿using PotatoSalad.Code;
+using PotatoSalad.Code.Mobiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace PotatoSalad
         public string id;   // Every mobile needs a unique ID.
         public string name; // The display name.
         public string displayGraphic;   // The image which is the thing.
+        public string faction;
         public Tile location;   // A reference to the containing tile.
         public int FOVRange;
         public int AI_type;     // I can't work out how to pull this selectively.
@@ -54,7 +56,7 @@ namespace PotatoSalad
             return location.Y;
         }
 
-        public void MoveTo(int destX, int destY)
+        public bool MoveTo(int destX, int destY)
         {
             int origX = X();
             int origY = Y();
@@ -63,7 +65,7 @@ namespace PotatoSalad
             {
                 // You're trying to move off the edge of the map. Nope.
                 //Game.GAPI.RenderText($"No movement! {this.id} is trying to walk off the map at {destX}, {destY}.");
-                return;
+                return false;
             }
 
             Tile newLoc = Game.DungeonMap.TileArray[destX, destY];
@@ -72,14 +74,29 @@ namespace PotatoSalad
             if (newLoc.BlockMovement)
             {
                 //Game.GAPI.RenderText($"No movement! {this.id} bumped into {newLoc.Name}.");
-                return;
+                return false;
             }
 
             // Check if the tile has a mob in it.
             if (newLoc.Occupier != null)
             {
                 //Game.GAPI.RenderText($"No movement! {this.id} bumped into {newLoc.Occupier.name}.");
-                return;
+                //Game.GAPI.RenderText("Attack!");
+                // Wait, monsters shouldn't fight each other. Usually.
+                
+                // If two people on the same faction move into each other, movement
+                // is cancelled.
+
+                // If THE PLAYER moves into an ally, they should switch locations.
+                // TODO -- handle that later.
+
+                if(this.faction != newLoc.Occupier.faction)
+                {
+                    Game.ViolenceHandler.MakeBumpAttack(this, newLoc.Occupier);
+                    return true;
+                }
+                
+                return false;
             }
 
             // If clear, move self there.
@@ -91,6 +108,7 @@ namespace PotatoSalad
             // This may need to move to a turn update method at some point.
 
             Game.GAPI.DrawMap(Game.DungeonMap);
+            return true;
         }
 
         public virtual string GenerateSaveXML()
@@ -98,6 +116,38 @@ namespace PotatoSalad
             // For overwriting.
             string gsx = "";
             return gsx;
+        }
+
+        public void DamageHealth(int damage)
+        {
+            this.health = this.health - damage;
+            if(this.health <= 0)
+            {
+                this.KillSelf();
+            }
+        }
+
+        public virtual void KillSelf()
+        {
+            // send message
+            Game.GAPI.RenderText($"{Game.GAPI.CapitaliseString(this.name)} dies!");
+
+            // TODO: drop inventory
+            // TODO: give XP
+
+            // remove from map
+            location.Occupier = null;
+            this.location = null;
+
+            // remove from display
+            Game.GAPI.DrawMap(Game.DungeonMap);
+            // I feel like there must be a more efficient method
+            // of updating a single tile than this, but still.
+
+            // remove from mobilelist
+            Game.DungeonMap.MobileArray.Remove(this);
+
+            // overwrite/extend for player
         }
 
         public int GetSkillRatingBySkill(string skill)

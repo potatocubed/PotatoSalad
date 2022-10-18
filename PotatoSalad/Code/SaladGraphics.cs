@@ -23,6 +23,14 @@ namespace PotatoSalad
             Game.WorldForm.DrawMap(m);
         }
 
+        public void RemoveMob(int x, int y, Map m)
+        {
+            // At the moment this blanks the whole square,
+            // including items. That needs fixing in the called
+            // function though.
+            Game.WorldForm.EraseMob(x, y, m);
+        }
+
         public string CapitaliseString(string s)
         {
             return s.First().ToString().ToUpper() + s.Substring(1);

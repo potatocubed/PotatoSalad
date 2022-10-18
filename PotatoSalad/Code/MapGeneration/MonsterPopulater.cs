@@ -101,6 +101,9 @@ namespace PotatoSalad
             xElem = (XmlElement)xmlSnippet.SelectSingleNode("./mana");
             mon.mana = Convert.ToInt32(xElem.InnerText);
 
+            xElem = (XmlElement)xmlSnippet.SelectSingleNode("./faction");
+            mon.faction = xElem.InnerText;
+
             xElem = (XmlElement)xmlSnippet.SelectSingleNode("./ai");
             mon.AI_type = Convert.ToInt32(xElem.InnerText);
 
@@ -144,6 +147,8 @@ namespace PotatoSalad
                             mon.displayGraphic = "../../Graphics/Mobiles/goblin.png";
                             mon.health = 4;
                             mon.mana = 4;
+                            mon.AI_type = 1;
+                            mon.faction = "enemy";
                             break;
                         default:
                             // If passed with no parameter then nothing happens.

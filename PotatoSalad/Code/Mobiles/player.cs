@@ -41,6 +41,9 @@ namespace PotatoSalad
             xElem = (XmlElement)xmlSnippet.SelectSingleNode("./DisplayGraphic");
             this.displayGraphic = xElem.InnerText;
 
+            // The player is always allied with themselves.
+            this.faction = "player";
+
             xElem = (XmlElement)xmlSnippet.SelectSingleNode("./Stats/FOVRange");
             this.FOVRange = Convert.ToInt32(xElem.InnerText);
             xElem = (XmlElement)xmlSnippet.SelectSingleNode("./Stats/Health");
@@ -59,6 +62,25 @@ namespace PotatoSalad
                 targRow++;
             }
 
+        }
+
+        public override void KillSelf()
+        {
+            // Doesn't actually do anything yet
+
+            // send message
+            Game.GAPI.RenderText($"{Game.GAPI.CapitaliseString("this.name")} dies!");
+
+            // TODO: drop inventory
+            // TODO: give XP
+            // remove from map
+            //location.Occupier = null;
+            //this.location = null;
+
+            // remove from mobilelist
+            //Game.DungeonMap.MobileArray.Remove(this);
+
+            // overwrite/extend for player
         }
     }
 }

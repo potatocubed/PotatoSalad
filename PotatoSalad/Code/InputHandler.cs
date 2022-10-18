@@ -11,15 +11,12 @@ namespace PotatoSalad
     {
         public void KeyIn(string k)
         {
-            //if (Globals.DEBUG_MODE)
-            //{
-            //    Game.ConsoleForm.RenderText(k);
-            //}
             if (Game.StateMachine.GetState() == Globals.STATE_PLAYER_TURN)
             {
                 // Player input should move the player.
-                // And then change the state, but we'll get to that.
+                // And then change the state, but we'll get to that. -- TICK
                 string direction = "";
+                bool attemptedAction = false;
                 int deltaX = 0;
                 int deltaY = 0;
                 switch (k)
@@ -79,14 +76,19 @@ namespace PotatoSalad
                     case "8":
                     case "9":
                         //Game.GAPI.RenderText($"Attempting player movement to the {direction}.");
-                        Game.Player.MoveTo(Game.Player.X() + deltaX, Game.Player.Y() + deltaY);
+                        attemptedAction = Game.Player.MoveTo(Game.Player.X() + deltaX, Game.Player.Y() + deltaY);
                         break;
                     default:
                         break;
                 }
 
                 // Letting the monsters have a turn.
-                Game.AIHandler.RunAllAIs();
+                if (attemptedAction)
+                {
+                    Game.AIHandler.RunAllAIs();
+                }
+                // If the player's action failed we skip the monster
+                // turn and let the player try again.
             }
         }
     }

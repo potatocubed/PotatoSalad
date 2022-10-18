@@ -34,6 +34,7 @@ namespace PotatoSalad
             s = $"{s}<fov>{FOVRange}</fov>";
             s = $"{s}<health>{health}</health>";
             s = $"{s}<mana>{mana}</mana>";
+            s = $"{s}<faction>{faction}</faction>";
 
             s = $"{s}<skills>";
             for (int i = 0; i < skillArray.GetLength(0); i++)

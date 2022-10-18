@@ -56,27 +56,76 @@ namespace PotatoSalad.Code
             if (MakeAttackRoll(mainweapon, attacker))
             {
                 // HIT!
+                int damage = MakeDamageRoll(mainweapon, attacker, defender);
+                Game.GAPI.RenderText($"{damage} damage!");
+                defender.DamageHealth(damage);
             }
             else
             {
                 // MISS!
+                // The skill-rating stuff should already be included.
             }
 
-            if(offweapon != null)
+            if(offweapon != null && defender.health > 0)
             {
                 Game.GAPI.RenderText($"{Game.GAPI.CapitaliseString(attacker.name)} attacks {Game.GAPI.CapitaliseString(defender.name)} with {offweapon.name}.");
-                if (MakeAttackRoll(offweapon, attacker))
+                // -5 penalty on off-hand attacks
+                if (MakeAttackRoll(offweapon, attacker, 16))
                 {
                     // HIT!
+                    int damage = MakeDamageRoll(offweapon, attacker, defender);
+                    Game.GAPI.RenderText($"{damage} damage!");
+                    defender.DamageHealth(damage);
                 }
                 else
                 {
                     // MISS!
+                    // No skill-ups.
                 }
             }
         }
 
-        private bool MakeAttackRoll(Item weapon, Mobile attacker, int targetNumber = 11)
+        private int MakeDamageRoll(Item weapon, Mobile attacker, Mobile defender)
+        {
+            // Attacker and defender are included for future shenanigans.
+            // For our super-basic system right now we just want damage.
+            // And damage type.
+
+            // Damage lines start with a value (a die or a flat value)
+            // and then a bunch of tags which can be in any order.
+
+            string[] wTags = weapon.damage.Split('-');
+
+            string damage = wTags[0];
+            int dam = -1;
+            int.TryParse(damage, out dam);
+            // That catches flat damage.
+
+            if(dam == 0)
+            {
+                // Not flat damage.
+                string[] damExpression = damage.Split('d');
+
+                int x;
+                int y;
+                if (int.TryParse(damExpression[0], out x) &&
+                    int.TryParse(damExpression[1], out y))
+                {
+                    Game.GAPI.RenderText($"Rolling {x}d{y} for damage...");
+                    dam = Game.Dice.XdY(x, y);
+                }
+                else
+                {
+                    // It's all fucked.
+                    Game.GAPI.RenderText("Damage output nonsensical!");
+                    dam = 1;
+                }
+            }
+
+            return dam;
+        }
+
+        private bool MakeAttackRoll(Item weapon, Mobile attacker, int targetNumber = 11, bool skillCheck = true)
         {
             string skill = GetSkillFromWeapon(weapon.type);
             int skillRating = attacker.GetSkillRatingBySkill(skill);
@@ -93,10 +142,13 @@ namespace PotatoSalad.Code
             {
                 // MISS!
                 Game.GAPI.RenderText("Miss!");
+                // We only care about practice for the PC.
                 if (attacker.GetType().Name == "Player")
                 {
-                    // We only care about practice for the PC.
-                    attacker.AddSkillCheck(skill);
+                    if (skillCheck)
+                    {
+                        attacker.AddSkillCheck(skill);
+                    }
                 }
                 return false;
             }

@@ -108,7 +108,7 @@ namespace PotatoSalad.Code
             }
 
             //Game.GAPI.RenderText($"Attempting {m.id} movement to the {direction}.");
-            m.MoveTo(m.X() + deltaX, m.Y() + deltaY);
+            bool moveAttempt = m.MoveTo(m.X() + deltaX, m.Y() + deltaY);
         }
     }
 }
