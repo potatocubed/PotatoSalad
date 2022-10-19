@@ -57,7 +57,7 @@ namespace PotatoSalad
                     {
                         if(cArray[i] == Convert.ToChar("."))
                         {
-                            TileArray[i, j - YDimension].IsExplored = true;
+                            TileArray[i, j - (YDimension + 1)].IsExplored = true;
                         }
                     }
                 }
