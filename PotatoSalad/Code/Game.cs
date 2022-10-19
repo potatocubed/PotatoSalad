@@ -73,8 +73,6 @@ namespace PotatoSalad
             Application.Run();
 
             // Starting screen, menu, etc.
-            // Then melee attacks.
-            // Also, the ability to scroll a cursor around to gather info.
             // Then ranged attacks.
             // XML file for tile details.
             // XML files for monster details.
