@@ -38,7 +38,7 @@ namespace PotatoSalad.Code
             if (destX < 0 || destY < 0 || destX > Game.DungeonMap.XDimension || destY > Game.DungeonMap.YDimension)
             {
                 // You're trying to move off the edge of the map. Nope.
-                Game.GAPI.RenderText($"No movement! Cursor is trying to walk off the map at {destX}, {destY}.");
+                //Game.GAPI.RenderText($"No movement! Cursor is trying to walk off the map at {destX}, {destY}.");
                 return false;
             }
 
@@ -47,7 +47,7 @@ namespace PotatoSalad.Code
             this.previousLocation = this.location;
             this.location = newLoc;
 
-            Game.GAPI.RenderText($"Cursor has moved to {this.X()}, {this.Y()}.");
+            //Game.GAPI.RenderText($"Cursor has moved to {this.X()}, {this.Y()}.");
             Game.GAPI.CursorDrawMap(Game.DungeonMap, this);
             return true;
         }
@@ -55,6 +55,30 @@ namespace PotatoSalad.Code
         public string GenerateDescription(int x, int y)
         {
             // bear in mind 'you can see' vs 'you last saw'
+            string s = "";
+            s = $"{this.location.Description}";
+            if(this.location.Occupier != null)
+            {
+                string article = "A ";
+                string startLetter = this.location.Occupier.name.Substring(0, 1).ToLower();
+                if (this.location.Occupier.unique)
+                {
+                    article = "";
+                }
+                else if (startLetter == "a" ||
+                        startLetter == "i" ||
+                        startLetter == "e" ||
+                        startLetter == "o" ||
+                        startLetter == "u")
+                {
+                    article = "An ";
+                }
+                s = $"{s} {article}{this.location.Occupier.name}. {this.location.Occupier.description}";
+            }
+
+            // TODO -- list floor inventory.
+            // TODO -- *enable* floor inventory as a list of Item objects
+            // attached to any given tile.
             return "";
         }
     }

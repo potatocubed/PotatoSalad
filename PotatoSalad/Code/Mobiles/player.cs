@@ -17,6 +17,7 @@ namespace PotatoSalad
         {
             name = "Player";
             displayGraphic = "../../Graphics/Mobiles/player.png";
+            unique = true;
         }
 
         public void LoadPlayer(string n, string id, string dg, int fovr)

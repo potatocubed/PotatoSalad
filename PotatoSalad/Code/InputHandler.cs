@@ -41,9 +41,10 @@ namespace PotatoSalad
                         break;
                     case 'x':
                     case 'X':
-                        Game.GAPI.RenderText("Activating CURSOR MODE.");
+                        //Game.GAPI.RenderText("Activating CURSOR MODE.");
                         Game.SaladCursor = new PotatoSalad.Code.Cursor(Game.Player.location);
                         Game.StateMachine.SetState(Globals.STATE_CURSOR_MODE);
+                        Game.GAPI.CursorDrawMap(Game.DungeonMap, Game.SaladCursor);
                         break;
                     default:
                         break;
@@ -76,7 +77,7 @@ namespace PotatoSalad
                         string[] s = GetDirectionAndDeltas(int.Parse(k.ToString()));
                         deltaX = Convert.ToInt32(s[1]);
                         deltaY = Convert.ToInt32(s[2]);
-                        Game.GAPI.RenderText($"Attempting cursor movement to the {s[0]}.");
+                        //Game.GAPI.RenderText($"Attempting cursor movement to the {s[0]}.");
                         attemptedAction = Game.SaladCursor.MoveTo(Game.SaladCursor.X() + deltaX, Game.SaladCursor.Y() + deltaY);
                         break;
                     case 'x':

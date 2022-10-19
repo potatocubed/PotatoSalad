@@ -127,7 +127,8 @@ namespace PotatoSalad
                 }
                 else
                 {
-                    MapDrawer.FillRectangle(Brushes.Black, t.X * 32, t.Y * 32, 32, 32);
+                    MapDrawer.DrawImage(Image.FromFile(t.Blackout), t.X * 32, t.Y * 32);
+                    //MapDrawer.FillRectangle(Brushes.Black, t.X * 32, t.Y * 32, 32, 32);
                 }
 
                 MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;

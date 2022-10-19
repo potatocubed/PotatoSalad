@@ -25,6 +25,7 @@ namespace PotatoSalad
         public string[,] skillArray;   // Stores skillName [0], skillRating [1], and skillChecks [2]
         public Inventory inventory;
         public string description;
+        public bool unique; // For description-building purposes.
 
         public int health;
         public int mana;
@@ -36,6 +37,7 @@ namespace PotatoSalad
             location = loc;
             displayGraphic = "../../Graphics/Mobiles/player.png";
             FOVRange = 5;   // Just a default value, for testing.
+            unique = false; // We assume one of many.
 
             // At some point we'll have to initiate all skills.
             skillArray = new string[1, 3];
