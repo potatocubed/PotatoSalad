@@ -12,9 +12,11 @@ namespace PotatoSalad.Windows
 {
     public partial class CursorInfoForm : Form
     {
+        public TextBox infoBox;
         public CursorInfoForm()
         {
             InitializeComponent();
+            infoBox = this.cursorInfoBox;
         }
     }
 }

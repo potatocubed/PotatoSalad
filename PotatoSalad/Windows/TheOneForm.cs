@@ -41,6 +41,7 @@ namespace PotatoSalad
                 // It was minimised, then I clicked the icon on the taskbar.
                 WorldForm.WindowState = FormWindowState.Normal;
                 ConsoleForm.WindowState = FormWindowState.Normal;
+                CursorInfoForm.WindowState = FormWindowState.Normal;
             }
         }
 

@@ -83,8 +83,9 @@ namespace PotatoSalad
                     case 'x':
                     case 'X':
                     case '\u001b':      // Esc
-                        Game.StateMachine.SetState(Globals.STATE_PLAYER_TURN);
                         Game.GAPI.DrawMap(Game.DungeonMap);
+                        Game.GAPI.InfoText("");
+                        Game.StateMachine.SetState(Globals.STATE_PLAYER_TURN);
                         break;
                     default:
                         break;

@@ -47,6 +47,8 @@ namespace PotatoSalad.Code
             this.previousLocation = this.location;
             this.location = newLoc;
 
+            Game.GAPI.InfoText(this.GenerateDescription(this.X(), this.Y()));
+
             //Game.GAPI.RenderText($"Cursor has moved to {this.X()}, {this.Y()}.");
             Game.GAPI.CursorDrawMap(Game.DungeonMap, this);
             return true;
@@ -79,7 +81,7 @@ namespace PotatoSalad.Code
             // TODO -- list floor inventory.
             // TODO -- *enable* floor inventory as a list of Item objects
             // attached to any given tile.
-            return "";
+            return s;
         }
     }
 }

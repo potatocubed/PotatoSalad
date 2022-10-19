@@ -18,6 +18,15 @@ namespace PotatoSalad
             Game.ConsoleForm.Refresh();
         }
 
+        public void InfoText(string textToRender)
+        {
+            TextBox cOutput = Game.CursorInfoForm.infoBox;
+            cOutput.ReadOnly = false;
+            cOutput.Text = textToRender;
+            cOutput.ReadOnly = true;
+            Game.CursorInfoForm.Refresh();
+        }
+
         public void DrawMap(Map m)
         {
             Game.WorldForm.DrawMap(m);
