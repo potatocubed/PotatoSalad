@@ -85,10 +85,58 @@ namespace PotatoSalad
 
         public void CursorDrawMap(Map m, PotatoSalad.Code.Cursor c)
         {
-            // No need to worry about field of view.
-            // Just draw all the boxes around the cursor.
+            List<Tile> fovList = new List<Tile>();
+            fovList.Add(Game.SaladCursor.location);
+            if(Game.SaladCursor.location != Game.SaladCursor.previousLocation)
+            {
+                fovList.Add(Game.SaladCursor.previousLocation);
+            }
 
+            Panel p = this.WorldMapPanel;
+            Graphics g = p.CreateGraphics();
             Bitmap bmp;
+
+            /*
+            foreach (Tile t in oldFOV)
+            {
+                t.IsInFOV = false;
+            }
+
+            foreach (Tile t in newFOV)
+            {
+                t.IsExplored = true;
+                t.IsInFOV = true;
+            }
+            */
+
+            foreach (Tile t in fovList)
+            {
+                if (t.IsInFOV)
+                {
+                    MapDrawer.DrawImage(Image.FromFile(t.TileGraphic), t.X * 32, t.Y * 32);
+                    if (t.Occupier != null)
+                    {
+                        MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+                        MapDrawer.DrawImage(Image.FromFile(t.Occupier.displayGraphic), t.X * 32, t.Y * 32);
+                        MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+                    }
+                }
+                else if (t.IsExplored)
+                {
+                    MapDrawer.DrawImage(Image.FromFile(t.DarkTileGraphic), t.X * 32, t.Y * 32);
+                }
+                else
+                {
+                    MapDrawer.FillRectangle(Brushes.Black, t.X * 32, t.Y * 32, 32, 32);
+                }
+
+                MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+                MapDrawer.DrawImage(Image.FromFile(Game.SaladCursor.graphic), Game.SaladCursor.X() * 32, Game.SaladCursor.Y() * 32, 32, 32);
+                MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+            }
+
+            // Whenever we draw the map, we take a 480 x 480 slice from map image with the player
+            // at the centre, and draw that as the background image.
 
             int sideMeasure = apertureCount * TileSize.Width;  // Default 480 pixels for a 15x15 tile layout at 32x32 size.
             Size apertureSize = new Size(sideMeasure, sideMeasure);
@@ -113,13 +161,7 @@ namespace PotatoSalad
             // It turns out that clone breaks if the rectangle is outside the image bounds.
             Rectangle cropper = new Rectangle(origin, apertureSize);
             bmp = (Bitmap)MapImage.Clone(cropper, MapImage.PixelFormat);
-
             WorldMapPanel.BackgroundImage = bmp;
-
-            //MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-            MapDrawer.DrawImage(Image.FromFile(Game.SaladCursor.graphic), 0, 0);
-            //MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-
         }
 
         public void DrawMap(Map m)

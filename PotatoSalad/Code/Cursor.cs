@@ -10,11 +10,13 @@ namespace PotatoSalad.Code
     {
         public string graphic;
         public Tile location;
+        public Tile previousLocation;
 
         public Cursor(Tile loc)
         {
             graphic = "../../Graphics/cursor.png";
             location = loc;
+            previousLocation = loc;
         }
 
         public int X()
@@ -42,6 +44,7 @@ namespace PotatoSalad.Code
 
             Tile newLoc = Game.DungeonMap.TileArray[destX, destY];
 
+            this.previousLocation = this.location;
             this.location = newLoc;
 
             Game.GAPI.RenderText($"Cursor has moved to {this.X()}, {this.Y()}.");
