@@ -14,10 +14,11 @@ namespace PotatoSalad
     {
         private Form WorldForm;
         private Form ConsoleForm;
+        private Form CursorInfoForm;
         public bool MinimiseOkay = false;
         public bool AllFormsMinimised = false;
 
-        public TheOneForm(Form wForm, Form cForm)
+        public TheOneForm(Form wForm, Form cForm, Form ciForm)
         {
             // This form is just a controller for the behaviour of all the other forms.
             InitializeComponent();
@@ -25,6 +26,7 @@ namespace PotatoSalad
             this.Text = "Potato Salad";
             WorldForm = wForm;
             ConsoleForm = cForm;
+            CursorInfoForm = ciForm;
         }
 
         private void TheOneForm_Load(object sender, EventArgs e)

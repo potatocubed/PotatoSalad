@@ -1,4 +1,5 @@
 ﻿using PotatoSalad.Code;
+using PotatoSalad.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace PotatoSalad
 
         public static TheWorld WorldForm;
         public static ConsoleForm ConsoleForm;
+        public static CursorInfoForm CursorInfoForm;
         public static MainMenu MainMenu;
 
         public static AIHandler AIHandler;
@@ -252,12 +254,14 @@ namespace PotatoSalad
             //Form1 worldForm = new Form1();
             WorldForm = new TheWorld();
             ConsoleForm = new ConsoleForm();
+            CursorInfoForm = new CursorInfoForm();
             
             formList.Add(WorldForm);
             formList.Add(ConsoleForm);
+            formList.Add(CursorInfoForm);
 
             // We fire up the control form last of all.
-            TheOneForm ControlForm = new TheOneForm(WorldForm, ConsoleForm)
+            TheOneForm ControlForm = new TheOneForm(WorldForm, ConsoleForm, CursorInfoForm)
             {
                 ShowInTaskbar = true
             };
