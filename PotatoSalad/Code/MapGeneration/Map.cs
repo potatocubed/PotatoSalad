@@ -169,49 +169,52 @@ namespace PotatoSalad
             }
 
             // Carve some rooms.
-            List<Code.MapGeneration.Room> RoomList = new List<Code.MapGeneration.Room>();
+            //List<Code.MapGeneration.Room> RoomList = new List<Code.MapGeneration.Room>();
+            Code.MapGeneration.Room currentRoom = null;
+            Code.MapGeneration.Room prevRoom = null;
             for (int i = 1; i <= 10; i++)
             {
                 int xDim = Game.Dice.XdY(1, 7) + 3;
                 int yDim = Game.Dice.XdY(1, 7) + 3;
 
-                Code.MapGeneration.Room r = CarveRoom(xDim, yDim);
-                if (r.CentreX != -1)
+                currentRoom = CarveRoom(xDim, yDim);
+                if (currentRoom != null && prevRoom != null)
                 {
-                    RoomList.Add(CarveRoom(xDim, yDim));
+                    // carve a corridor
+                    int oldX = prevRoom.CentreX;
+                    int oldy = prevRoom.CentreY;
+                    int newx = currentRoom.CentreX;
+                    int newy = currentRoom.CentreY;
+
+                    // Go across
+                    CarveLine(oldX, oldy, newx, oldy);
+
+                    // Go down
+                    CarveLine(newx, oldy, newx, newy);
+
+                    // then put this room into the queue
+                    prevRoom = currentRoom;
                 }
-                // If r.centrex IS -1, that means the room generation failed.
+                else if(currentRoom != null && prevRoom == null)
+                {
+                    prevRoom = currentRoom;
+                }
             }
 
-            // Link the rooms with tunnels.
-            // Nice basic L-shaped tunnels for now.
-            for (int i = 0; i < RoomList.Count - 1; i++)
+            // And then we drop the player in the start of the final room.
+            if (currentRoom != null)
             {
-                if (RoomList[i].CentreX > 0)    // Ruling out the duff rooms.
-                {
-                    // Go across.
-                    CarveLine(RoomList[i].CentreX, RoomList[i].CentreY, RoomList[i + 1].CentreX, RoomList[i].CentreY);
-                    // Go down.
-                    CarveLine(RoomList[i].CentreX, RoomList[i].CentreY, RoomList[i].CentreX, RoomList[i + 1].CentreY);
-                }
+                InstantiatePlayer(TileArray[currentRoom.CentreX, currentRoom.CentreY]);
             }
-            // And then one more to link room(last) to room(first).
-            // TODO: THIS ISN'T WORKING.
-
-            for(int i = RoomList.Count-1; i > 0; i--)
+            else if (prevRoom != null)
             {
-                if (RoomList[i].CentreX != -1)
-                {
-                    CarveLine(RoomList[i].CentreX, RoomList[i].CentreY, RoomList[0].CentreX, RoomList[i].CentreY);
-                    CarveLine(RoomList[i].CentreX, RoomList[i].CentreY, RoomList[i].CentreX, RoomList[0].CentreY);
-                    break;
-                }
+                InstantiatePlayer(TileArray[prevRoom.CentreX, prevRoom.CentreY]);
             }
-
-            // And then we drop the player in the start of Room 1.
-            int x = RoomList[0].CentreX;
-            int y = RoomList[0].CentreY;
-            InstantiatePlayer(TileArray[x, y]);
+            else
+            {
+                // We've got no valid rooms, somehow.
+                GenerateDefaultMap();
+            }
         }
 
         private void GenerateDefaultMap()
@@ -283,6 +286,19 @@ namespace PotatoSalad
                         return r;
                     }
                 }
+                else
+                {
+                    // We're good. Carve and return.
+                    r.CalculateCentre();    // While I'm thinking of it.
+                    for (int x = 0; x < xSize; x++)
+                    {
+                        for (int y = 0; y < ySize; y++)
+                        {
+                            TileArray[r.TopLeftX + x, r.TopLeftY + y].MakeTile("floor");
+                        }
+                    }
+                    return r;
+                }
             }
 
             // If we get here, room generation has failed.
@@ -291,7 +307,7 @@ namespace PotatoSalad
                 Game.Globals.DEBUG_ERROR_LIST.Add("Room generation failed!");
             }
             r.CentreX = -1;
-            return r;
+            return null;
         }
 
         private void CarveLine(int startX, int startY, int endX, int endY)
@@ -306,6 +322,21 @@ namespace PotatoSalad
                 }
                 return;
             }
+
+            // Needs to carve backwards too.
+            if (startX > endX)
+            {
+                int x = startX;
+                startX = endX;
+                endX = x;
+            }
+            if (startY > endY)
+            {
+                int y = startY;
+                startY = endY;
+                endY = y;
+            }
+
             if (startX == endX)
             {
                 // It's a vertical corridor.
