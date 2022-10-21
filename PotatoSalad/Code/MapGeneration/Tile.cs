@@ -23,7 +23,7 @@ namespace PotatoSalad
         public Mobile Occupier;
         public string Blackout;
         public string Description;
-        public bool Usable;
+        public string Usable;   // If blank, not usable.
 
         private string TileDir = "../../Graphics/Tiles";
 
@@ -31,7 +31,7 @@ namespace PotatoSalad
             bool bs = false, bool be = false, bool bm = false,
             bool fov = false, bool exp = false,
             string dc = "X", string graphic = "../../Graphics/Tiles/default.png",
-            string dGraphic = "../../Graphics/Tiles/default.png", bool us = false)
+            string dGraphic = "../../Graphics/Tiles/default.png", string us = "")
         {
             // The default tile is blank empty space, unexplored and currently unseen.
             X = x;
@@ -62,7 +62,7 @@ namespace PotatoSalad
                     DisplayChar = ".";
                     Description = "Plain dungeon flooring.";
                     TileGraphicSetting("floor");
-                    Usable = false;
+                    Usable = "";
                     break;
                 case "wall":
                     Name = "wall";
@@ -72,7 +72,7 @@ namespace PotatoSalad
                     DisplayChar = "#";
                     Description = "An unremarkable dungeon wall.";
                     TileGraphicSetting("wall");
-                    Usable = false;
+                    Usable = "";
                     break;
                 default:
                     // If passed with no parameter then nothing happens.
