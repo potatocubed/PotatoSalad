@@ -13,28 +13,28 @@ namespace PotatoSalad
 
         public void RenderText(string textToRender)
         {
-            ListBox cOutput = Game.ConsoleForm.cOutput;
+            ListBox cOutput = Game.MainForm.consoleOutput;
             cOutput.Items.Insert(0, textToRender);
-            Game.ConsoleForm.Refresh();
+            Game.MainForm.consoleOutput.Refresh();
         }
 
         public void InfoText(string textToRender)
         {
-            TextBox cOutput = Game.CursorInfoForm.infoBox;
+            TextBox cOutput = Game.MainForm.informationBox;
             cOutput.ReadOnly = false;
             cOutput.Text = textToRender;
             cOutput.ReadOnly = true;
-            Game.CursorInfoForm.Refresh();
+            Game.MainForm.informationBox.Refresh();
         }
 
         public void DrawMap(Map m)
         {
-            Game.WorldForm.DrawMap(m);
+            Game.MainForm.DrawMap(m);
         }
 
         public void CursorDrawMap(Map m, PotatoSalad.Code.Cursor c)
         {
-            Game.WorldForm.CursorDrawMap(m, c);
+            Game.MainForm.CursorDrawMap(m, c);
         }
 
         public void RemoveMob(int x, int y, Map m)
@@ -42,7 +42,7 @@ namespace PotatoSalad
             // At the moment this blanks the whole square,
             // including items. That needs fixing in the called
             // function though.
-            Game.WorldForm.EraseMob(x, y, m);
+            Game.MainForm.EraseMob(x, y, m);
         }
 
         public string CapitaliseString(string s)

@@ -8,20 +8,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace PotatoSalad
+namespace PotatoSalad.Windows
 {
-    public partial class TheWorld : Form
+    public partial class MainForm : Form
     {
         private Size TileSize;
         private int apertureCount;  // Window width AND height in tiles.
         private List<Tile> oldFOV;
         private Bitmap MapImage;
         private Graphics MapDrawer;
+        public ListBox consoleOutput;
+        public TextBox informationBox;
 
-        public TheWorld()
+        public MainForm()
         {
             InitializeComponent();
-            this.Text = "The World";    //Sets the window title.
+            consoleOutput = this.consoleListBox;
+            informationBox = this.infoBox;
+
             TileSize = new Size(32, 32);
             apertureCount = 15;
 
@@ -36,40 +40,28 @@ namespace PotatoSalad
             InitialJumpToPlayer();
         }
 
-        private void WorldForm_Paint(object sender, PaintEventArgs e)
+        private void worldMapPanel_Paint(object sender, PaintEventArgs e)
         {
             //DrawMap(Game.DungeonMap);
             //MessageBox.Show("Paint Event!");
-            this.WorldMapPanel.Invalidate();
+            this.worldMapPanel.Invalidate();
         }
 
-        private void WorldForm_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
             // I stole this from Stack Overflow to remove the flickering problem.
             // I have no idea how it works, but it does.
-            typeof(Panel).InvokeMember("DoubleBuffered", 
+            typeof(Panel).InvokeMember("DoubleBuffered",
                 System.Reflection.BindingFlags.SetProperty |
                 System.Reflection.BindingFlags.Instance |
-                System.Reflection.BindingFlags.NonPublic, 
-                null, 
-                WorldMapPanel, 
+                System.Reflection.BindingFlags.NonPublic,
+                null,
+                worldMapPanel,
                 new object[] { true });
 
             int GubbinsHeight = this.Height - this.ClientSize.Height;
             int GubbinsWidth = this.Width - this.ClientSize.Width;
             this.MinimumSize = new Size(96 + GubbinsWidth, 122 + GubbinsHeight);
-            
-        }
-
-        public void DisplayDeath()
-        {
-            // A placeholder so that killing mobs can be reflected in the display.
-            // Basically just dak the picture box with the matching tag.
-        }
-
-        public void DisplayAddMob()
-        {
-            // Another placeholder. For mid-level summons, spawns, etc.
         }
 
         public void DrawMapOnLoad(Map m)
@@ -87,12 +79,12 @@ namespace PotatoSalad
         {
             List<Tile> fovList = new List<Tile>();
             fovList.Add(Game.SaladCursor.location);
-            if(Game.SaladCursor.location != Game.SaladCursor.previousLocation)
+            if (Game.SaladCursor.location != Game.SaladCursor.previousLocation)
             {
                 fovList.Add(Game.SaladCursor.previousLocation);
             }
 
-            Panel p = this.WorldMapPanel;
+            Panel p = this.worldMapPanel;
             Graphics g = p.CreateGraphics();
             Bitmap bmp;
 
@@ -162,7 +154,7 @@ namespace PotatoSalad
             // It turns out that clone breaks if the rectangle is outside the image bounds.
             Rectangle cropper = new Rectangle(origin, apertureSize);
             bmp = (Bitmap)MapImage.Clone(cropper, MapImage.PixelFormat);
-            WorldMapPanel.BackgroundImage = bmp;
+            worldMapPanel.BackgroundImage = bmp;
         }
 
         public void DrawMap(Map m)
@@ -179,7 +171,7 @@ namespace PotatoSalad
             // If you can see it, paint it on the map.
             // Then arrange all the mob pictureboxes in the right places.
 
-            Panel p = this.WorldMapPanel;
+            Panel p = this.worldMapPanel;
             Graphics g = p.CreateGraphics();
             Bitmap bmp;
 
@@ -212,7 +204,7 @@ namespace PotatoSalad
                 }
             }
             oldFOV = newFOV;
-            
+
             // Whenever we draw the map, we take a 480 x 480 slice from map image with the player
             // at the centre, and draw that as the background image.
 
@@ -239,7 +231,7 @@ namespace PotatoSalad
             // It turns out that clone breaks if the rectangle is outside the image bounds.
             Rectangle cropper = new Rectangle(origin, apertureSize);
             bmp = (Bitmap)MapImage.Clone(cropper, MapImage.PixelFormat);
-            WorldMapPanel.BackgroundImage = bmp;
+            worldMapPanel.BackgroundImage = bmp;
         }
 
         public void InitialJumpToPlayer()
@@ -261,7 +253,7 @@ namespace PotatoSalad
             {
                 MapDrawer.DrawImage(Image.FromFile(t.DarkTileGraphic), t.X * 32, t.Y * 32);
             }
-            WorldMapPanel.Refresh();
+            worldMapPanel.Refresh();
         }
     }
 }

@@ -63,23 +63,17 @@
     <Compile Include="Code\StateMachine.cs" />
     <Compile Include="Code\Violence.cs" />
     <Compile Include="Code\XMLHandler.cs" />
-    <Compile Include="Windows\ConsoleForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\ConsoleForm.Designer.cs">
-      <DependentUpon>ConsoleForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Code\Dice.cs" />
     <Compile Include="Code\Game.cs" />
     <Compile Include="Code\MapGeneration\Map.cs" />
     <Compile Include="Code\InputHandler.cs" />
     <Compile Include="Code\Mobiles\Mobile.cs" />
     <Compile Include="Code\SaladGraphics.cs" />
-    <Compile Include="Windows\CursorInfoForm.cs">
+    <Compile Include="Windows\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Windows\CursorInfoForm.Designer.cs">
-      <DependentUpon>CursorInfoForm.cs</DependentUpon>
+    <Compile Include="Windows\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\MainMenu.cs">
       <SubType>Form</SubType>
@@ -95,23 +89,8 @@
     <Compile Include="Windows\TextInputBox.Designer.cs">
       <DependentUpon>TextInputBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\TheOneForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\TheOneForm.Designer.cs">
-      <DependentUpon>TheOneForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\TheWorld.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\TheWorld.Designer.cs">
-      <DependentUpon>TheWorld.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Windows\ConsoleForm.resx">
-      <DependentUpon>ConsoleForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\CursorInfoForm.resx">
-      <DependentUpon>CursorInfoForm.cs</DependentUpon>
+    <EmbeddedResource Include="Windows\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\MainMenu.resx">
       <DependentUpon>MainMenu.cs</DependentUpon>
@@ -128,12 +107,6 @@
     </Compile>
     <EmbeddedResource Include="Windows\TextInputBox.resx">
       <DependentUpon>TextInputBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\TheOneForm.resx">
-      <DependentUpon>TheOneForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\TheWorld.resx">
-      <DependentUpon>TheWorld.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

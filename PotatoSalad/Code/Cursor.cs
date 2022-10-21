@@ -56,6 +56,10 @@ namespace PotatoSalad.Code
 
         public string GenerateDescription(int x, int y)
         {
+            if (!this.location.IsExplored)
+            {
+                return "Unexplored.";
+            }
             // bear in mind 'you can see' vs 'you last saw'
             string s = "";
             s = $"{this.location.Description}";

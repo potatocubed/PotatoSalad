@@ -17,10 +17,11 @@ namespace PotatoSalad
 
         public static Map DungeonMap;
 
-        public static TheWorld WorldForm;
-        public static ConsoleForm ConsoleForm;
-        public static CursorInfoForm CursorInfoForm;
+        //public static TheWorld WorldForm;
+        //public static ConsoleForm ConsoleForm;
+        //public static CursorInfoForm CursorInfoForm;
         public static MainMenu MainMenu;
+        public static MainForm MainForm;
 
         public static AIHandler AIHandler;
         public static XMLHandler XMLHandler;
@@ -196,7 +197,7 @@ namespace PotatoSalad
             }
 
             // Then we close the main menu and on with the show.
-            Game.ShowForms();
+            Game.ShowForms2();
         }
 
 
@@ -221,9 +222,29 @@ namespace PotatoSalad
             PlayerXML.Load(XMLHandler.saveDir + "/character.xml");
 
             // And now we start the show.
-            Game.ShowForms();
+            Game.ShowForms2();
         }
 
+        private static void ShowForms2()
+        {
+            // This should just open MainForm, I guess?
+            StateMachine.SetState(Globals.STATE_WORKING);
+            MainForm = new MainForm();
+            MainForm.FormClosed += (sender, e) =>
+            {
+                Application.ExitThread();
+            };
+            MainForm.KeyPreview = true;
+            MainForm.KeyPress += (sender, e) =>
+            {
+                InputHandler.KeyIn(e.KeyChar);
+            };
+            MainForm.Show();
+            MainMenu.Close();
+            StateMachine.SetState(Globals.STATE_PLAYER_TURN);
+        }
+
+        /*
         public static void ShowForms()
         {
             // This doesn't quite do what I want.
@@ -319,5 +340,6 @@ namespace PotatoSalad
 
             StateMachine.SetState(Globals.STATE_PLAYER_TURN);
         }
+        */
     }
 }
