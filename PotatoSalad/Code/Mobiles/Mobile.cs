@@ -20,6 +20,7 @@ namespace PotatoSalad
         public string displayGraphic;   // The image which is the thing.
         public string faction;
         public Tile location;   // A reference to the containing tile.
+        public Tile prevLocation;   // For speeding up the drawing stage.
         public int FOVRange;
         public int AI_type;     // I can't work out how to pull this selectively.
         public string[,] skillArray;   // Stores skillName [0], skillRating [1], and skillChecks [2]
@@ -63,6 +64,8 @@ namespace PotatoSalad
         {
             int origX = X();
             int origY = Y();
+
+            prevLocation = location;    // You used to be here.
 
             if (destX < 0 || destY < 0 || destX > Game.DungeonMap.XDimension || destY > Game.DungeonMap.YDimension)
             {

@@ -153,15 +153,20 @@ namespace PotatoSalad.Windows
                 Game.Player.FOVRange);
             List<Tile> fovList = oldFOV.Union(newFOV).ToList();
             List<Tile> mobLocs = new List<Tile>();
+            List<Tile> mobPrevs = new List<Tile>();
             
             foreach (Mobile mob in Game.DungeonMap.MobileArray)
             {
                 mobLocs.Add(mob.location);
+                mobPrevs.Add(mob.prevLocation);
             }
 
             List<Tile> newTiles = newFOV.Except(oldFOV).ToList();
             List<Tile> oldTiles = oldFOV.Except(newFOV).ToList();
             List<Tile> mobTiles = newFOV.Intersect(mobLocs).ToList();
+            //List<Tile> mobOldTiles = newFOV.Intersect(mobPrevs).ToList();
+            newTiles = newTiles.Union(newFOV.Intersect(mobPrevs).ToList()).ToList();
+            
 
             // Draw the map.
             // Okay, so, all is black by default.
@@ -178,19 +183,11 @@ namespace PotatoSalad.Windows
                 MapDrawer.DrawImage(Image.FromFile(t.DarkTileGraphic), t.X * 32, t.Y * 32);
             }
 
-            foreach (Tile t in newFOV)
+            foreach (Tile t in newTiles)
             {
                 t.IsExplored = true;
                 t.IsInFOV = true;
                 MapDrawer.DrawImage(Image.FromFile(t.TileGraphic), t.X * 32, t.Y * 32);
-                /*
-                if (t.Occupier != null)
-                {
-                    MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-                    MapDrawer.DrawImage(Image.FromFile(t.Occupier.displayGraphic), t.X * 32, t.Y * 32);
-                    MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-                }
-                */
             }
 
             foreach (Tile t in mobTiles)
