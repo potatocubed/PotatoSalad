@@ -88,19 +88,6 @@ namespace PotatoSalad.Windows
             Graphics g = p.CreateGraphics();
             Bitmap bmp;
 
-            /*
-            foreach (Tile t in oldFOV)
-            {
-                t.IsInFOV = false;
-            }
-
-            foreach (Tile t in newFOV)
-            {
-                t.IsExplored = true;
-                t.IsInFOV = true;
-            }
-            */
-
             foreach (Tile t in fovList)
             {
                 if (t.IsInFOV)
@@ -165,44 +152,61 @@ namespace PotatoSalad.Windows
                 Game.Player.Y(),
                 Game.Player.FOVRange);
             List<Tile> fovList = oldFOV.Union(newFOV).ToList();
+            List<Tile> mobLocs = new List<Tile>();
+            
+            foreach (Mobile mob in Game.DungeonMap.MobileArray)
+            {
+                mobLocs.Add(mob.location);
+            }
+
+            List<Tile> newTiles = newFOV.Except(oldFOV).ToList();
+            List<Tile> oldTiles = oldFOV.Except(newFOV).ToList();
+            List<Tile> mobTiles = newFOV.Intersect(mobLocs).ToList();
 
             // Draw the map.
             // Okay, so, all is black by default.
             // If you can see it, paint it on the map.
             // Then arrange all the mob pictureboxes in the right places.
 
-            Panel p = this.worldMapPanel;
-            Graphics g = p.CreateGraphics();
+            //Panel p = this.worldMapPanel;
+            //Graphics g = p.CreateGraphics();
             Bitmap bmp;
 
-            foreach (Tile t in oldFOV)
+            foreach (Tile t in oldTiles)
             {
                 t.IsInFOV = false;
+                MapDrawer.DrawImage(Image.FromFile(t.DarkTileGraphic), t.X * 32, t.Y * 32);
             }
 
             foreach (Tile t in newFOV)
             {
                 t.IsExplored = true;
                 t.IsInFOV = true;
+                MapDrawer.DrawImage(Image.FromFile(t.TileGraphic), t.X * 32, t.Y * 32);
+                /*
+                if (t.Occupier != null)
+                {
+                    MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+                    MapDrawer.DrawImage(Image.FromFile(t.Occupier.displayGraphic), t.X * 32, t.Y * 32);
+                    MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+                }
+                */
             }
 
-            foreach (Tile t in fovList)
+            foreach (Tile t in mobTiles)
             {
-                if (t.IsInFOV)
+                // Since it's an intersection with newFOV I know it's already in field of view.
+                if (t.Occupier != null)
                 {
-                    MapDrawer.DrawImage(Image.FromFile(t.TileGraphic), t.X * 32, t.Y * 32);
-                    if (t.Occupier != null)
-                    {
-                        MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-                        MapDrawer.DrawImage(Image.FromFile(t.Occupier.displayGraphic), t.X * 32, t.Y * 32);
-                        MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-                    }
-                }
-                else
-                {
-                    MapDrawer.DrawImage(Image.FromFile(t.DarkTileGraphic), t.X * 32, t.Y * 32);
+                    // This should never be null, but just in case...
+                    MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+                    MapDrawer.DrawImage(Image.FromFile(t.Occupier.displayGraphic), t.X * 32, t.Y * 32);
+                    MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
                 }
             }
+
+            // TODO: Replace newFOV up there with newTiles, and find a better way of drawing and removing monsters.
+
             oldFOV = newFOV;
 
             // Whenever we draw the map, we take a 480 x 480 slice from map image with the player
