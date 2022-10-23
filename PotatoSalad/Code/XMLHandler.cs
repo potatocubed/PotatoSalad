@@ -186,9 +186,59 @@ namespace PotatoSalad
             XmlNode importNode = xRoot.OwnerDocument.ImportNode(UpdateMobileData(), true);
             xRoot.AppendChild(importNode);
 
+            // Here's the terrain section like the mobiles section.
+            xNode = xRoot.SelectSingleNode("./terrain");
+            if (!(xNode == null))
+            {
+                xRoot.RemoveChild(xNode);
+            }
+            importNode = xRoot.OwnerDocument.ImportNode(UpdateTerrainData(), true);
+            xRoot.AppendChild(importNode);
+
             // TODO: Once (if?) this starts getting uwieldy, I'll cut this bit and store the XML
             // in memory until the player exits, at which point it gets written to drive.
             mapxml.Save(mapDir);
+        }
+
+        XmlDocumentFragment UpdateTerrainData()
+        {
+            XmlDocumentFragment umd = new XmlDocument().CreateDocumentFragment();
+            string s = "<terrain>";
+
+            foreach(Tile t in Game.DungeonMap.TileArray)
+            {
+                if(t.Usable != "")
+                {
+                    try
+                    {
+                        if (t.Usable.Substring(0, 11) == "stairs-down")
+                        {
+                            s = $"{s}<item x=\"{t.X}\" y=\"{t.Y}\"><type>stairs-down</type><id>{t.Usable.Substring(12, 1)}</id></item>";
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // Just skip it, try again in a moment.
+                    }
+
+                    try
+                    {
+                        if (t.Usable.Substring(0, 9) == "stairs-up")
+                        {
+                            s = $"{s}<item x=\"{t.X}\" y=\"{t.Y}\"><type>stairs-up</type><id>{t.Usable.Substring(10, 1)}</id></item>";
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+            }
+
+            s = $"{s}</terrain>";
+
+            umd.InnerXml = s;
+            return umd;
         }
 
         XmlDocumentFragment UpdateMobileData()

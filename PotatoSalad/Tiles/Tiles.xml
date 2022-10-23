@@ -23,7 +23,7 @@
 	<Tile>
 		<Name>stairs-up</Name>
 		<Block sight="no" effect="no" movement="no"/>
-		<DisplayChar>></DisplayChar>
+		<DisplayChar>,</DisplayChar>
 		<Description>Stairs leading to a higher dungeon level.</Description>
 		<Usable>stairs-up</Usable>
 	</Tile>

@@ -83,7 +83,6 @@ namespace PotatoSalad
         {
             // This is part of a terrible, terrible loop that will need to be fixed eventually.
 
-            Tile t = new Tile(-1, -1);
             string TileXML = "../../Tiles/Tiles.xml";
 
             XmlDocument tiles = new XmlDocument();
@@ -92,6 +91,7 @@ namespace PotatoSalad
 
             foreach(XmlNode n in xNodes)
             {
+                Tile t = new Tile(-1, -1);
                 t.MakeTile(n.SelectSingleNode("Name").InnerText);
                 TileList.Add(t);
             }
@@ -144,6 +144,20 @@ namespace PotatoSalad
             string mType = xElem.GetAttribute("maptype");
             DungeonMap.LoadMap(mn, mid, ln, d, xSize, ySize, mType);
 
+            // We need to do a secondary pass to set any meaningful terrain ids.
+            XmlNodeList nodes = LevelXML.SelectNodes("//terrain/item");
+            foreach (XmlElement n in nodes)
+            {
+                // May need to update this later if usable strings get more complex.
+                int x = Convert.ToInt32(n.Attributes["x"].InnerText);
+                int y = Convert.ToInt32(n.Attributes["y"].InnerText);
+                xElem = (XmlElement)n.SelectSingleNode("type");
+                string s = xElem.InnerText;
+                xElem = (XmlElement)n.SelectSingleNode("id");
+                s = $"{s}-{xElem.InnerText}";
+                DungeonMap.TileArray[x, y].Usable = s;
+            }
+
             // Then we load the player.
             PlayerXML = new XmlDocument();
             PlayerXML.Load(saveDir + "/character.xml");
@@ -159,7 +173,7 @@ namespace PotatoSalad
             Player.LoadPlayerXML(xElem);
 
             // Now we want to load all the mobiles.
-            XmlNodeList nodes = LevelXML.SelectNodes("//monster");
+            nodes = LevelXML.SelectNodes("//monster");
             foreach (XmlElement n in nodes)
             {
                 Game.MonPop.LoadMonsterXML(n, ref DungeonMap.TileArray, ref DungeonMap.MobileArray);
@@ -167,6 +181,14 @@ namespace PotatoSalad
 
             // Then we close the main menu and on with the show.
             Game.ShowForms2();
+        }
+
+        public static void EnterNewLevel(string mn, string mid, int ln, int d, int xSize = 80, int ySize = 25, string mType = "default")
+        {
+            SaveGame(); // Stash previous data.
+            DungeonMap = new Map();
+            DungeonMap.Generate(mn, mid, ln, d, xSize, ySize, mType);
+            // TODO
         }
 
 

@@ -229,12 +229,14 @@ namespace PotatoSalad
                     if (coords[0] > 0 && coords[1] > 0)
                     {
                         Game.DungeonMap.TileArray[coords[0], coords[1]].MakeTile("stairs-down");
+                        Game.DungeonMap.TileArray[coords[0], coords[1]].Usable += $"-{i}";
                     }
                 }
             }
             else
             {
                 // We got nothing here right now. TODO.
+                // Stairs up need to take IDs from previous level.
             }
         }
 
