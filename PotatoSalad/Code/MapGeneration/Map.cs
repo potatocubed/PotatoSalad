@@ -62,6 +62,8 @@ namespace PotatoSalad
                     }
                 }
             }
+            mapReader.Close();
+            mapReader.Dispose();
         }
 
         public void Generate(string mn, string mid, int ln, int d, int xSize = 80, int ySize = 25, string mType = "default")
