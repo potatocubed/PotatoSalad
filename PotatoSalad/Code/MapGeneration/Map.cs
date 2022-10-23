@@ -83,10 +83,10 @@ namespace PotatoSalad
 
             // We'll add some more creation parameters and variables later. Like depth, tileset, reference, etc.
             
-           switch (mapType)
+            switch (mapType)
             {
                 case "dungeon":
-                    GenerateDungeonMap();
+                    GenerateDungeonMap(d);
                     PopulateDefault();
                     break;
                 case "default":
@@ -156,7 +156,7 @@ namespace PotatoSalad
             TileArray = new Tile[0,0];
         }
 
-        private void GenerateDungeonMap()
+        private void GenerateDungeonMap(int depth)
         {
             // A dungeon map fills the entire level with wall, then cuts ten rooms, then links them with tunnels.
             // Right now it produces quite an open-plan dungeon. Which I'm okay with?
@@ -217,6 +217,52 @@ namespace PotatoSalad
                 // We've got no valid rooms, somehow.
                 GenerateDefaultMap();
             }
+
+            // Now let's throw in some terrain.
+            // Stairs down only on the first level, at least until I've got the endgame sorted out.
+            if (depth == 1)
+            {
+                for(int i = 0; i < 3; i++)
+                {
+                    int[] coords = new int[2];
+                    coords = GetEmptySpace();
+                    if (coords[0] > 0 && coords[1] > 0)
+                    {
+                        Game.DungeonMap.TileArray[coords[0], coords[1]].MakeTile("stairs-down");
+                    }
+                }
+            }
+            else
+            {
+                // We got nothing here right now. TODO.
+            }
+        }
+
+        private int[] GetEmptySpace()
+        {
+            // This only works on the currently loaded map.
+            int[] result = new int[2];
+
+            int maxX = Game.DungeonMap.XDimension - 2;
+            int maxY = Game.DungeonMap.YDimension - 2;
+
+            for(int i = 0; i < 1000; i++)
+            {
+                int xCheck = Game.Dice.XdY(1, maxX);
+                int yCheck = Game.Dice.XdY(1, maxY);
+
+                if (Game.DungeonMap.TileArray[xCheck, yCheck].Name == "floor")
+                {
+                    // Result
+                    result[0] = xCheck;
+                    result[1] = yCheck;
+                    return result;
+                }
+            }
+
+            result[0] = -1;
+            result[1] = -1;
+            return result;
         }
 
         private void GenerateDefaultMap()

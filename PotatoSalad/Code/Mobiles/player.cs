@@ -74,8 +74,6 @@ namespace PotatoSalad
             // send message
             Game.GAPI.RenderText($"{Game.GAPI.CapitaliseString("this.name")} dies!");
 
-            // TODO: drop inventory
-            // TODO: give XP
             // remove from map
             //location.Occupier = null;
             //this.location = null;
@@ -84,6 +82,25 @@ namespace PotatoSalad
             //Game.DungeonMap.MobileArray.Remove(this);
 
             // overwrite/extend for player
+        }
+
+        public bool UseTerrain(Tile t)
+        {
+            if (t.Usable == "")
+            {
+                Game.GAPI.RenderText("There is nothing to use here.");
+                return false;
+            }
+
+            switch (t.Name)
+            {
+                case "stairs-down":
+                case "stairs-up":
+                default:
+                    break;
+            }
+
+            return true;
         }
     }
 }

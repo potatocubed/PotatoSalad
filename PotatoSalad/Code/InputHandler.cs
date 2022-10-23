@@ -46,6 +46,10 @@ namespace PotatoSalad
                         Game.StateMachine.SetState(Globals.STATE_CURSOR_MODE);
                         Game.GAPI.CursorDrawMap(Game.DungeonMap, Game.SaladCursor);
                         break;
+                    case '>':
+                    case '.':
+                        attemptedAction = Game.Player.UseTerrain(Game.DungeonMap.TileArray[Game.Player.X(), Game.Player.Y()]);
+                        break;
                     default:
                         break;
                 }
