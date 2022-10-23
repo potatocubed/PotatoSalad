@@ -1,0 +1,16 @@
+﻿<Tiles>
+	<Tile>
+		<Name>floor</Name>
+		<Block sight="no" effect="no" movement="no"/>
+		<DisplayChar>.</DisplayChar>
+		<Description>Plain dungeon flooring.</Description>
+		<Usable/>
+	</Tile>
+	<Tile>
+		<Name>wall</Name>
+		<Block sight="yes" effect="yes" movement="yes"/>
+		<DisplayChar>#</DisplayChar>
+		<Description>An unremarkable dungeon wall.</Description>
+		<Usable/>
+	</Tile>
+</Tiles>

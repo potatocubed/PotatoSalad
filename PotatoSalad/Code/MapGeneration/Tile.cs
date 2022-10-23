@@ -25,13 +25,14 @@ namespace PotatoSalad
         public string Description;
         public string Usable;   // If blank, not usable.
 
-        private string TileDir = "../../Graphics/Tiles";
+        private static string TileDir = "../../Tiles/Graphics";
+        private string TileXML = "../../Tiles/Tiles.xml";
 
         public Tile(int x, int y,
             bool bs = false, bool be = false, bool bm = false,
             bool fov = false, bool exp = false,
-            string dc = "X", string graphic = "../../Graphics/Tiles/default.png",
-            string dGraphic = "../../Graphics/Tiles/default.png", string us = "")
+            string dc = "X", string graphic = "../../Tiles/Graphics/default.png",
+            string dGraphic = "../../Tiles/Graphics/default.png", string us = "")
         {
             // The default tile is blank empty space, unexplored and currently unseen.
             X = x;
@@ -51,33 +52,38 @@ namespace PotatoSalad
 
         public void MakeTile(string tileType = "")
         {
-            switch (tileType)
+            string[] t = Game.XMLHandler.LoadTile(tileType, TileXML);
+
+            Name = t[0];
+            if (t[1] == "yes")
             {
-                // TODO: Put all these details in an external file and draw from there.
-                case "floor":
-                    Name = "floor";
-                    BlockSight = false;
-                    BlockEffect = false;
-                    BlockMovement = false;
-                    DisplayChar = ".";
-                    Description = "Plain dungeon flooring.";
-                    TileGraphicSetting("floor");
-                    Usable = "";
-                    break;
-                case "wall":
-                    Name = "wall";
-                    BlockSight = true;
-                    BlockEffect = true;
-                    BlockMovement = true;
-                    DisplayChar = "#";
-                    Description = "An unremarkable dungeon wall.";
-                    TileGraphicSetting("wall");
-                    Usable = "";
-                    break;
-                default:
-                    // If passed with no parameter then nothing happens.
-                    break;
+                BlockSight = true;
             }
+            else
+            {
+                BlockSight = false;
+            }
+            if (t[2] == "yes")
+            {
+                BlockEffect = true;
+            }
+            else
+            {
+                BlockEffect = false;
+            }
+            if (t[3] == "yes")
+            {
+                BlockMovement = true;
+            }
+            else
+            {
+                BlockMovement = false;
+            }
+            DisplayChar = t[4];
+            Description = t[5];
+            Usable = t[6];
+
+            TileGraphicSetting(tileType);
         }
 
         private void TileGraphicSetting(string baseTile)

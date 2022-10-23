@@ -86,6 +86,22 @@ namespace PotatoSalad
 
         private static void InitialiseTileList()
         {
+            // This is part of a terrible, terrible loop that will need to be fixed eventually.
+
+            Tile t = new Tile(-1, -1);
+            string TileXML = "../../Tiles/Tiles.xml";
+
+            XmlDocument tiles = new XmlDocument();
+            tiles.Load(TileXML);
+            XmlNodeList xNodes = tiles.SelectNodes("//Tile");
+
+            foreach(XmlNode n in xNodes)
+            {
+                t.MakeTile(n.SelectSingleNode("Name").InnerText);
+                TileList.Add(t);
+            }
+
+            /*
             // At some point I can initialise this from a separate data file.
             // All the data is currently stored in Tile.MakeTile.
             Tile t = new Tile(-1, -1);
@@ -97,6 +113,7 @@ namespace PotatoSalad
             // wall
             t.MakeTile("wall");
             TileList.Add(t);
+            */
         }
 
         public static string GetTileTypeFromChar(char c)

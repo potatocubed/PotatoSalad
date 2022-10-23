@@ -54,6 +54,39 @@ namespace PotatoSalad
             }
         }
 
+        public string[] LoadTile(string tileType, string tileFile)
+        {
+            string[] output = new string[7];
+            XmlDocument tiles = new XmlDocument();
+            tiles.Load(tileFile);
+
+            // Every part of this should exist; if not, it'll fall into a default value.
+            XmlElement xRoot = tiles.DocumentElement;
+            XmlNode xNode;
+            XmlElement xElem;
+            XmlAttribute xAtt;
+
+            xNode = xRoot.SelectSingleNode($"./Tile[Name = \"{tileType}\"]");
+            output[0] = tileType;
+
+            xElem = (XmlElement)xNode.SelectSingleNode("./Block");
+            xAtt = (XmlAttribute)xElem.SelectSingleNode("@sight");
+            output[1] = xAtt.InnerText;
+            xAtt = (XmlAttribute)xElem.SelectSingleNode("@effect");
+            output[2] = xAtt.InnerText;
+            xAtt = (XmlAttribute)xElem.SelectSingleNode("@movement");
+            output[3] = xAtt.InnerText;
+
+            xElem = (XmlElement)xNode.SelectSingleNode("./DisplayChar");
+            output[4] = xElem.InnerText;
+            xElem = (XmlElement)xNode.SelectSingleNode("./Description");
+            output[5] = xElem.InnerText;
+            xElem = (XmlElement)xNode.SelectSingleNode("./Usable");
+            output[6] = xElem.InnerText;
+
+            return output;
+        }
+
         public void CreateNewLevelData()
         {
             // Creates save data for the current player, for the current map.

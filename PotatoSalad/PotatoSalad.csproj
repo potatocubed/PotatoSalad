@@ -125,12 +125,16 @@
     <Content Include="Graphics\Mobiles\generic_monster.png" />
     <Content Include="Graphics\Mobiles\goblin.png" />
     <Content Include="Graphics\Mobiles\player.png" />
-    <Content Include="Graphics\Tiles\default.png" />
-    <Content Include="Graphics\Tiles\floor.png" />
-    <Content Include="Graphics\Tiles\floor_dark.png" />
-    <Content Include="Graphics\Tiles\return-to-nature.png" />
-    <Content Include="Graphics\Tiles\wall.png" />
-    <Content Include="Graphics\Tiles\wall_dark.png" />
+    <Content Include="Tiles\Graphics\default.png" />
+    <Content Include="Tiles\Graphics\floor.png" />
+    <Content Include="Tiles\Graphics\floor_dark.png" />
+    <Content Include="Tiles\Graphics\return-to-nature.png" />
+    <Content Include="Tiles\Graphics\wall.png" />
+    <Content Include="Tiles\Graphics\wall_dark.png" />
+    <Content Include="Tiles\Tiles.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Graphics\Tiles\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
