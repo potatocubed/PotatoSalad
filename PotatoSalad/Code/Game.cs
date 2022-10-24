@@ -44,6 +44,8 @@ namespace PotatoSalad
 
         public static Item EmptyHand;   // Just creating it once to work as a reference.
 
+        private static string whereYouWere;
+
         [STAThread]
         static void Main()
         {
@@ -186,9 +188,15 @@ namespace PotatoSalad
         public static void EnterNewLevel(string mn, string mid, int ln, int d, int xSize = 80, int ySize = 25, string mType = "default")
         {
             SaveGame(); // Stash previous data.
+            string whereYouWere = DungeonMap.MapID;    // Stash this for generating stairs back the way.
+
             DungeonMap = new Map();
-            DungeonMap.Generate(mn, mid, ln, d, xSize, ySize, mType);
-            // TODO
+            DungeonMap.Generate(mn, mid, ln, d, xSize, ySize, mType, whereYouWere);
+            XMLHandler.CreateNewLevelData();
+            LevelXML = new XmlDocument();
+            LevelXML.Load(XMLHandler.saveDir + "/data/" + Game.DungeonMap.MapID + "/mapdata.xml");
+
+            // We've created and stored a new level. Now we find the corresponding stairs and put the player there.
         }
 
 

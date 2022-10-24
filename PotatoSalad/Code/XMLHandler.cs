@@ -117,6 +117,39 @@ namespace PotatoSalad
             File.WriteAllLines(mapDir + "/geography.txt", mText);
         }
 
+        public string PossibleExits(string currentMapID)
+        {
+            string s = "";
+            XmlDocument exitsDoc = new XmlDocument();
+            exitsDoc.Load(here + "../../../Code/MapGeneration/StairDestinations.xml");
+            XmlElement xElem = (XmlElement)exitsDoc.DocumentElement.SelectSingleNode($"level[@id='{currentMapID}']");
+            XmlNodeList xNodes = xElem.SelectNodes("exit");
+            foreach(XmlNode n in xNodes)
+            {
+                if (s != "")
+                {
+                    s = $"{s}-";
+                }
+                s = $"{s}{n.SelectSingleNode("@id").InnerText}";
+            }
+            return s;
+        }
+
+        public List<string> PossibleEntrances(string mapID)
+        {
+            List<string> result = new List<string>();
+            XmlDocument exitsDoc = new XmlDocument();
+            exitsDoc.Load($"{saveDir}/data/{mapID}/mapdata.xml");
+            XmlNodeList xNodes = exitsDoc.SelectNodes("//terrain/item[type='stairsdown']");
+
+            foreach (XmlNode n in xNodes)
+            {
+                result.Add(n.SelectSingleNode("item").InnerText);
+            }
+
+            return result;
+        }
+
         public void UpdateMapData()
         {
             string mapDir = saveDir + "/data/" + Game.DungeonMap.MapID + "/mapdata.xml";
@@ -207,13 +240,14 @@ namespace PotatoSalad
 
             foreach(Tile t in Game.DungeonMap.TileArray)
             {
-                if(t.Usable != "")
+                string[] usable_split = t.Usable.Split('-');
+                if (usable_split.Length != 0)
                 {
                     try
                     {
-                        if (t.Usable.Substring(0, 11) == "stairs-down")
+                        if (usable_split[0] == "stairsdown")
                         {
-                            s = $"{s}<item x=\"{t.X}\" y=\"{t.Y}\"><type>stairs-down</type><id>{t.Usable.Substring(12, 1)}</id></item>";
+                            s = $"{s}<item x=\"{t.X}\" y=\"{t.Y}\"><type>stairsdown</type><id>{usable_split[1]}-{usable_split[2]}</id></item>";
                         }
                     }
                     catch (Exception)
@@ -223,9 +257,9 @@ namespace PotatoSalad
 
                     try
                     {
-                        if (t.Usable.Substring(0, 9) == "stairs-up")
+                        if (usable_split[0] == "stairsup")
                         {
-                            s = $"{s}<item x=\"{t.X}\" y=\"{t.Y}\"><type>stairs-up</type><id>{t.Usable.Substring(10, 1)}</id></item>";
+                            s = $"{s}<item x=\"{t.X}\" y=\"{t.Y}\"><type>stairsup</type><id>{usable_split[1]}-{usable_split[2]}</id></item>";
                         }
                     }
                     catch (Exception)

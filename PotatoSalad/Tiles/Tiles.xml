@@ -13,18 +13,19 @@
 		<Description>An unremarkable dungeon wall.</Description>
 		<Usable/>
 	</Tile>
+	<!-- Stairs contain three sections to their id: what they are, what level they POINT TO, and their ID -->
 	<Tile>
-		<Name>stairs-down</Name>
+		<Name>stairsdown</Name>
 		<Block sight="no" effect="no" movement="no"/>
 		<DisplayChar>></DisplayChar>
 		<Description>Stairs leading to a deeper dungeon level.</Description>
-		<Usable>stairs-down</Usable>
+		<Usable>stairsdown</Usable>
 	</Tile>
 	<Tile>
-		<Name>stairs-up</Name>
+		<Name>stairsup</Name>
 		<Block sight="no" effect="no" movement="no"/>
 		<DisplayChar>,</DisplayChar>
 		<Description>Stairs leading to a higher dungeon level.</Description>
-		<Usable>stairs-up</Usable>
+		<Usable>stairsup</Usable>
 	</Tile>
 </Tiles>

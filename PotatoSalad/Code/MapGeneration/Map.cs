@@ -66,7 +66,7 @@ namespace PotatoSalad
             mapReader.Dispose();
         }
 
-        public void Generate(string mn, string mid, int ln, int d, int xSize = 80, int ySize = 25, string mType = "default")
+        public void Generate(string mn, string mid, int ln, int d, int xSize = 80, int ySize = 25, string mType = "default", string whereYouWere = "")
         {
             ClearMap();
 
@@ -86,7 +86,7 @@ namespace PotatoSalad
             switch (mapType)
             {
                 case "dungeon":
-                    GenerateDungeonMap(d);
+                    GenerateDungeonMap(d, whereYouWere);
                     PopulateDefault();
                     break;
                 case "default":
@@ -156,11 +156,9 @@ namespace PotatoSalad
             TileArray = new Tile[0,0];
         }
 
-        private void GenerateDungeonMap(int depth)
+        private void GenerateDungeonMap(int depth, string whereYouWere)
         {
             // A dungeon map fills the entire level with wall, then cuts ten rooms, then links them with tunnels.
-            // Right now it produces quite an open-plan dungeon. Which I'm okay with?
-            // But I think I need to refine the overlap parameters.
             for (int i = 0; i <= TileArray.GetUpperBound(0); i++)
             {
                 for (int j = 0; j <= TileArray.GetUpperBound(1); j++)
@@ -220,7 +218,7 @@ namespace PotatoSalad
 
             // Now let's throw in some terrain.
             // Stairs down only on the first level, at least until I've got the endgame sorted out.
-            if (depth == 1)
+            if (whereYouWere == "")
             {
                 for(int i = 0; i < 3; i++)
                 {
@@ -228,15 +226,39 @@ namespace PotatoSalad
                     coords = GetEmptySpace();
                     if (coords[0] > 0 && coords[1] > 0)
                     {
-                        Game.DungeonMap.TileArray[coords[0], coords[1]].MakeTile("stairs-down");
-                        Game.DungeonMap.TileArray[coords[0], coords[1]].Usable += $"-{i}";
+                        Game.DungeonMap.TileArray[coords[0], coords[1]].MakeTile("stairsdown");
+                        Game.DungeonMap.TileArray[coords[0], coords[1]].Usable += $"-{Game.XMLHandler.PossibleExits(MapID)}-{i}";
                     }
                 }
             }
             else
             {
-                // We got nothing here right now. TODO.
-                // Stairs up need to take IDs from previous level.
+                // Stairs up need to take IDs from previous level, as supplied in whereYouWere
+                // And they *have* to match.
+
+                // So we consult the mapdata for the previous level to get stairsdown quantities and IDs.
+                List<string> stairIDs = Game.XMLHandler.PossibleEntrances(whereYouWere);
+                if (stairIDs.Count > 0)
+                {
+                    // This should ALWAYS be true.
+                    foreach (string s in stairIDs)
+                    {
+                        string[] s_split = s.Split('-');
+                        if (s_split[0] == MapID)    // In case we want fancier stair setups later.
+                        {
+                            int[] coords = GetEmptySpace();
+                            if (coords[0] == -1)
+                            {
+                                // We brute-force it.
+                                coords[0] = Game.Dice.XdY(1, XDimension - 1);
+                                coords[1] = Game.Dice.XdY(1, YDimension - 1);
+                                CarveLine(coords[0], coords[1], currentRoom.CentreX, currentRoom.CentreY);
+                            }
+                            Game.DungeonMap.TileArray[coords[0], coords[1]].MakeTile("stairsup");
+                            Game.DungeonMap.TileArray[coords[0], coords[1]].Usable += $"-{whereYouWere}-{s_split[1]}";
+                        }
+                    }
+                }
             }
         }
 
