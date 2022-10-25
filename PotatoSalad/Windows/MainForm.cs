@@ -38,10 +38,17 @@ namespace PotatoSalad.Windows
 
         public void BlankMap()
         {
+            // Reset mapimage
             MapImage = new Bitmap((Game.DungeonMap.XDimension + 1) * 32, (Game.DungeonMap.YDimension + 1) * 32);
             MapDrawer = Graphics.FromImage(MapImage);
             MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
             MapDrawer.FillRectangle(Brushes.Black, 0, 0, MapImage.Width, MapImage.Height);
+
+            // Reset the visible window
+            Rectangle cropper = new Rectangle(0,0,480,480);
+            Bitmap bmp = (Bitmap)MapImage.Clone(cropper, MapImage.PixelFormat);
+            worldMapPanel.BackgroundImage = bmp;
+            worldMapPanel.Refresh();
         }
 
         private void worldMapPanel_Paint(object sender, PaintEventArgs e)
@@ -205,8 +212,6 @@ namespace PotatoSalad.Windows
                     MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
                 }
             }
-
-            // TODO: Replace newFOV up there with newTiles, and find a better way of drawing and removing monsters.
 
             oldFOV = newFOV;
 
