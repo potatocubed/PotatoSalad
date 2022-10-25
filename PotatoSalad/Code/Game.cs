@@ -189,6 +189,7 @@ namespace PotatoSalad
         {
             SaveGame(); // Stash previous data.
             string whereYouWere = DungeonMap.MapID;    // Stash this for generating stairs back the way.
+            string prevStairs = Player.location.Usable;
 
             DungeonMap = new Map();
             DungeonMap.Generate(mn, mid, ln, d, xSize, ySize, mType, whereYouWere);
@@ -197,6 +198,14 @@ namespace PotatoSalad
             LevelXML.Load(XMLHandler.saveDir + "/data/" + Game.DungeonMap.MapID + "/mapdata.xml");
 
             // We've created and stored a new level. Now we find the corresponding stairs and put the player there.
+            int x = prevStairs.LastIndexOf('-');
+            prevStairs = prevStairs.Substring(x + 1);
+
+            // TERRAIN HASN'T BEEN SPAWNED YET
+            XmlNode xNode = LevelXML.SelectSingleNode($"//terrain/item[id = '{whereYouWere}-{prevStairs}']");
+            x = Convert.ToInt32(xNode.SelectSingleNode("@x").InnerText);
+            int y = Convert.ToInt32(xNode.SelectSingleNode("@y").InnerText);
+            DungeonMap.InstantiatePlayer(DungeonMap.TileArray[x, y]);
         }
 
 

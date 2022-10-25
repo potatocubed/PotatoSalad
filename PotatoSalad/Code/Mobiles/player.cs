@@ -94,8 +94,10 @@ namespace PotatoSalad
 
             switch (t.Name)
             {
-                case "stairs-down":
-                case "stairs-up":
+                case "stairsdown":
+                    Game.EnterNewLevel("Dungeon", "D2", 2, 2, 80, 25, "dungeon");
+                    break;
+                case "stairsup":
                 default:
                     break;
             }

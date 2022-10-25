@@ -144,7 +144,7 @@ namespace PotatoSalad
 
             foreach (XmlNode n in xNodes)
             {
-                result.Add(n.SelectSingleNode("item").InnerText);
+                result.Add(n.SelectSingleNode("id").InnerText);
             }
 
             return result;
