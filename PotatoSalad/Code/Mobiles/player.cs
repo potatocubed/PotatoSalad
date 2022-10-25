@@ -34,6 +34,9 @@ namespace PotatoSalad
 
         public void LoadPlayerXML(XmlNode xmlSnippet)
         {
+            // IMPORTANT: Does not load location, only stats.
+            // Which is GOOD.
+
             XmlElement xElem;
             xElem = (XmlElement)xmlSnippet.SelectSingleNode("./CharacterID");
             this.id = xElem.InnerText;
@@ -95,9 +98,21 @@ namespace PotatoSalad
             switch (t.Name)
             {
                 case "stairsdown":
-                    Game.EnterNewLevel("Dungeon", "D2", 2, 2, 80, 25, "dungeon");
-                    break;
                 case "stairsup":
+                    // Need to determine where it's going from the stair.
+                    string destination = this.location.Usable.Split('-')[1];
+                    // And then pick up the various details from a big XML
+                    // of dungeon levels.
+                    string[] goHere = Game.XMLHandler.GetLevelDetails(destination);
+                    Game.EnterNewLevel(
+                        goHere[0],
+                        goHere[1],
+                        Convert.ToInt32(goHere[2]),
+                        Convert.ToInt32(goHere[3]),
+                        Convert.ToInt32(goHere[4]),
+                        Convert.ToInt32(goHere[5]),
+                        goHere[6]);
+                    break;
                 default:
                     break;
             }

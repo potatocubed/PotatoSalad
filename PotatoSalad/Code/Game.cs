@@ -2,6 +2,7 @@
 using PotatoSalad.Windows;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -125,12 +126,38 @@ namespace PotatoSalad
             // load is valid in all ways otherwise this risks
             // some crashes due to unhandled errors.
 
+            LoadLevelData(saveDir, mapID);
+
+            // Then we load the player.
+            PlayerXML = new XmlDocument();
+            PlayerXML.Load(saveDir + "/character.xml");
+
+            XmlElement xElem;
+            int xSize;
+            int ySize;
+
+            // Find the player location and call DungeonMap.InstantiatePlayer there.
+            xElem = (XmlElement)PlayerXML.SelectSingleNode("/CharData/Location");
+            xSize = Convert.ToInt32(xElem.GetAttribute("x"));
+            ySize = Convert.ToInt32(xElem.GetAttribute("y"));
+            DungeonMap.InstantiatePlayer(DungeonMap.TileArray[xSize, ySize]);
+
+            // Call Player.LoadPlayer, which will load from the XML.
+            xElem = (XmlElement)PlayerXML.SelectSingleNode("/CharData");
+            Player.LoadPlayerXML(xElem);
+
+            // Then we close the main menu and on with the show.
+            Game.ShowForms2();
+        }
+
+        private static void LoadLevelData(string saveDir, string mapID)
+        {
             // We need to load the map first.
             // LevelXML first then have DungeonMap draw from that.
             DungeonMap = new Map();
             LevelXML = new XmlDocument();
             LevelXML.Load(saveDir + "/data/" + mapID + "/mapdata.xml");
-            
+
             // Call DungeonMap.LoadMap method, which will load from the XML.
             XmlElement xElem;
             xElem = (XmlElement)LevelXML.SelectSingleNode("/MapData/MapName");
@@ -160,55 +187,48 @@ namespace PotatoSalad
                 DungeonMap.TileArray[x, y].Usable = s;
             }
 
-            // Then we load the player.
-            PlayerXML = new XmlDocument();
-            PlayerXML.Load(saveDir + "/character.xml");
-            
-            // Find the player location and call DungeonMap.InstantiatePlayer there.
-            xElem = (XmlElement)PlayerXML.SelectSingleNode("/CharData/Location");
-            xSize = Convert.ToInt32(xElem.GetAttribute("x"));
-            ySize = Convert.ToInt32(xElem.GetAttribute("y"));
-            DungeonMap.InstantiatePlayer(DungeonMap.TileArray[xSize, ySize]);
-
-            // Call Player.LoadPlayer, which will load from the XML.
-            xElem = (XmlElement)PlayerXML.SelectSingleNode("/CharData");
-            Player.LoadPlayerXML(xElem);
-
             // Now we want to load all the mobiles.
             nodes = LevelXML.SelectNodes("//monster");
             foreach (XmlElement n in nodes)
             {
                 Game.MonPop.LoadMonsterXML(n, ref DungeonMap.TileArray, ref DungeonMap.MobileArray);
             }
-
-            // Then we close the main menu and on with the show.
-            Game.ShowForms2();
         }
 
         public static void EnterNewLevel(string mn, string mid, int ln, int d, int xSize = 80, int ySize = 25, string mType = "default")
         {
-            // WAIT
-            // We need to check if we're creating a new level or loading a pre-existing one.
-
             SaveGame(); // Stash previous data.
             string whereYouWere = DungeonMap.MapID;    // Stash this for generating stairs back the way.
             string prevStairs = Player.location.Usable;
+            Game.GAPI.BlankMap();
 
-            DungeonMap = new Map();
-            DungeonMap.Generate(mn, mid, ln, d, xSize, ySize, mType, whereYouWere);
-            XMLHandler.CreateNewLevelData();
-            LevelXML = new XmlDocument();
-            LevelXML.Load(XMLHandler.saveDir + "/data/" + Game.DungeonMap.MapID + "/mapdata.xml");
-
+            // We need to check if we're creating a new level or loading a pre-existing one.
+            if (Directory.Exists(XMLHandler.saveDir + "/data/" + mid))
+            {
+                // We're going somewhere that already exists.
+                LoadLevelData(XMLHandler.saveDir, mid);
+            }
+            else
+            {
+                DungeonMap = new Map();
+                DungeonMap.Generate(mn, mid, ln, d, xSize, ySize, mType, whereYouWere);
+                XMLHandler.CreateNewLevelData();
+                LevelXML = new XmlDocument();
+                LevelXML.Load(XMLHandler.saveDir + "/data/" + Game.DungeonMap.MapID + "/mapdata.xml");
+            }
+            
             // We've created and stored a new level. Now we find the corresponding stairs and put the player there.
             int x = prevStairs.LastIndexOf('-');
             prevStairs = prevStairs.Substring(x + 1);
 
-            // TERRAIN HASN'T BEEN SPAWNED YET
             XmlNode xNode = LevelXML.SelectSingleNode($"//terrain/item[id = '{whereYouWere}-{prevStairs}']");
             x = Convert.ToInt32(xNode.SelectSingleNode("@x").InnerText);
             int y = Convert.ToInt32(xNode.SelectSingleNode("@y").InnerText);
-            DungeonMap.InstantiatePlayer(DungeonMap.TileArray[x, y]);
+            DungeonMap.TeleportPlayer(DungeonMap.TileArray[x, y]);
+            
+            // This is necessary, otherwise the player's details are all reset.
+            XmlElement xElem = (XmlElement)PlayerXML.SelectSingleNode("/CharData");
+            Player.LoadPlayerXML(xElem);
         }
 
 
@@ -225,7 +245,7 @@ namespace PotatoSalad
             LevelXML.Load(XMLHandler.saveDir + "/data/" + Game.DungeonMap.MapID + "/mapdata.xml");
 
             // Sort the player data.
-            Game.Player.name = playerName;
+            Player.name = playerName;
             Player.health = 5;
             Player.mana = 5;
             XMLHandler.UpdateCharData();

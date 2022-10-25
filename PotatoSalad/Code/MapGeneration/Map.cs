@@ -103,6 +103,14 @@ namespace PotatoSalad
             MobileArray.Add(Game.Player);
         }
 
+        public void TeleportPlayer(Tile destination)
+        {
+            //Game.Player.location.Occupier = null;
+            Game.Player.location = destination;
+            destination.Occupier = Game.Player;
+            MobileArray.Add(Game.Player);
+        }
+
         private void PopulateDefault()
         {
             // TODO

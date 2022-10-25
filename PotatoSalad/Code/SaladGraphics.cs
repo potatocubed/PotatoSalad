@@ -18,6 +18,11 @@ namespace PotatoSalad
             Game.MainForm.consoleOutput.Refresh();
         }
 
+        public void BlankMap()
+        {
+            Game.MainForm.BlankMap();
+        }
+
         public void InfoText(string textToRender)
         {
             TextBox cOutput = Game.MainForm.informationBox;

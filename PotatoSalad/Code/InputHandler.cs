@@ -49,6 +49,7 @@ namespace PotatoSalad
                     case '>':
                     case '.':
                         attemptedAction = Game.Player.UseTerrain(Game.DungeonMap.TileArray[Game.Player.X(), Game.Player.Y()]);
+                        Game.GAPI.DrawMap(Game.DungeonMap);
                         break;
                     default:
                         break;

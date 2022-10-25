@@ -122,6 +122,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Code\MapGeneration\DungeonLevelDetails.xml" />
     <Content Include="Code\MapGeneration\StairDestinations.xml" />
     <Content Include="Graphics\Mobiles\generic_monster.png" />
     <Content Include="Graphics\Mobiles\goblin.png" />

@@ -1,0 +1,28 @@
+﻿<DungeonLevels>
+  <level>
+    <name>Dungeon</name>
+    <mapID>D1</mapID>
+    <!-- 
+    levelnumber is just the number that goes on the end of the ID
+    depth is a measure of relative difficulty
+    -->
+    <levelnumber>1</levelnumber>
+    <depth>1</depth>
+    <xdimension>80</xdimension>
+    <ydimension>25</ydimension>
+    <maptype>dungeon</maptype>
+    <exits>
+      <exit>D2</exit>
+    </exits>
+  </level>
+  <level>
+    <name>Dungeon</name>
+    <mapID>D2</mapID>
+    <levelnumber>2</levelnumber>
+    <depth>2</depth>
+    <xdimension>80</xdimension>
+    <ydimension>25</ydimension>
+    <maptype>dungeon</maptype>
+    <exits/>
+  </level>
+</DungeonLevels>

@@ -121,18 +121,36 @@ namespace PotatoSalad
         {
             string s = "";
             XmlDocument exitsDoc = new XmlDocument();
-            exitsDoc.Load(here + "../../../Code/MapGeneration/StairDestinations.xml");
-            XmlElement xElem = (XmlElement)exitsDoc.DocumentElement.SelectSingleNode($"level[@id='{currentMapID}']");
-            XmlNodeList xNodes = xElem.SelectNodes("exit");
+            exitsDoc.Load(here + "../../../Code/MapGeneration/DungeonLevelDetails.xml");
+            XmlElement xElem = (XmlElement)exitsDoc.DocumentElement.SelectSingleNode($"level[mapID = '{currentMapID}']");
+            XmlNodeList xNodes = xElem.SelectNodes("//exit");
             foreach(XmlNode n in xNodes)
             {
                 if (s != "")
                 {
                     s = $"{s}-";
                 }
-                s = $"{s}{n.SelectSingleNode("@id").InnerText}";
+                s = $"{s}{n.InnerText}";
             }
             return s;
+        }
+
+        public string[] GetLevelDetails(string mapID)
+        {
+            string[] results = new string[7];
+            XmlDocument bigLevelDoc = new XmlDocument();
+            bigLevelDoc.Load(here + "../../../Code/MapGeneration/DungeonLevelDetails.xml");
+            XmlElement xElem = (XmlElement)bigLevelDoc.DocumentElement.SelectSingleNode($"level[mapID = '{mapID}']");
+
+            results[0] = xElem.SelectSingleNode("name").InnerText;
+            results[1] = xElem.SelectSingleNode("mapID").InnerText;
+            results[2] = xElem.SelectSingleNode("levelnumber").InnerText;
+            results[3] = xElem.SelectSingleNode("depth").InnerText;
+            results[4] = xElem.SelectSingleNode("xdimension").InnerText;
+            results[5] = xElem.SelectSingleNode("ydimension").InnerText;
+            results[6] = xElem.SelectSingleNode("maptype").InnerText;
+
+            return results;
         }
 
         public List<string> PossibleEntrances(string mapID)

@@ -1,4 +1,5 @@
 ﻿<root>
+  <!-- stairs down and/or out generated on a level could go to whatever exits -->
 	<level id="D1">
 		<exit id="D2"/>
 	</level>

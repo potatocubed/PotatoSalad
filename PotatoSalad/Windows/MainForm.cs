@@ -31,13 +31,17 @@ namespace PotatoSalad.Windows
 
             oldFOV = new List<Tile>();
 
+            BlankMap();
+            DrawMapOnLoad(Game.DungeonMap);
+            InitialJumpToPlayer();
+        }
+
+        public void BlankMap()
+        {
             MapImage = new Bitmap((Game.DungeonMap.XDimension + 1) * 32, (Game.DungeonMap.YDimension + 1) * 32);
             MapDrawer = Graphics.FromImage(MapImage);
             MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
             MapDrawer.FillRectangle(Brushes.Black, 0, 0, MapImage.Width, MapImage.Height);
-
-            DrawMapOnLoad(Game.DungeonMap);
-            InitialJumpToPlayer();
         }
 
         private void worldMapPanel_Paint(object sender, PaintEventArgs e)
