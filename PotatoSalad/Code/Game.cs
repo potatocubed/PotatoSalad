@@ -187,6 +187,9 @@ namespace PotatoSalad
 
         public static void EnterNewLevel(string mn, string mid, int ln, int d, int xSize = 80, int ySize = 25, string mType = "default")
         {
+            // WAIT
+            // We need to check if we're creating a new level or loading a pre-existing one.
+
             SaveGame(); // Stash previous data.
             string whereYouWere = DungeonMap.MapID;    // Stash this for generating stairs back the way.
             string prevStairs = Player.location.Usable;
