@@ -75,6 +75,7 @@ namespace PotatoSalad
             mapType = mType;
 
             TileArray = new Tile[xSize, ySize];
+            MobileArray = new List<Mobile>();
 
             MapID = mid;
             MapName = mn;
@@ -226,20 +227,7 @@ namespace PotatoSalad
 
             // Now let's throw in some terrain.
             // Stairs down only on the first level, at least until I've got the endgame sorted out.
-            if (whereYouWere == "")
-            {
-                for(int i = 0; i < 3; i++)
-                {
-                    int[] coords = new int[2];
-                    coords = GetEmptySpace();
-                    if (coords[0] > 0 && coords[1] > 0)
-                    {
-                        Game.DungeonMap.TileArray[coords[0], coords[1]].MakeTile("stairsdown");
-                        Game.DungeonMap.TileArray[coords[0], coords[1]].Usable += $"-{Game.XMLHandler.PossibleExits(MapID)}-{i}";
-                    }
-                }
-            }
-            else
+            if (whereYouWere != "")
             {
                 // Stairs up need to take IDs from previous level, as supplied in whereYouWere
                 // And they *have* to match.
@@ -268,6 +256,22 @@ namespace PotatoSalad
                     }
                 }
             }
+
+            // Stairs down. If we're not at the bottom.
+            if(Game.XMLHandler.PossibleExits(MapID) != "")
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    int[] coords = new int[2];
+                    coords = GetEmptySpace();
+                    if (coords[0] > 0 && coords[1] > 0)
+                    {
+                        Game.DungeonMap.TileArray[coords[0], coords[1]].MakeTile("stairsdown");
+                        Game.DungeonMap.TileArray[coords[0], coords[1]].Usable += $"-{Game.XMLHandler.PossibleExits(MapID)}-{i}";
+                    }
+                }
+            }
+            
         }
 
         private int[] GetEmptySpace()

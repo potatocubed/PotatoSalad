@@ -123,7 +123,7 @@ namespace PotatoSalad
             XmlDocument exitsDoc = new XmlDocument();
             exitsDoc.Load(here + "../../../Code/MapGeneration/DungeonLevelDetails.xml");
             XmlElement xElem = (XmlElement)exitsDoc.DocumentElement.SelectSingleNode($"level[mapID = '{currentMapID}']");
-            XmlNodeList xNodes = xElem.SelectNodes("//exit");
+            XmlNodeList xNodes = xElem.SelectNodes(".//exit");
             foreach(XmlNode n in xNodes)
             {
                 if (s != "")

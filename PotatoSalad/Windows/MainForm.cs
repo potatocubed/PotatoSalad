@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -31,6 +32,8 @@ namespace PotatoSalad.Windows
 
             oldFOV = new List<Tile>();
 
+            MapImage = new Bitmap((Game.DungeonMap.XDimension + 1) * 32, (Game.DungeonMap.YDimension + 1) * 32);
+            MapDrawer = Graphics.FromImage(MapImage);
             BlankMap();
             DrawMapOnLoad(Game.DungeonMap);
             InitialJumpToPlayer();
@@ -39,16 +42,8 @@ namespace PotatoSalad.Windows
         public void BlankMap()
         {
             // Reset mapimage
-            MapImage = new Bitmap((Game.DungeonMap.XDimension + 1) * 32, (Game.DungeonMap.YDimension + 1) * 32);
-            MapDrawer = Graphics.FromImage(MapImage);
-            MapDrawer.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-            MapDrawer.FillRectangle(Brushes.Black, 0, 0, MapImage.Width, MapImage.Height);
-
-            // Reset the visible window
-            Rectangle cropper = new Rectangle(0,0,480,480);
-            Bitmap bmp = (Bitmap)MapImage.Clone(cropper, MapImage.PixelFormat);
-            worldMapPanel.BackgroundImage = bmp;
-            worldMapPanel.Refresh();
+            oldFOV = new List<Tile>();  // THIS MOTHERFUCKER. ATE MY ENTIRE EVENING.
+            MapDrawer.Clear(Color.Black);
         }
 
         private void worldMapPanel_Paint(object sender, PaintEventArgs e)
@@ -182,7 +177,7 @@ namespace PotatoSalad.Windows
             // Draw the map.
             // Okay, so, all is black by default.
             // If you can see it, paint it on the map.
-            // Then arrange all the mob pictureboxes in the right places.
+            // Then take a window of that map and paint it on the worldpanel.
 
             //Panel p = this.worldMapPanel;
             //Graphics g = p.CreateGraphics();
