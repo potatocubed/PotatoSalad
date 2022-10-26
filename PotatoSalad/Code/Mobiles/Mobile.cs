@@ -84,7 +84,12 @@ namespace PotatoSalad
             }
 
             // Check if the tile has a mob in it.
-            if (newLoc.Occupier != null)
+            if (newLoc.Occupier == Game.Player)
+            {
+                // There's a weird bug where the player occupies multiple places at once?
+                // So just do nothing and it should work out?
+            }
+            else if (newLoc.Occupier != null)
             {
                 //Game.GAPI.RenderText($"No movement! {this.id} bumped into {newLoc.Occupier.name}.");
                 //Game.GAPI.RenderText("Attack!");

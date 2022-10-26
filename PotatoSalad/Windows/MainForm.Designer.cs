@@ -37,38 +37,44 @@
             // 
             this.worldMapPanel.BackColor = System.Drawing.Color.Black;
             this.worldMapPanel.Location = new System.Drawing.Point(0, 0);
+            this.worldMapPanel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.worldMapPanel.Name = "worldMapPanel";
-            this.worldMapPanel.Size = new System.Drawing.Size(480, 480);
+            this.worldMapPanel.Size = new System.Drawing.Size(720, 738);
             this.worldMapPanel.TabIndex = 0;
             this.worldMapPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.worldMapPanel_Paint);
             // 
             // consoleListBox
             // 
             this.consoleListBox.FormattingEnabled = true;
-            this.consoleListBox.Location = new System.Drawing.Point(12, 486);
+            this.consoleListBox.ItemHeight = 20;
+            this.consoleListBox.Location = new System.Drawing.Point(18, 748);
+            this.consoleListBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.consoleListBox.Name = "consoleListBox";
-            this.consoleListBox.Size = new System.Drawing.Size(454, 108);
+            this.consoleListBox.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.consoleListBox.Size = new System.Drawing.Size(679, 164);
             this.consoleListBox.TabIndex = 1;
             // 
             // infoBox
             // 
-            this.infoBox.Location = new System.Drawing.Point(490, 12);
+            this.infoBox.Location = new System.Drawing.Point(735, 18);
+            this.infoBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.infoBox.Multiline = true;
             this.infoBox.Name = "infoBox";
             this.infoBox.ReadOnly = true;
             this.infoBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.infoBox.Size = new System.Drawing.Size(299, 59);
+            this.infoBox.Size = new System.Drawing.Size(446, 89);
             this.infoBox.TabIndex = 2;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(801, 601);
+            this.ClientSize = new System.Drawing.Size(1202, 925);
             this.Controls.Add(this.infoBox);
             this.Controls.Add(this.consoleListBox);
             this.Controls.Add(this.worldMapPanel);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "MainForm";
             this.Text = "PotatoSalad";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);

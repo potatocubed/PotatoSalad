@@ -109,7 +109,7 @@ namespace PotatoSalad
             //Game.Player.location.Occupier = null;
             Game.Player.location = destination;
             destination.Occupier = Game.Player;
-            MobileArray.Add(Game.Player);
+            //MobileArray.Add(Game.Player);
         }
 
         private void PopulateDefault()

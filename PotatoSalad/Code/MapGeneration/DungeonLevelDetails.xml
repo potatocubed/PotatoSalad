@@ -23,6 +23,18 @@
     <xdimension>80</xdimension>
     <ydimension>25</ydimension>
     <maptype>dungeon</maptype>
+    <exits>
+      <exit>D3</exit>
+    </exits>
+  </level>
+  <level>
+    <name>Dungeon</name>
+    <mapID>D3</mapID>
+    <levelnumber>3</levelnumber>
+    <depth>3</depth>
+    <xdimension>80</xdimension>
+    <ydimension>25</ydimension>
+    <maptype>dungeon</maptype>
     <exits/>
   </level>
 </DungeonLevels>
