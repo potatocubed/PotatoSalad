@@ -123,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Code\MapGeneration\DungeonLevelDetails.xml" />
+    <Content Include="Code\To-Do.txt" />
     <Content Include="Graphics\Mobiles\generic_monster.png" />
     <Content Include="Graphics\Mobiles\goblin.png" />
     <Content Include="Graphics\Mobiles\player.png" />

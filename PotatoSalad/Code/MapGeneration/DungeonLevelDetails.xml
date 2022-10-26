@@ -1,4 +1,12 @@
 ﻿<DungeonLevels>
+  <!--
+  Overall Structure:
+  10 levels of dungeon [getting the hang of things, skilling up, etc.]
+  10 levels of caverns
+  10 levels of labyrinth with boss on the bottom
+  four midboss branches in the labyrinth
+  three midboss branches in the caverns
+  -->
   <level>
     <name>Dungeon</name>
     <mapID>D1</mapID>
@@ -32,6 +40,90 @@
     <mapID>D3</mapID>
     <levelnumber>3</levelnumber>
     <depth>3</depth>
+    <xdimension>80</xdimension>
+    <ydimension>25</ydimension>
+    <maptype>dungeon</maptype>
+    <exits>
+      <exit>D4</exit>
+    </exits>
+  </level>
+  <level>
+    <name>Dungeon</name>
+    <mapID>D4</mapID>
+    <levelnumber>4</levelnumber>
+    <depth>4</depth>
+    <xdimension>80</xdimension>
+    <ydimension>25</ydimension>
+    <maptype>dungeon</maptype>
+    <exits>
+      <exit>D5</exit>
+    </exits>
+  </level>
+  <level>
+    <name>Dungeon</name>
+    <mapID>D5</mapID>
+    <levelnumber>5</levelnumber>
+    <depth>5</depth>
+    <xdimension>80</xdimension>
+    <ydimension>25</ydimension>
+    <maptype>dungeon</maptype>
+    <exits>
+      <exit>D6</exit>
+    </exits>
+  </level>
+  <level>
+    <name>Dungeon</name>
+    <mapID>D6</mapID>
+    <levelnumber>6</levelnumber>
+    <depth>6</depth>
+    <xdimension>80</xdimension>
+    <ydimension>25</ydimension>
+    <maptype>dungeon</maptype>
+    <exits>
+      <exit>D7</exit>
+    </exits>
+  </level>
+  <level>
+    <name>Dungeon</name>
+    <mapID>D7</mapID>
+    <levelnumber>7</levelnumber>
+    <depth>7</depth>
+    <xdimension>80</xdimension>
+    <ydimension>25</ydimension>
+    <maptype>dungeon</maptype>
+    <exits>
+      <exit>D8</exit>
+    </exits>
+  </level>
+  <level>
+    <name>Dungeon</name>
+    <mapID>D8</mapID>
+    <levelnumber>8</levelnumber>
+    <depth>8</depth>
+    <xdimension>80</xdimension>
+    <ydimension>25</ydimension>
+    <maptype>dungeon</maptype>
+    <exits>
+      <exit>D9</exit>
+    </exits>
+  </level>
+  <level>
+    <name>Dungeon</name>
+    <mapID>D9</mapID>
+    <levelnumber>9</levelnumber>
+    <depth>9</depth>
+    <xdimension>80</xdimension>
+    <ydimension>25</ydimension>
+    <maptype>dungeon</maptype>
+    <exits>
+      <exit>D10</exit>
+    </exits>
+  </level>
+  <level>
+    <name>Dungeon</name>
+    <mapID>D10</mapID>
+    <levelnumber>10</levelnumber>
+    <depth>10</depth>
     <xdimension>80</xdimension>
     <ydimension>25</ydimension>
     <maptype>dungeon</maptype>

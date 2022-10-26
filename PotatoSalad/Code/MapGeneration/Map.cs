@@ -106,10 +106,8 @@ namespace PotatoSalad
 
         public void TeleportPlayer(Tile destination)
         {
-            //Game.Player.location.Occupier = null;
             Game.Player.location = destination;
             destination.Occupier = Game.Player;
-            //MobileArray.Add(Game.Player);
         }
 
         private void PopulateDefault()
@@ -233,6 +231,9 @@ namespace PotatoSalad
                 // And they *have* to match.
 
                 // So we consult the mapdata for the previous level to get stairsdown quantities and IDs.
+                // THIS ONLY WORKS ONE LEVEL AT A TIME
+                // Which doesn't seem too onerous to build around, since multiple exits are basically
+                // for building branches rather than shortcuts.
                 List<string> stairIDs = Game.XMLHandler.PossibleEntrances(whereYouWere);
                 if (stairIDs.Count > 0)
                 {
@@ -257,8 +258,9 @@ namespace PotatoSalad
                 }
             }
 
+            string exits = Game.XMLHandler.PossibleExits(MapID);
             // Stairs down. If we're not at the bottom.
-            if(Game.XMLHandler.PossibleExits(MapID) != "")
+            if(exits != "")
             {
                 for (int i = 0; i < 3; i++)
                 {
@@ -267,7 +269,9 @@ namespace PotatoSalad
                     if (coords[0] > 0 && coords[1] > 0)
                     {
                         Game.DungeonMap.TileArray[coords[0], coords[1]].MakeTile("stairsdown");
-                        Game.DungeonMap.TileArray[coords[0], coords[1]].Usable += $"-{Game.XMLHandler.PossibleExits(MapID)}-{i}";
+                        string[] exitss = exits.Split('-');
+                        int x = Game.Dice.XdY(1, exitss.Length) - 1;
+                        Game.DungeonMap.TileArray[coords[0], coords[1]].Usable += $"-{exitss[x]}-{i}";
                     }
                 }
             }

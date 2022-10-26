@@ -18,6 +18,8 @@ namespace PotatoSalad
 
         public static int AI_TYPE_DO_NOTHING = 0;
         public static int AI_TYPE_MOVE_RANDOM = 1;
+        public static int AI_TYPE_NORMAL = 2;   // Go to where they last saw the PC.
+        public static int AI_TYPE_HUNTER = 3;   // Always knows where you are.
 
         public List<string> DEBUG_ERROR_LIST = new List<string>();
     }

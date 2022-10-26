@@ -1,0 +1,17 @@
+﻿monsters of increasing difficulty
+monster AI other than 'move at random'
+	once they know where you are, they remember and head for there
+	some can track you
+skill system for weapons
+	and magic, and other things
+level up system for the PC [more hp and mana]
+	assume 20 equal-level encounters to level up
+	monsters grant xp equal to level
+ranged targeting
+inventories and equipment
+spells
+cavern-style levels
+labyrinth-style levels
+more terrain to encounter -- altars, pools, vaults
+move monster details to an XML file
+	or, better, a series of XML files -- an 'index' for random gen then subfiles for details
