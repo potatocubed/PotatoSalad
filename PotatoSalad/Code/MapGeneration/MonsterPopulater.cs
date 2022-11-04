@@ -10,6 +10,20 @@ namespace PotatoSalad
 {
     class MonsterPopulater
     {
+
+        public MonsterPopulater()
+        {
+            // Each level needs its own monster list.
+            // Then for out-of-depth monsters you can look to the level's potential
+            // entrances and exits.
+
+            // Maybe include potential entrances and exits in the Map object?
+            // If we're going to be referring to them a lot. Just keep them in
+            // memory.
+
+            // Likewise the monster list.
+        }
+
         public string GenerateUniqueID(string name, List<Mobile> mobArray)
         {
             // Takes a mobile's name and appends an ever-increasing number to it
@@ -51,20 +65,6 @@ namespace PotatoSalad
             mon.AI_type = ai;
             monList.Add(mon);
             tileArray[locx, locy].Occupier = mon;
-
-            /*
-            Monster mon = new Monster(TileArray[targX, targY], uid);
-            mon.monType = mType;
-            MobileArray.Add(mon);
-            TileArray[targX, targY].Occupier = mon;
-
-            <name>Goblin</name>
-            <id>goblin-0</id>
-            <location x="48" y="2" />
-            <graphic>../../Graphics/Mobiles/goblin.png</graphic>
-            <fov>5</fov>
-            <ai>1</ai>
-            */
         }
 
         public void LoadMonsterXML(XmlElement xmlSnippet, ref Tile[,] tileArray, ref List<Mobile> monList)

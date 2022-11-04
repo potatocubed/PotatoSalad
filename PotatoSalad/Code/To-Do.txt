@@ -6,6 +6,7 @@ skill system for weapons
 	and magic, and other things
 level up system for the PC [more hp and mana]
 	assume 20 equal-level encounters to level up
+		start with 10 pre-spawned monsters and spawn more over time until 20
 	monsters grant xp equal to level
 ranged targeting
 inventories and equipment
